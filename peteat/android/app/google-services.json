@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "190409747777",
+    "project_id": "peteat-26a68",
+    "storage_bucket": "peteat-26a68.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190409747777:android:7b44f9ed77b05fc4c385c0",
+        "android_client_info": {
+          "package_name": "com.example.peteat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190409747777-0004hkffk4829cc9n74v96lnljairukq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.peteat",
+            "certificate_hash": "e13b422c60f609b20d0dec495e9ca95aee57c1a4"
+          }
+        },
+        {
+          "client_id": "190409747777-df3at9soc2oct2cbc8nium7g5pamgq6i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAduIBZBxOXJaM9aDvwBowsszRxM-PkvXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "190409747777-df3at9soc2oct2cbc8nium7g5pamgq6i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

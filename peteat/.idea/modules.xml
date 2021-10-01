@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ac02.iml" filepath="$PROJECT_DIR$/ac02.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/ac02_android.iml" filepath="$PROJECT_DIR$/android/ac02_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/peteat.iml" filepath="$PROJECT_DIR$/peteat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/peteat_android.iml" filepath="$PROJECT_DIR$/android/peteat_android.iml" />
     </modules>
   </component>
 </project>
