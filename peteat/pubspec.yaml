@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_core: ^1.7.0
   google_fonts: ^2.1.0
+  google_sign_in: ^5.1.1
+  shared_preferences: ^2.0.8
 
 dev_dependencies:
   flutter_test:
@@ -61,7 +63,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/pawprint.png
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

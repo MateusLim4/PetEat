@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/modules/Login/login_page.dart';
+import 'package:peteat/modules/home/home_page.dart';
 import 'package:peteat/modules/splash/splash_page.dart';
 
 class WidgetController extends StatelessWidget {
@@ -12,6 +14,8 @@ class WidgetController extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         routes: {
           "/splash": (context) => SplashPage(),
+          "/login": (context) => LoginPage(),
+          "/home": (context) => HomePage(),
         });
   }
 }
