@@ -20,8 +20,18 @@ class TextStyles {
     color: AppColors.primary,
   );
   static final pinkTitleThin = GoogleFonts.sunflower(
-    fontSize: 18,
+    fontSize: 27,
     fontWeight: FontWeight.normal,
     color: AppColors.primary,
+  );
+  static final textBlackLight = GoogleFonts.sunflower(
+    fontSize: 14,
+    fontWeight: FontWeight.normal,
+    color: AppColors.textColor,
+  );
+  static final textBlackBold = GoogleFonts.sunflower(
+    fontSize: 27,
+    fontWeight: FontWeight.bold,
+    color: AppColors.textColor,
   );
 }

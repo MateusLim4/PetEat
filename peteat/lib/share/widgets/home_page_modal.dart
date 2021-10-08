@@ -16,44 +16,44 @@ class ModalHomeWidget extends StatelessWidget {
                 height: 500,
                 color: AppColors.titleWhite,
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Column(children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 40.0, bottom: 40),
-                      child: Container(
-                          child: Text('Conectar dispositivo',
-                              style: TextStyles.textBlackBold)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Row(
-                        children: [
-                          Container(
+                  padding: const EdgeInsets.only(
+                      left: 20, right: 20, top: 50, bottom: 50),
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                            child: Text('Conectar dispositivo',
+                                style: TextStyles.textBlackBold)),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Container(
                             child: Text(
-                              'Nenhum dispositivo encontrado...',
-                              style: TextStyles.textBlackLight,
-                              textAlign: TextAlign.right,
-                            ),
+                                'Nenhum dispositivo encontrado... \n'
+                                'Pressione “Buscar” para procurar novos dispositivos...',
+                                style: TextStyles.textBlackLight),
                           ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: Container(
-                        child: Text(
-                            'Pressione “Buscar” para procurar novos dispositivos...',
-                            style: TextStyles.textBlackLight),
-                      ),
-                    ),
-                    Container(
-                      child: ElevatedButton(
-                          onPressed: () {},
-                          child: const Icon(
-                            Icons.search,
-                          )),
-                    )
-                  ]),
+                        ),
+                        Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ElevatedButton(
+                                    onPressed: () {},
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.search,
+                                        ),
+                                        Text('Buscar')
+                                      ],
+                                    )),
+                              ),
+                            ],
+                          ),
+                        )
+                      ]),
                 ),
               );
             },
