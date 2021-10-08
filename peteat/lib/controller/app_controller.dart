@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/modules/Login/login_page.dart';
 import 'package:peteat/modules/home/home_page.dart';
+import 'package:peteat/modules/models/user_model.dart';
 import 'package:peteat/modules/splash/splash_page.dart';
 
 class WidgetController extends StatelessWidget {
@@ -15,7 +16,8 @@ class WidgetController extends StatelessWidget {
         routes: {
           "/splash": (context) => SplashPage(),
           "/login": (context) => LoginPage(),
-          "/home": (context) => HomePage(),
+          "/home": (context) => HomePage(
+              user: ModalRoute.of(context)!.settings.arguments as UserModel)
         });
   }
 }
