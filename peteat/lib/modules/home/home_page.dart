@@ -25,44 +25,52 @@ class _HomePageState extends State<HomePage> {
             height: 152,
             color: AppColors.titleWhite,
             child: Center(
-              child: ListTile(
-                trailing: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
                         child: Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Row(children: [
-                            Container(
-                              height: 56,
-                              width: 56,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                image: DecorationImage(
-                                  image: NetworkImage(widget.user.photoURL!),
+                            TextButton(
+                              onPressed: () {},
+                              child: Container(
+                                height: 48,
+                                width: 48,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  image: DecorationImage(
+                                    image: NetworkImage(widget.user.photoURL!),
+                                  ),
                                 ),
                               ),
                             ),
-                            Text('Hello, ', style: TextStyles.pinkTitleThin),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text('Hello, ',
+                                  style: TextStyles.pinkTitleThin),
+                            ),
                             Text(
                               "${widget.user.name}",
                               style: TextStyles.pinkTitle,
                             ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10.0),
+                              child: Container(
+                                  child: TextButton(
+                                child: Icon(Icons.notifications,
+                                    size: 40, color: AppColors.grey),
+                                onPressed: () {},
+                              )),
+                            ),
                           ]),
                         ),
                       ),
-                      Container(
-                          child: TextButton(
-                        child: Icon(Icons.notifications, size: 40),
-                        onPressed: () {},
-                      )),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
+                  ]),
             ),
           ),
         ),
