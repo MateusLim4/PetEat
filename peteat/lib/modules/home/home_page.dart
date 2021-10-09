@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:peteat/modules/models/user_model.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
+import 'package:peteat/share/widgets/logout_modal.dart';
 
 import '../../share/widgets/home_page_modal.dart';
+import 'home1.dart';
+import 'home2.dart';
+import 'home_controller.dart';
 
 class HomePage extends StatefulWidget {
   final UserModel user;
@@ -12,6 +16,12 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
+final homeController = HomeController();
+final pages = [
+  Container(color: Colors.red),
+  Container(color: Colors.blue),
+];
 
 class _HomePageState extends State<HomePage> {
   @override
@@ -26,7 +36,7 @@ class _HomePageState extends State<HomePage> {
             color: AppColors.titleWhite,
             child: Center(
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(
@@ -35,19 +45,9 @@ class _HomePageState extends State<HomePage> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 8.0),
                           child: Row(children: [
-                            TextButton(
-                              onPressed: () {},
-                              child: Container(
-                                height: 48,
-                                width: 48,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  image: DecorationImage(
-                                    image: NetworkImage(widget.user.photoURL!),
-                                  ),
-                                ),
-                              ),
-                            ),
+                            Logout(
+                                user: ModalRoute.of(context)!.settings.arguments
+                                    as UserModel),
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Text('Hello, ',
@@ -57,14 +57,12 @@ class _HomePageState extends State<HomePage> {
                               "${widget.user.name}",
                               style: TextStyles.pinkTitle,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 10.0),
-                              child: Container(
-                                  child: TextButton(
+                            Container(
+                              child: TextButton(
                                 child: Icon(Icons.notifications,
                                     size: 40, color: AppColors.grey),
                                 onPressed: () {},
-                              )),
+                              ),
                             ),
                           ]),
                         ),
@@ -75,51 +73,9 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         backgroundColor: AppColors.primary,
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Container(
-                child: Text('Dispositivos conectados',
-                    style: TextStyles.titleHomeThin),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 30, left: 8, right: 8),
-              child: Container(
-                width: size.width,
-                child: Row(
-                  children: [
-                    Image.asset(
-                      'assets/images/saddog.png',
-                      height: size.height * 0.23,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 80),
-                      child: Text.rich(TextSpan(
-                          text: '"OPS!!!',
-                          style: TextStyles.textWhiteBold,
-                          children: [
-                            TextSpan(
-                              text:
-                                  ' \n Parece que \n voce nao possui\n nenhum alimentador \n disponivel"',
-                              style: TextStyles.textWhite,
-                            )
-                          ])),
-                    )
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
+        body: FeederModal(),
         floatingActionButton: Padding(
             padding: const EdgeInsets.only(bottom: 18.0),
-            child: ModalHomeWidget()
-            // label: const Text('Novo Alimentador',
-            //     style: TextStyle(fontWeight: FontWeight.bold)),
-            // icon: const Icon(Icons.add),
-            // backgroundColor: AppColors.secondary,
-            ));
+            child: ModalHomeWidget()));
   }
 }

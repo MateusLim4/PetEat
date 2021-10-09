@@ -1,12 +1,36 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:peteat/modules/home/home_controller.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
 
-class ModalHomeWidget extends StatelessWidget {
+class ModalHomeWidget extends StatefulWidget {
+  const ModalHomeWidget({Key? key}) : super(key: key);
+
+  @override
+  State<ModalHomeWidget> createState() => _ModalHomeWidgetState();
+}
+
+class _ModalHomeWidgetState extends State<ModalHomeWidget> {
   @override
   Widget build(BuildContext context) {
+    var message1 = "Nenhum dispositivo encontrado... \n";
+    var message2 = "Pressione “Buscar” para procurar novos dispositivos...";
+    var button_message = "Buscar";
+
+    void _buscar() {
+      WidgetsBinding.instance!.addPostFrameCallback((_) => setState(() {
+            message1 = "";
+            message2 = "Buscando novos dispositivos";
+            button_message = "Buscando...";
+          }));
+    }
+
     final size = MediaQuery.of(context).size;
+
     return FloatingActionButton(
+        backgroundColor: AppColors.secondary,
         child: Icon(Icons.add),
         onPressed: () {
           showModalBottomSheet<void>(
@@ -28,8 +52,8 @@ class ModalHomeWidget extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 20.0),
                           child: Container(
                             child: Text(
-                                'Nenhum dispositivo encontrado... \n'
-                                'Pressione “Buscar” para procurar novos dispositivos...',
+                                '$message1'
+                                '$message2',
                                 style: TextStyles.textBlackLight),
                           ),
                         ),
@@ -40,13 +64,17 @@ class ModalHomeWidget extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: ElevatedButton(
-                                    onPressed: () {},
+                                    style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                AppColors.secondary)),
+                                    onPressed: _buscar,
                                     child: Row(
                                       children: [
                                         Icon(
                                           Icons.search,
                                         ),
-                                        Text('Buscar')
+                                        Text('$button_message')
                                       ],
                                     )),
                               ),

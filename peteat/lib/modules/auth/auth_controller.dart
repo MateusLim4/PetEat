@@ -7,6 +7,10 @@ class AuthController {
 
   UserModel get user => _user!;
 
+  void LogOut(BuildContext context, UserModel? user) {
+    _user = null;
+  }
+
   void SetUser(BuildContext context, UserModel? user) {
     if (user != null) {
       saveUser(user);
@@ -19,6 +23,7 @@ class AuthController {
 
   Future<void> saveUser(UserModel user) async {
     final instance = await SharedPreferences.getInstance();
+
     await instance.setString("user", user.toJson());
   }
 

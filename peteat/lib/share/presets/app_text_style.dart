@@ -9,6 +9,7 @@ class TextStyles {
     fontWeight: FontWeight.normal,
     color: AppColors.titleWhite,
   );
+
   static final buttonGray = GoogleFonts.inter(
     fontSize: 15,
     fontWeight: FontWeight.w400,
