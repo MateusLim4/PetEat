@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:peteat/modules/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,10 +7,6 @@ class AuthController {
   UserModel? _user;
 
   UserModel get user => _user!;
-
-  void LogOut(BuildContext context, UserModel? user) {
-    _user = null;
-  }
 
   void SetUser(BuildContext context, UserModel? user) {
     if (user != null) {

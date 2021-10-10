@@ -35,7 +35,7 @@ class TextStyles {
     fontWeight: FontWeight.normal,
     color: AppColors.titleWhite,
   );
-  static final textWhiteBold = GoogleFonts.sunflower(
+  static final textWhiteBold = GoogleFonts.roboto(
     fontSize: 18,
     fontWeight: FontWeight.bold,
     color: AppColors.titleWhite,
@@ -49,5 +49,15 @@ class TextStyles {
     fontSize: 14,
     fontWeight: FontWeight.normal,
     color: AppColors.textColor,
+  );
+  static final blueTextBold = GoogleFonts.sunflower(
+    fontSize: 36,
+    fontWeight: FontWeight.bold,
+    color: AppColors.secondary,
+  );
+  static final blueText = GoogleFonts.sunflower(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: AppColors.secondary,
   );
 }
