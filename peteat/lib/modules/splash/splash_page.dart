@@ -13,7 +13,7 @@ class SplashPage extends StatelessWidget {
     authController.currentUser(context);
     return Scaffold(
       backgroundColor: AppColors.primary,
-      body: Container(
+      body: SizedBox(
         width: size.width,
         height: size.height,
         child: Stack(

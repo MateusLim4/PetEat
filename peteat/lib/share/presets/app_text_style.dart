@@ -60,4 +60,9 @@ class TextStyles {
     fontWeight: FontWeight.bold,
     color: AppColors.secondary,
   );
+  static final textBlack = GoogleFonts.sunflower(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: AppColors.textColor,
+  );
 }

@@ -86,6 +86,15 @@ class _FeederModalState extends State<FeederModal> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       color: AppColors.titleWhite,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                          offset:
+                              const Offset(2, 3), // changes position of shadow
+                        ),
+                      ],
                     ),
                     child: Column(
                       children: [
@@ -108,7 +117,10 @@ class _FeederModalState extends State<FeederModal> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Container(
                                         child: ElevatedButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.pushNamed(
+                                                context, "/config");
+                                          },
                                           child: Text('Configurar',
                                               style: TextStyles.textWhiteBold),
                                           style: ButtonStyle(

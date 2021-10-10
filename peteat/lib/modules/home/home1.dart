@@ -10,14 +10,12 @@ class OpsPage extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(top: 20.0),
-          child: Container(
-            child: Text('Dispositivos conectados',
-                style: TextStyles.titleHomeThin),
-          ),
+          child:
+              Text('Dispositivos conectados', style: TextStyles.titleHomeThin),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 30, left: 8, right: 8),
-          child: Container(
+          child: SizedBox(
             width: size.width,
             child: Row(
               children: [

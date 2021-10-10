@@ -14,7 +14,7 @@ class LoginPage extends StatelessWidget {
     final controller = LoginController();
     return Scaffold(
       backgroundColor: AppColors.primary,
-      body: Container(
+      body: SizedBox(
         width: size.width,
         height: size.height,
         child: Stack(

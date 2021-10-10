@@ -26,11 +26,9 @@ final pages = [
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(152),
+          preferredSize: const Size.fromHeight(152),
           child: Container(
             height: 152,
             color: AppColors.titleWhite,
@@ -41,31 +39,27 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 8.0),
-                          child: Row(children: [
-                            Logout(
-                                user: ModalRoute.of(context)!.settings.arguments
-                                    as UserModel),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text('Hello, ',
-                                  style: TextStyles.pinkTitleThin),
-                            ),
-                            Text(
-                              "${widget.user.name}",
-                              style: TextStyles.pinkTitle,
-                            ),
-                            Container(
-                              child: TextButton(
-                                child: Icon(Icons.notifications,
-                                    size: 40, color: AppColors.grey),
-                                onPressed: () {},
-                              ),
-                            ),
-                          ]),
-                        ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Row(children: [
+                          Logout(
+                              user: ModalRoute.of(context)!.settings.arguments
+                                  as UserModel),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Text('Hello, ',
+                                style: TextStyles.pinkTitleThin),
+                          ),
+                          Text(
+                            widget.user.name,
+                            style: TextStyles.pinkTitle,
+                          ),
+                          TextButton(
+                            child: const Icon(Icons.notifications,
+                                size: 40, color: AppColors.grey),
+                            onPressed: () {},
+                          ),
+                        ]),
                       ),
                     ),
                   ]),
@@ -73,9 +67,8 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         backgroundColor: AppColors.primary,
-        body: FeederModal(),
-        floatingActionButton: Padding(
-            padding: const EdgeInsets.only(bottom: 18.0),
-            child: ModalHomeWidget()));
+        body: const FeederModal(),
+        floatingActionButton: const Padding(
+            padding: EdgeInsets.only(bottom: 18.0), child: ModalHomeWidget()));
   }
 }
