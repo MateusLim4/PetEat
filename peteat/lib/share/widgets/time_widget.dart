@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
+import 'package:peteat/share/widgets/clock.dart';
+
+import 'checkbox.dart';
+import 'hours_little.dart';
 
 class TimeWidget extends StatefulWidget {
   const TimeWidget({Key? key}) : super(key: key);
@@ -11,7 +15,18 @@ class TimeWidget extends StatefulWidget {
 
 class _TimeWidgetState extends State<TimeWidget> {
   @override
-  double _animatedHeight = 300;
+  Future<void> _show() async {
+    String? _selectedTime;
+    final TimeOfDay? result =
+        await showTimePicker(context: context, initialTime: TimeOfDay.now());
+    if (result != null) {
+      setState(() {
+        _selectedTime = result.format(context);
+      });
+    }
+  }
+
+  double _animatedHeight = 200;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +63,7 @@ class _TimeWidgetState extends State<TimeWidget> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('00:00', style: TextStyles.textBlack),
+                          HourClass(),
                           Text('Sem data definida',
                               style: TextStyles.textBlackLight),
                         ],
@@ -63,23 +78,30 @@ class _TimeWidgetState extends State<TimeWidget> {
           AnimatedContainer(
             duration: Duration(milliseconds: 120),
             child: Container(
-              height: size.height * 2,
-              width: size.width,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(5),
-                    bottomRight: Radius.circular(5)),
-                color: AppColors.titleWhite,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.02),
-                    spreadRadius: 2,
-                    blurRadius: 8,
-                    offset: const Offset(0, 0), // changes position of shadow
-                  ),
-                ],
-              ),
-            ),
+                height: size.height * 2,
+                width: size.width,
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                      bottomLeft: Radius.circular(5),
+                      bottomRight: Radius.circular(5)),
+                  color: AppColors.titleWhite,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.02),
+                      spreadRadius: 2,
+                      blurRadius: 8,
+                      offset: const Offset(0, 0), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [],
+                    ),
+                    ClockWidget(),
+                  ],
+                )),
             height: _animatedHeight,
           )
         ],

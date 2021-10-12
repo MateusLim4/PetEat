@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
+import 'package:peteat/share/widgets/hours_big.dart';
+import 'package:peteat/share/widgets/hours_little.dart';
+import 'package:peteat/share/widgets/my-globals.dart';
 
 class FeederModal extends StatefulWidget {
   const FeederModal({Key? key}) : super(key: key);
@@ -81,7 +84,7 @@ class _FeederModalState extends State<FeederModal> {
                       ],
                     )),
                 AnimatedContainer(
-                  duration: Duration(milliseconds: 120),
+                  duration: const Duration(milliseconds: 120),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
@@ -106,35 +109,31 @@ class _FeederModalState extends State<FeederModal> {
                               children: [
                                 Column(
                                   children: [
-                                    Text(
-                                      '00:00',
-                                      style: TextStyles.blueTextBold,
-                                    ),
+                                    const HourClass2(),
                                     Text('Proxima liberação de\n ração',
                                         style: TextStyles.textBlackLight,
                                         textAlign: TextAlign.center),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pushNamed(
-                                                context, "/config");
-                                          },
-                                          child: Text('Configurar',
-                                              style: TextStyles.textWhiteBold),
-                                          style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      AppColors.secondary)),
-                                        ),
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacementNamed(
+                                              context, "/config");
+                                        },
+                                        child: Text('Configurar',
+                                            style: TextStyles.textWhiteBold),
+                                        style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    AppColors.secondary)),
                                       ),
                                     ),
                                   ],
                                 ),
                                 Column(
                                   children: [
-                                    Text('0g', style: TextStyles.blueTextBold),
+                                    Text('${food!}g',
+                                        style: TextStyles.blueTextBold),
                                     Text('Quantidade de ração\n definida',
                                         style: TextStyles.textBlackLight,
                                         textAlign: TextAlign.center),

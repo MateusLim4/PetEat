@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/modules/models/user_model.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
+import 'package:peteat/share/widgets/my-globals.dart';
 import 'package:peteat/share/widgets/time_widget.dart';
 
 class ConfigPage extends StatefulWidget {
@@ -15,6 +15,12 @@ class _ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
+    TextEditingController _controller = TextEditingController();
+
+    void quantAlimento() {
+      food = _controller.text;
+    }
 
     return Scaffold(
         appBar: PreferredSize(
@@ -32,9 +38,12 @@ class _ConfigPageState extends State<ConfigPage> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          BackButton(
-                            color: AppColors.primary,
-                          ),
+                          ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(
+                                    context, "/login");
+                              },
+                              child: const Text('Retornar')),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 8.0, right: 25),
@@ -67,11 +76,16 @@ class _ConfigPageState extends State<ConfigPage> {
                       style: TextStyles.titleHomeThin,
                     ),
                     ElevatedButton(
-                        onPressed: () {},
-                        child: const Text('Salvar'),
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                AppColors.secondary))),
+                      onPressed: () {
+                        quantAlimento();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    super.widget));
+                      },
+                      child: const Text('Salvar'),
+                    )
                   ],
                 ),
                 Padding(
@@ -113,12 +127,12 @@ class _ConfigPageState extends State<ConfigPage> {
                                   SizedBox(
                                     height: size.height * 0.06,
                                     width: size.width * 0.62,
-                                    child: const TextField(
+                                    child: TextField(
                                       keyboardType: TextInputType.number,
+                                      // controller:
                                       decoration: InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        labelText: '',
-                                      ),
+                                          // labelText: food,
+                                          ),
                                     ),
                                   )
                                 ],
@@ -162,13 +176,6 @@ class _ConfigPageState extends State<ConfigPage> {
                     ),
                   ),
                 ),
-                ElevatedButton(
-                    onPressed: () {},
-                    child:
-                        Text('Adicionar horário', style: TextStyles.textWhite),
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.secondary)))
               ],
             ),
           ),
