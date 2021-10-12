@@ -14,11 +14,17 @@ class _ClockWidgetState extends State<ClockWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        selectTime(context);
-      },
-      child: Text("Selecionar novo horário"),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            selectTime(context);
+          },
+          child: Text("Selecionar horário"),
+        ),
+        Text('Novo horário: ${hours}:${minutes}')
+      ],
     );
   }
 
@@ -30,7 +36,6 @@ class _ClockWidgetState extends State<ClockWidget> {
     );
     if (timeOfDay != null && timeOfDay != selectedTime) {
       setState(() {
-        var selectedTime = timeOfDay;
         hours = timeOfDay.hour;
         minutes = timeOfDay.minute;
       });

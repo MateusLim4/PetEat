@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:peteat/modules/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -8,6 +7,7 @@ class AuthController {
 
   UserModel get user => _user!;
 
+  // ignore: non_constant_identifier_names
   void SetUser(BuildContext context, UserModel? user) {
     if (user != null) {
       saveUser(user);

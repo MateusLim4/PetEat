@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/share/presets/app_colors.dart';
+import 'package:peteat/share/widgets/my-globals.dart';
 
 class CheckBox extends StatefulWidget {
   const CheckBox({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class CheckBox extends StatefulWidget {
 }
 
 class _CheckBox extends State<CheckBox> {
-  bool isChecked = false;
+  bool _isChecked = isChecked!;
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +29,13 @@ class _CheckBox extends State<CheckBox> {
     return Checkbox(
       checkColor: Colors.white,
       fillColor: MaterialStateProperty.resolveWith(getColor),
-      value: isChecked,
+      value: _isChecked,
       onChanged: (bool? value) {
         setState(() {
-          isChecked = value!;
+          _isChecked = value!;
+          if (_isChecked == true) {
+            isChecked = true;
+          }
         });
       },
     );

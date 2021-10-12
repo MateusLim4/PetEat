@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/modules/models/user_model.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
 import 'package:peteat/share/widgets/my-globals.dart';
 import 'package:peteat/share/widgets/time_widget.dart';
 
 class ConfigPage extends StatefulWidget {
-  const ConfigPage({Key? key}) : super(key: key);
+  final UserModel user;
+  const ConfigPage({Key? key, required this.user}) : super(key: key);
 
   @override
   State<ConfigPage> createState() => _ConfigPageState();
 }
 
 class _ConfigPageState extends State<ConfigPage> {
+  final TextEditingController _controllerFood = TextEditingController();
+  void quantAlimento() {
+    food = _controllerFood.text;
+    print(food);
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
-    TextEditingController _controller = TextEditingController();
-
-    void quantAlimento() {
-      food = _controller.text;
-    }
 
     return Scaffold(
         appBar: PreferredSize(
@@ -38,12 +40,14 @@ class _ConfigPageState extends State<ConfigPage> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ElevatedButton(
+                          IconButton(
+                              icon: Icon(Icons.arrow_back),
                               onPressed: () {
-                                Navigator.pushReplacementNamed(
-                                    context, "/login");
-                              },
-                              child: const Text('Retornar')),
+                                Navigator.pushReplacementNamed(context, "/home",
+                                    arguments: UserModel(
+                                        name: widget.user.name,
+                                        photoURL: widget.user.photoURL!));
+                              }),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 8.0, right: 25),
@@ -101,8 +105,7 @@ class _ConfigPageState extends State<ConfigPage> {
                             color: Colors.black.withOpacity(0.15),
                             spreadRadius: 2,
                             blurRadius: 2,
-                            offset: const Offset(
-                                2, 3), // changes position of shadow
+                            offset: Offset(2, 3), // changes position of shadow
                           ),
                         ],
                       ),
@@ -129,10 +132,9 @@ class _ConfigPageState extends State<ConfigPage> {
                                     width: size.width * 0.62,
                                     child: TextField(
                                       keyboardType: TextInputType.number,
-                                      // controller:
+                                      controller: _controllerFood,
                                       decoration: InputDecoration(
-                                          // labelText: food,
-                                          ),
+                                          hintText: 'Valor atual: ${food}g'),
                                     ),
                                   )
                                 ],
@@ -169,6 +171,10 @@ class _ConfigPageState extends State<ConfigPage> {
                             children: [
                               Text('Horários', style: TextStyles.blueText),
                               const TimeWidget(),
+                              const TimeWidget(),
+                              const TimeWidget(),
+                              const TimeWidget(),
+                              const TimeWidget(),
                             ],
                           ),
                         ],
@@ -176,6 +182,11 @@ class _ConfigPageState extends State<ConfigPage> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                      onPressed: () {}, child: Text('Adicionar novo horário')),
+                )
               ],
             ),
           ),

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/modules/models/user_model.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
 import 'package:peteat/share/widgets/hours_big.dart';
-import 'package:peteat/share/widgets/hours_little.dart';
 import 'package:peteat/share/widgets/my-globals.dart';
 
 class FeederModal extends StatefulWidget {
-  const FeederModal({Key? key}) : super(key: key);
+  final UserModel user;
+  const FeederModal({Key? key, required this.user}) : super(key: key);
 
   @override
   State<FeederModal> createState() => _FeederModalState();
@@ -18,6 +19,19 @@ class _FeederModalState extends State<FeederModal> {
 
   @override
   Widget build(BuildContext context) {
+    void adiantar() {
+      DateTime now = DateTime.now();
+      hours = now.hour.toInt();
+      minutes = now.minute.toInt() + 5;
+      if (minutes! > 59) {
+        minutes = minutes! - 60;
+        hours = hours! + 1;
+      }
+      Navigator.pushReplacementNamed(context, "/home",
+          arguments: UserModel(
+              name: widget.user.name, photoURL: widget.user.photoURL!));
+    }
+
     final size = MediaQuery.of(context).size;
 
     return Padding(
@@ -61,9 +75,7 @@ class _FeederModalState extends State<FeederModal> {
                                   Text('Alimentador 01',
                                       style: TextStyles.textWhite),
                                   OutlinedButton(
-                                    onPressed: () {
-                                      print('Aqui');
-                                    },
+                                    onPressed: () {},
                                     child: Text(
                                       'Relatório',
                                       style: TextStyles.textWhiteBold,
@@ -118,7 +130,11 @@ class _FeederModalState extends State<FeederModal> {
                                       child: ElevatedButton(
                                         onPressed: () {
                                           Navigator.pushReplacementNamed(
-                                              context, "/config");
+                                              context, "/config",
+                                              arguments: UserModel(
+                                                  name: widget.user.name,
+                                                  photoURL:
+                                                      widget.user.photoURL!));
                                         },
                                         child: Text('Configurar',
                                             style: TextStyles.textWhiteBold),
@@ -140,11 +156,13 @@ class _FeederModalState extends State<FeederModal> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: OutlinedButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          adiantar();
+                                        },
                                         child: Text('Antecipar',
                                             style: TextStyles.blueText),
                                         style: OutlinedButton.styleFrom(
-                                          side: BorderSide(
+                                          side: const BorderSide(
                                               color: AppColors.secondary,
                                               width: 2.0),
                                           shape: const RoundedRectangleBorder(

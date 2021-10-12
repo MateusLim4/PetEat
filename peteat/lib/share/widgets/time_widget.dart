@@ -26,7 +26,7 @@ class _TimeWidgetState extends State<TimeWidget> {
     }
   }
 
-  double _animatedHeight = 200;
+  double _animatedHeight = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class _TimeWidgetState extends State<TimeWidget> {
                 child: Column(
                   children: [
                     Row(
-                      children: [],
+                      children: [CheckBox()],
                     ),
                     ClockWidget(),
                   ],

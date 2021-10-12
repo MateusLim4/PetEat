@@ -4,7 +4,7 @@ import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
 import 'package:peteat/share/widgets/logout_modal.dart';
 
-import '../../share/widgets/home_page_modal.dart';
+import 'home_page_modal.dart';
 import 'home1.dart';
 import 'home2.dart';
 import 'home_controller.dart';
@@ -67,7 +67,10 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         backgroundColor: AppColors.primary,
-        body: const FeederModal(),
+        body: FeederModal(
+          user: UserModel(
+              name: widget.user.name, photoURL: widget.user.photoURL!),
+        ),
         floatingActionButton: const Padding(
             padding: EdgeInsets.only(bottom: 18.0), child: ModalHomeWidget()));
   }
