@@ -16,8 +16,9 @@ class ConfigPage extends StatefulWidget {
 class _ConfigPageState extends State<ConfigPage> {
   final TextEditingController _controllerFood = TextEditingController();
   void quantAlimento() {
-    food = _controllerFood.text;
-    print(food);
+    if (_controllerFood.text != '') {
+      food = _controllerFood.text;
+    }
   }
 
   @override
@@ -128,15 +129,14 @@ class _ConfigPageState extends State<ConfigPage> {
                                   Text('Quantidade (g):',
                                       style: TextStyles.textBlackLight),
                                   SizedBox(
-                                    height: size.height * 0.06,
-                                    width: size.width * 0.62,
-                                    child: TextField(
-                                      keyboardType: TextInputType.number,
-                                      controller: _controllerFood,
-                                      decoration: InputDecoration(
-                                          hintText: 'Valor atual: ${food}g'),
-                                    ),
-                                  )
+                                      height: size.height * 0.06,
+                                      width: size.width * 0.62,
+                                      child: TextField(
+                                        keyboardType: TextInputType.number,
+                                        controller: _controllerFood,
+                                        decoration: InputDecoration(
+                                            hintText: "Valor atual: ${food}g"),
+                                      ))
                                 ],
                               ),
                             ]),
