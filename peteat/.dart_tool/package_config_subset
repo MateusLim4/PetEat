@@ -34,6 +34,10 @@ cupertino_icons
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.3/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.3/lib/
+equatable
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/equatable-2.0.3/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/equatable-2.0.3/lib/
 fake_async
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/
@@ -58,6 +62,10 @@ firebase_core_web
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.1.0/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.1.0/lib/
+fl_chart
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/fl_chart-0.40.0/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/fl_chart-0.40.0/lib/
 flutter_lints
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_lints-1.0.4/
@@ -214,6 +222,10 @@ vector_math
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.0/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/vector_math-2.1.0/lib/
+weekday_selector
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/weekday_selector-1.0.0/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/weekday_selector-1.0.0/lib/
 win32
 2.13
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.2.9/

@@ -75,7 +75,13 @@ class _FeederModalState extends State<FeederModal> {
                                   Text('Alimentador 01',
                                       style: TextStyles.textWhite),
                                   OutlinedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                          context, '/statistics',
+                                          arguments: UserModel(
+                                              name: widget.user.name,
+                                              photoURL: widget.user.photoURL!));
+                                    },
                                     child: Text(
                                       'Relatório',
                                       style: TextStyles.textWhiteBold,

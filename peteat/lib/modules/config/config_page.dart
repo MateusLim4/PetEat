@@ -24,7 +24,7 @@ class _ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
+    var primerio = const TimeWidget();
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(152),
@@ -170,7 +170,7 @@ class _ConfigPageState extends State<ConfigPage> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text('Horários', style: TextStyles.blueText),
-                              const TimeWidget(),
+                              primerio,
                               const TimeWidget(),
                               const TimeWidget(),
                               const TimeWidget(),

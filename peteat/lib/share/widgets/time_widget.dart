@@ -3,7 +3,6 @@ import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
 import 'package:peteat/share/widgets/clock.dart';
 
-import 'checkbox.dart';
 import 'hours_little.dart';
 
 class TimeWidget extends StatefulWidget {
@@ -97,7 +96,7 @@ class _TimeWidgetState extends State<TimeWidget> {
                 child: Column(
                   children: [
                     Row(
-                      children: [CheckBox()],
+                      children: [],
                     ),
                     ClockWidget(),
                   ],
