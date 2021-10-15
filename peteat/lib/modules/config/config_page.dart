@@ -22,6 +22,70 @@ class _ConfigPageState extends State<ConfigPage> {
   }
 
   @override
+  void diaSemana() {
+    var lista = [domingo, segunda, terca, quarta, quinta, sexta, sabado];
+    var week = [
+      'Domingo',
+      'Segunda',
+      'Terça',
+      'Quarta',
+      'Quinta',
+      'Sexta',
+      'Sábado'
+    ];
+    var days = [];
+
+    int count = 0;
+    lista.forEach((element) {
+      if (element == true) {
+        days.add(week[count]);
+      }
+      count = count + 1;
+    });
+
+    switch (days.length) {
+      case 0:
+        message = 'Sem data definida';
+        break;
+      case 1:
+        message = '${days[0]}';
+        break;
+      case 2:
+        if (days[0] == 'Sábado' && days[1] == 'Domingo') {
+          message = "Apenas aos fins de semana";
+        } else {
+          message = '${days[0]} e ${days[1]}';
+        }
+        break;
+      case 3:
+        message = '${days[0]}, ${days[1]} e ${days[2]}';
+        break;
+      case 4:
+        message = '${days[0]}, ${days[1]},${days[2]} e ${days[3]}';
+        break;
+      case 5:
+        if (days[0] == 'Segunda' &&
+            days[1] == 'Terça' &&
+            days[2] == 'Quarta' &&
+            days[3] == 'Quinta' &&
+            days[4] == 'Sexta') {
+          message = "Apenas nos dias úteis";
+        } else {
+          message =
+              '${days[0]}, ${days[1]}, ${days[2]}, ${days[3]} ,${days[4]}';
+        }
+        break;
+      case 6:
+        message =
+            '${days[0]}, ${days[1]}, ${days[2]}, ${days[3]}, ${days[4]} e ${days[5]}';
+        break;
+      case 7:
+        message = 'Todos os dias';
+        break;
+      default:
+    }
+  }
+
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     var primerio = const TimeWidget();
@@ -69,7 +133,7 @@ class _ConfigPageState extends State<ConfigPage> {
         ),
         backgroundColor: AppColors.primary,
         body: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -83,6 +147,7 @@ class _ConfigPageState extends State<ConfigPage> {
                     ElevatedButton(
                       onPressed: () {
                         quantAlimento();
+                        diaSemana();
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -161,7 +226,6 @@ class _ConfigPageState extends State<ConfigPage> {
                       ],
                     ),
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(15),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -169,11 +233,12 @@ class _ConfigPageState extends State<ConfigPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text('Horários', style: TextStyles.blueText),
+                              Padding(
+                                padding: const EdgeInsets.all(15),
+                                child: Text('Horários',
+                                    style: TextStyles.blueText),
+                              ),
                               primerio,
-                              const TimeWidget(),
-                              const TimeWidget(),
-                              const TimeWidget(),
                               const TimeWidget(),
                             ],
                           ),

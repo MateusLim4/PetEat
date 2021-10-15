@@ -16,8 +16,8 @@ class WidgetController extends StatelessWidget {
         initialRoute: '/splash',
         debugShowCheckedModeBanner: false,
         routes: {
-          "/splash": (context) => SplashPage(),
-          "/login": (context) => LoginPage(),
+          "/splash": (context) => const SplashPage(),
+          "/login": (context) => const LoginPage(),
           "/home": (context) => HomePage(
               user: ModalRoute.of(context)!.settings.arguments as UserModel),
           "/config": (context) => ConfigPage(

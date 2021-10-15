@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
 import 'package:peteat/share/widgets/clock.dart';
+import 'package:peteat/share/widgets/my-globals.dart';
 
+import 'checkbox/checkbox.dart';
 import 'hours_little.dart';
 
 class TimeWidget extends StatefulWidget {
@@ -16,6 +18,7 @@ class _TimeWidgetState extends State<TimeWidget> {
   @override
   Future<void> _show() async {
     String? _selectedTime;
+
     final TimeOfDay? result =
         await showTimePicker(context: context, initialTime: TimeOfDay.now());
     if (result != null) {
@@ -42,6 +45,7 @@ class _TimeWidgetState extends State<TimeWidget> {
             }),
             child: Container(
                 height: size.height * 0.1,
+                width: size.width,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
                   color: AppColors.titleWhite,
@@ -63,8 +67,7 @@ class _TimeWidgetState extends State<TimeWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           HourClass(),
-                          Text('Sem data definida',
-                              style: TextStyles.textBlackLight),
+                          Text(message, style: TextStyle(fontSize: 11)),
                         ],
                       ),
                       SizedBox(
@@ -95,8 +98,51 @@ class _TimeWidgetState extends State<TimeWidget> {
                 ),
                 child: Column(
                   children: [
-                    Row(
-                      children: [],
+                    Container(
+                      child: Row(children: [
+                        Column(
+                          children: const [
+                            Text('Dom'),
+                            CheckboxSun(),
+                          ],
+                        ),
+                        Column(
+                          children: const [
+                            Text('Seg'),
+                            CheckboxMon(),
+                          ],
+                        ),
+                        Column(
+                          children: const [
+                            Text('Ter'),
+                            CheckboxTu(),
+                          ],
+                        ),
+                        Column(
+                          children: const [
+                            Text('Qua'),
+                            CheckboxWd(),
+                          ],
+                        ),
+                        Column(
+                          children: const [
+                            Text('Qui'),
+                            CheckboxTh(),
+                          ],
+                        ),
+                        Column(
+                          children: const [
+                            Text('Sex'),
+                            CheckboxFr(),
+                          ],
+                        ),
+                        Column(
+                          children: const [
+                            Text('Sab'),
+                            CheckboxSt(),
+                          ],
+                        )
+                      ]),
                     ),
                     ClockWidget(),
                   ],

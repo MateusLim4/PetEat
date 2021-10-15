@@ -113,16 +113,23 @@ class _StatisticsState extends State<Statistics> {
                 ],
               )),
               Container(
-                width: size.width * 0.75,
+                width: size.width * 0.95,
                 height: size.height * 0.5,
-                child: BarChart(
-                  BarChartData(
-                    barTouchData: barTouchData,
-                    titlesData: titlesData,
-                    borderData: borderData,
-                    barGroups: barGroups,
-                    alignment: BarChartAlignment.spaceAround,
-                    maxY: 20,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: AppColors.titleWhite,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: BarChart(
+                    BarChartData(
+                      barTouchData: barTouchData,
+                      titlesData: titlesData,
+                      borderData: borderData,
+                      barGroups: barGroups,
+                      alignment: BarChartAlignment.spaceAround,
+                      maxY: 20,
+                    ),
                   ),
                 ),
               ),
@@ -136,7 +143,7 @@ class _StatisticsState extends State<Statistics> {
         touchTooltipData: BarTouchTooltipData(
           tooltipBgColor: Colors.transparent,
           tooltipPadding: const EdgeInsets.all(0),
-          tooltipMargin: 8,
+          tooltipMargin: 2,
           getTooltipItem: (
             BarChartGroupData group,
             int groupIndex,
@@ -146,7 +153,7 @@ class _StatisticsState extends State<Statistics> {
             return BarTooltipItem(
               rod.y.round().toString(),
               const TextStyle(
-                color: Colors.white,
+                color: AppColors.textColor,
                 fontWeight: FontWeight.bold,
               ),
             );
@@ -159,7 +166,7 @@ class _StatisticsState extends State<Statistics> {
         bottomTitles: SideTitles(
           showTitles: true,
           getTextStyles: (context, value) => const TextStyle(
-            color: AppColors.titleWhite,
+            color: AppColors.textColor,
             fontWeight: FontWeight.bold,
             fontSize: 15,
           ),
@@ -236,7 +243,7 @@ class _StatisticsState extends State<Statistics> {
           showingTooltipIndicators: [0],
         ),
         BarChartGroupData(
-          x: 3,
+          x: 4,
           barRods: [
             BarChartRodData(
                 y: 10,
@@ -246,7 +253,17 @@ class _StatisticsState extends State<Statistics> {
           showingTooltipIndicators: [0],
         ),
         BarChartGroupData(
-          x: 3,
+          x: 5,
+          barRods: [
+            BarChartRodData(
+                y: 7,
+                colors: [AppColors.secondary, AppColors.secondary],
+                width: 15)
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 6,
           barRods: [
             BarChartRodData(
                 y: 7,
