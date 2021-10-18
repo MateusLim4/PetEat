@@ -88,7 +88,12 @@ class _ConfigPageState extends State<ConfigPage> {
 
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    var primerio = const TimeWidget();
+    List<Widget> v = [TimeWidget()];
+
+    void buildRow() {
+      v.add(TimeWidget());
+    }
+
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(152),
@@ -238,8 +243,7 @@ class _ConfigPageState extends State<ConfigPage> {
                                 child: Text('Horários',
                                     style: TextStyles.blueText),
                               ),
-                              primerio,
-                              const TimeWidget(),
+                              v[0],
                             ],
                           ),
                         ],
@@ -250,7 +254,10 @@ class _ConfigPageState extends State<ConfigPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                      onPressed: () {}, child: Text('Adicionar novo horário')),
+                      onPressed: () {
+                        buildRow();
+                      },
+                      child: const Text('Adicionar novo horário')),
                 )
               ],
             ),

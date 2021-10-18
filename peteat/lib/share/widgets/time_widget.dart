@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/share/presets/app_colors.dart';
-import 'package:peteat/share/presets/app_text_style.dart';
 import 'package:peteat/share/widgets/clock.dart';
 import 'package:peteat/share/widgets/my-globals.dart';
 
@@ -33,6 +32,7 @@ class _TimeWidgetState extends State<TimeWidget> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    bool _visible = true;
     return Card(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -42,6 +42,11 @@ class _TimeWidgetState extends State<TimeWidget> {
               _animatedHeight != 0.0
                   ? _animatedHeight = 0.0
                   : _animatedHeight = 150;
+              setState(
+                () {
+                  _visible = !_visible;
+                },
+              );
             }),
             child: Container(
                 height: size.height * 0.1,
@@ -71,14 +76,14 @@ class _TimeWidgetState extends State<TimeWidget> {
                         ],
                       ),
                       SizedBox(
-                          height: 25,
+                          height: 20,
                           child: Image.asset('assets/images/bleach.png'))
                     ],
                   ),
                 )),
           ),
           AnimatedContainer(
-            duration: Duration(milliseconds: 120),
+            duration: const Duration(milliseconds: 120),
             child: Container(
                 height: size.height * 2,
                 width: size.width,
@@ -98,52 +103,50 @@ class _TimeWidgetState extends State<TimeWidget> {
                 ),
                 child: Column(
                   children: [
-                    Container(
-                      child: Row(children: [
-                        Column(
-                          children: const [
-                            Text('Dom'),
-                            CheckboxSun(),
-                          ],
-                        ),
-                        Column(
-                          children: const [
-                            Text('Seg'),
-                            CheckboxMon(),
-                          ],
-                        ),
-                        Column(
-                          children: const [
-                            Text('Ter'),
-                            CheckboxTu(),
-                          ],
-                        ),
-                        Column(
-                          children: const [
-                            Text('Qua'),
-                            CheckboxWd(),
-                          ],
-                        ),
-                        Column(
-                          children: const [
-                            Text('Qui'),
-                            CheckboxTh(),
-                          ],
-                        ),
-                        Column(
-                          children: const [
-                            Text('Sex'),
-                            CheckboxFr(),
-                          ],
-                        ),
-                        Column(
-                          children: const [
-                            Text('Sab'),
-                            CheckboxSt(),
-                          ],
-                        )
-                      ]),
-                    ),
+                    Row(children: [
+                      Column(
+                        children: const [
+                          Text('Dom'),
+                          CheckboxSun(),
+                        ],
+                      ),
+                      Column(
+                        children: const [
+                          Text('Seg'),
+                          CheckboxMon(),
+                        ],
+                      ),
+                      Column(
+                        children: const [
+                          Text('Ter'),
+                          CheckboxTu(),
+                        ],
+                      ),
+                      Column(
+                        children: const [
+                          Text('Qua'),
+                          CheckboxWd(),
+                        ],
+                      ),
+                      Column(
+                        children: const [
+                          Text('Qui'),
+                          CheckboxTh(),
+                        ],
+                      ),
+                      Column(
+                        children: const [
+                          Text('Sex'),
+                          CheckboxFr(),
+                        ],
+                      ),
+                      Column(
+                        children: const [
+                          Text('Sab'),
+                          CheckboxSt(),
+                        ],
+                      )
+                    ]),
                     ClockWidget(),
                   ],
                 )),
