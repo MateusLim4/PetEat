@@ -9,5 +9,5 @@ class AppColors {
   static const lightGreen = Color(0x3EE24E);
   static const stroke = Color(0xFFE3E3E6);
   static const shape = Color(0xFFFAFAFC);
-  static const grey = Color(0xFF585666);
+  static const grey = Color(0xFFC4C4C4);
 }

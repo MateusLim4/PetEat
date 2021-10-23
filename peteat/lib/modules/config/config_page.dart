@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/modules/models/user_model.dart';
+import 'package:peteat/share/models/user_model.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
 import 'package:peteat/share/widgets/my-globals.dart';
-import 'package:peteat/share/widgets/time_widget.dart';
+import 'package:peteat/share/widgets/timewidget/time_widget.dart';
 
 class ConfigPage extends StatefulWidget {
-  final UserModel user;
-  const ConfigPage({Key? key, required this.user}) : super(key: key);
+  const ConfigPage({Key? key}) : super(key: key);
 
   @override
   State<ConfigPage> createState() => _ConfigPageState();
@@ -110,14 +109,7 @@ class _ConfigPageState extends State<ConfigPage> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          IconButton(
-                              icon: Icon(Icons.arrow_back),
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(context, "/home",
-                                    arguments: UserModel(
-                                        name: widget.user.name,
-                                        photoURL: widget.user.photoURL!));
-                              }),
+                          const BackButton(),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 8.0, right: 25),

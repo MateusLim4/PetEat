@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/modules/models/user_model.dart';
+import 'package:peteat/share/models/user_model.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
 import 'package:peteat/share/widgets/logout_modal.dart';
@@ -17,13 +17,12 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-final homeController = HomeController();
-final pages = [
-  Container(color: Colors.red),
-  Container(color: Colors.blue),
-];
-
 class _HomePageState extends State<HomePage> {
+  final homeController = HomeController();
+  final pages = [
+    OpsPage(),
+    FeederModal(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,11 +66,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         backgroundColor: AppColors.primary,
-        body: FeederModal(
-          user: UserModel(
-              name: widget.user.name, photoURL: widget.user.photoURL!),
-        ),
-        floatingActionButton: const Padding(
-            padding: EdgeInsets.only(bottom: 18.0), child: ModalHomeWidget()));
+        body: pages[homeController.currentPage],
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            homeController.setPage(1);
+            setState(() {});
+          },
+          label: Icon(Icons.add),
+        ));
   }
 }

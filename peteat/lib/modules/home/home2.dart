@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/modules/models/user_model.dart';
+import 'package:peteat/share/models/user_model.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
-import 'package:peteat/share/widgets/hours_big.dart';
+import 'package:peteat/share/widgets/timewidget/hours_big.dart';
 import 'package:peteat/share/widgets/my-globals.dart';
 
 class FeederModal extends StatefulWidget {
-  final UserModel user;
-  const FeederModal({Key? key, required this.user}) : super(key: key);
+  // final UserModel user;
+  const FeederModal({Key? key}) : super(key: key);
 
   @override
   State<FeederModal> createState() => _FeederModalState();
@@ -27,9 +27,9 @@ class _FeederModalState extends State<FeederModal> {
         minutes = minutes! - 60;
         hours = hours! + 1;
       }
-      Navigator.pushReplacementNamed(context, "/home",
-          arguments: UserModel(
-              name: widget.user.name, photoURL: widget.user.photoURL!));
+      // Navigator.pushReplacementNamed(context, "/home",
+      //     arguments: UserModel(
+      //         name: widget.user.name, photoURL: widget.user.photoURL!));
     }
 
     final size = MediaQuery.of(context).size;
@@ -54,8 +54,8 @@ class _FeederModalState extends State<FeederModal> {
                         Container(
                             height: size.height * 0.1,
                             width: size.width,
-                            decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.only(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
                                   topLeft: Radius.circular(3),
                                   topRight: Radius.circular(3)),
                               color: AppColors.secondary,
@@ -77,17 +77,16 @@ class _FeederModalState extends State<FeederModal> {
                                   OutlinedButton(
                                     onPressed: () {
                                       Navigator.pushNamed(
-                                          context, '/statistics',
-                                          arguments: UserModel(
-                                              name: widget.user.name,
-                                              photoURL: widget.user.photoURL!));
+                                        context,
+                                        '/statistics',
+                                      );
                                     },
                                     child: Text(
                                       'Relatório',
                                       style: TextStyles.textWhiteBold,
                                     ),
                                     style: OutlinedButton.styleFrom(
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                           color: AppColors.titleWhite,
                                           width: 2.0),
                                       shape: const RoundedRectangleBorder(
@@ -135,12 +134,10 @@ class _FeederModalState extends State<FeederModal> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: ElevatedButton(
                                         onPressed: () {
-                                          Navigator.pushReplacementNamed(
-                                              context, "/config",
-                                              arguments: UserModel(
-                                                  name: widget.user.name,
-                                                  photoURL:
-                                                      widget.user.photoURL!));
+                                          Navigator.pushNamed(
+                                            context,
+                                            "/config",
+                                          );
                                         },
                                         child: Text('Configurar',
                                             style: TextStyles.textWhiteBold),

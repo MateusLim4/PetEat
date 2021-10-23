@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:peteat/modules/models/user_model.dart';
+import 'package:peteat/share/models/user_model.dart';
 
 class Logout extends StatelessWidget {
   final UserModel user;

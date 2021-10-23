@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/modules/models/user_model.dart';
+import 'package:peteat/share/models/user_model.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController {
