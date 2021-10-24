@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/modules/Login/login_page.dart';
 import 'package:peteat/modules/config/config_page.dart';
+import 'package:peteat/modules/form/form_page.dart';
 import 'package:peteat/modules/home/home_page.dart';
 import 'package:peteat/modules/splash/splash_page.dart';
 import 'package:peteat/modules/statistic/statistic_page.dart';
@@ -22,6 +23,7 @@ class WidgetController extends StatelessWidget {
               user: ModalRoute.of(context)!.settings.arguments as UserModel),
           "/config": (context) => const ConfigPage(),
           "/statistics": (context) => const Statistics(),
+          '/changeTime': (context) => const ChangeTime(),
         });
   }
 }

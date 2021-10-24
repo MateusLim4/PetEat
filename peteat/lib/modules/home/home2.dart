@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:peteat/share/models/user_model.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
-import 'package:peteat/share/widgets/timewidget/hours_big.dart';
 import 'package:peteat/share/widgets/my-globals.dart';
+import 'package:peteat/share/widgets/timewidget/hours_little.dart';
 
 class FeederModal extends StatefulWidget {
   // final UserModel user;
@@ -19,18 +19,7 @@ class _FeederModalState extends State<FeederModal> {
 
   @override
   Widget build(BuildContext context) {
-    void adiantar() {
-      DateTime now = DateTime.now();
-      hours = now.hour.toInt();
-      minutes = now.minute.toInt() + 5;
-      if (minutes! > 59) {
-        minutes = minutes! - 60;
-        hours = hours! + 1;
-      }
-      // Navigator.pushReplacementNamed(context, "/home",
-      //     arguments: UserModel(
-      //         name: widget.user.name, photoURL: widget.user.photoURL!));
-    }
+    var hora = Hour();
 
     final size = MediaQuery.of(context).size;
 
@@ -126,7 +115,8 @@ class _FeederModalState extends State<FeederModal> {
                               children: [
                                 Column(
                                   children: [
-                                    const HourClass2(),
+                                    Text(hora.text,
+                                        style: TextStyles.blueTextBold),
                                     Text('Proxima liberação de\n ração',
                                         style: TextStyles.textBlackLight,
                                         textAlign: TextAlign.center),
@@ -160,7 +150,9 @@ class _FeederModalState extends State<FeederModal> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: OutlinedButton(
                                         onPressed: () {
-                                          adiantar();
+                                          hora.adiantar();
+                                          setState() {}
+                                          ;
                                         },
                                         child: Text('Antecipar',
                                             style: TextStyles.blueText),

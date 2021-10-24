@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/modules/config/config_controller.dart';
+import 'package:peteat/share/models/hour_model.dart';
 import 'package:peteat/share/presets/app_colors.dart';
-import 'package:peteat/share/widgets/timewidget/clock.dart';
 import 'package:peteat/share/widgets/my-globals.dart';
-
-import '../checkbox/checkbox.dart';
 import 'hours_little.dart';
 
 class TimeWidget extends StatefulWidget {
-  const TimeWidget({Key? key}) : super(key: key);
+  final HourModel data;
+  const TimeWidget({Key? key, required this.data}) : super(key: key);
 
   @override
   State<TimeWidget> createState() => _TimeWidgetState();
@@ -16,25 +14,15 @@ class TimeWidget extends StatefulWidget {
 
 class _TimeWidgetState extends State<TimeWidget> {
   @override
-  Future<void> _show() async {
-    String? _selectedTime;
-
-    final TimeOfDay? result =
-        await showTimePicker(context: context, initialTime: TimeOfDay.now());
-    if (result != null) {
-      setState(() {
-        _selectedTime = result.format(context);
-      });
-    }
-  }
-
-  final controller = ConfigController();
   double _animatedHeight = 0;
 
   @override
   Widget build(BuildContext context) {
+    final HourModel data;
     final size = MediaQuery.of(context).size;
     bool _visible = true;
+    var hora = Hour();
+
     return Card(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -43,7 +31,7 @@ class _TimeWidgetState extends State<TimeWidget> {
             onTap: () => setState(() {
               _animatedHeight != 0.0
                   ? _animatedHeight = 0.0
-                  : _animatedHeight = 150;
+                  : _animatedHeight = 70;
               setState(
                 () {
                   _visible = !_visible;
@@ -73,7 +61,7 @@ class _TimeWidgetState extends State<TimeWidget> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          HourClass(),
+                          Text(''),
                           Text(message, style: TextStyle(fontSize: 11)),
                         ],
                       ),
@@ -87,7 +75,7 @@ class _TimeWidgetState extends State<TimeWidget> {
           AnimatedContainer(
             duration: const Duration(milliseconds: 120),
             child: Container(
-                height: size.height * 2,
+                height: 1,
                 width: size.width,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadius.only(
@@ -103,53 +91,25 @@ class _TimeWidgetState extends State<TimeWidget> {
                     ),
                   ],
                 ),
-                child: Column(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Row(children: [
-                      Column(
-                        children: const [
-                          Text('Dom'),
-                          CheckboxSun(),
-                        ],
+                    ElevatedButton(
+                        child: Text('Excluir'),
+                        onPressed: () {},
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                AppColors.buttonRed))),
+                    ElevatedButton(
+                      child: Text('Alterar'),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/changeTime');
+                      },
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.secondary),
                       ),
-                      Column(
-                        children: const [
-                          Text('Seg'),
-                          CheckboxMon(),
-                        ],
-                      ),
-                      Column(
-                        children: const [
-                          Text('Ter'),
-                          CheckboxTu(),
-                        ],
-                      ),
-                      Column(
-                        children: const [
-                          Text('Qua'),
-                          CheckboxWd(),
-                        ],
-                      ),
-                      Column(
-                        children: const [
-                          Text('Qui'),
-                          CheckboxTh(),
-                        ],
-                      ),
-                      Column(
-                        children: const [
-                          Text('Sex'),
-                          CheckboxFr(),
-                        ],
-                      ),
-                      Column(
-                        children: const [
-                          Text('Sab'),
-                          CheckboxSt(),
-                        ],
-                      )
-                    ]),
-                    ClockWidget(),
+                    )
                   ],
                 )),
             height: _animatedHeight,

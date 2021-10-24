@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/share/models/user_model.dart';
+import 'package:peteat/share/models/hour_model.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
+import 'package:peteat/share/widgets/hourlist/hour_list.dart';
+import 'package:peteat/share/widgets/hourlist/hour_list_controller.dart';
 import 'package:peteat/share/widgets/my-globals.dart';
-import 'package:peteat/share/widgets/timewidget/time_widget.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({Key? key}) : super(key: key);
@@ -20,78 +21,10 @@ class _ConfigPageState extends State<ConfigPage> {
     }
   }
 
+  final controller = HourListController();
   @override
-  void diaSemana() {
-    var lista = [domingo, segunda, terca, quarta, quinta, sexta, sabado];
-    var week = [
-      'Domingo',
-      'Segunda',
-      'Terça',
-      'Quarta',
-      'Quinta',
-      'Sexta',
-      'Sábado'
-    ];
-    var days = [];
-
-    int count = 0;
-    lista.forEach((element) {
-      if (element == true) {
-        days.add(week[count]);
-      }
-      count = count + 1;
-    });
-
-    switch (days.length) {
-      case 0:
-        message = 'Sem data definida';
-        break;
-      case 1:
-        message = '${days[0]}';
-        break;
-      case 2:
-        if (days[0] == 'Sábado' && days[1] == 'Domingo') {
-          message = "Apenas aos fins de semana";
-        } else {
-          message = '${days[0]} e ${days[1]}';
-        }
-        break;
-      case 3:
-        message = '${days[0]}, ${days[1]} e ${days[2]}';
-        break;
-      case 4:
-        message = '${days[0]}, ${days[1]},${days[2]} e ${days[3]}';
-        break;
-      case 5:
-        if (days[0] == 'Segunda' &&
-            days[1] == 'Terça' &&
-            days[2] == 'Quarta' &&
-            days[3] == 'Quinta' &&
-            days[4] == 'Sexta') {
-          message = "Apenas nos dias úteis";
-        } else {
-          message =
-              '${days[0]}, ${days[1]}, ${days[2]}, ${days[3]} ,${days[4]}';
-        }
-        break;
-      case 6:
-        message =
-            '${days[0]}, ${days[1]}, ${days[2]}, ${days[3]}, ${days[4]} e ${days[5]}';
-        break;
-      case 7:
-        message = 'Todos os dias';
-        break;
-      default:
-    }
-  }
-
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    List<Widget> v = [TimeWidget()];
-
-    void buildRow() {
-      v.add(TimeWidget());
-    }
 
     return Scaffold(
         appBar: PreferredSize(
@@ -109,7 +42,7 @@ class _ConfigPageState extends State<ConfigPage> {
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const BackButton(),
+                          const BackButton(color: AppColors.primary),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 8.0, right: 25),
@@ -144,7 +77,6 @@ class _ConfigPageState extends State<ConfigPage> {
                     ElevatedButton(
                       onPressed: () {
                         quantAlimento();
-                        diaSemana();
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
@@ -152,6 +84,9 @@ class _ConfigPageState extends State<ConfigPage> {
                                     super.widget));
                       },
                       child: const Text('Salvar'),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(AppColors.secondary)),
                     )
                   ],
                 ),
@@ -235,7 +170,10 @@ class _ConfigPageState extends State<ConfigPage> {
                                 child: Text('Horários',
                                     style: TextStyles.blueText),
                               ),
-                              v[0],
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: HourListWidget(key: UniqueKey()),
+                              ),
                             ],
                           ),
                         ],
@@ -246,10 +184,14 @@ class _ConfigPageState extends State<ConfigPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                      onPressed: () {
-                        buildRow();
-                      },
-                      child: const Text('Adicionar novo horário')),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/changeTime');
+                    },
+                    child: const Text('Adicionar novo horário'),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.secondary)),
+                  ),
                 )
               ],
             ),

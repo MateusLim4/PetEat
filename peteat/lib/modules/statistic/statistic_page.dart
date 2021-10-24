@@ -1,7 +1,7 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:peteat/modules/statistic/grafico2.dart';
-import 'package:peteat/share/models/user_model.dart';
+import 'package:peteat/modules/statistic/grafico_dia.dart';
+import 'package:peteat/modules/statistic/grafico_semana.dart';
+import 'package:peteat/modules/statistic/statistic_page_controller.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
 import 'package:peteat/share/widgets/my-globals.dart';
@@ -25,6 +25,11 @@ class _StatisticsState extends State<Statistics> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     var color = AppColors.secondary;
+    final configController = StatisticsController();
+    final pages = [
+      const GraficoDia(),
+      const GraficoSemana(),
+    ];
 
     return Scaffold(
         appBar: PreferredSize(
@@ -73,8 +78,25 @@ class _StatisticsState extends State<Statistics> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Dia'),
+                      onPressed: () {
+                        configController.setPage(0);
+                        setState(() {});
+                      },
+                      child: Text('Hoje'),
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(AppColors.grey),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        configController.setPage(1);
+                        setState(() {});
+                      },
+                      child: Text('Ontem'),
                       style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(AppColors.grey),
@@ -92,17 +114,6 @@ class _StatisticsState extends State<Statistics> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Mês'),
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(AppColors.grey),
-                      ),
-                    ),
-                  ),
                 ],
               )),
               Container(
@@ -112,7 +123,7 @@ class _StatisticsState extends State<Statistics> {
                     borderRadius: BorderRadius.circular(5),
                     color: AppColors.titleWhite,
                   ),
-                  child: Grafico2()),
+                  child: pages[configController.currentPage]),
             ],
           ),
         ));
