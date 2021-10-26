@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/share/models/hour_model.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
-import 'package:peteat/share/widgets/hourlist/hour_list.dart';
-import 'package:peteat/share/widgets/hourlist/hour_list_controller.dart';
 import 'package:peteat/share/widgets/my-globals.dart';
+import 'package:peteat/share/widgets/timewidget/time_widget.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({Key? key}) : super(key: key);
@@ -21,7 +19,6 @@ class _ConfigPageState extends State<ConfigPage> {
     }
   }
 
-  final controller = HourListController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -74,24 +71,10 @@ class _ConfigPageState extends State<ConfigPage> {
                       'Configurações',
                       style: TextStyles.titleHomeThin,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        quantAlimento();
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    super.widget));
-                      },
-                      child: const Text('Salvar'),
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(AppColors.secondary)),
-                    )
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
+                  padding: const EdgeInsets.only(top: 15.0),
                   child: Container(
                       height: size.height * 0.15,
                       width: size.width,
@@ -165,15 +148,34 @@ class _ConfigPageState extends State<ConfigPage> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Text('Horários',
-                                    style: TextStyles.blueText),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(15),
+                                    child: Text('Horários',
+                                        style: TextStyles.blueText),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pushNamed(
+                                            context, '/changeTime');
+                                      },
+                                      child: const Text('Novo horário'),
+                                      style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  AppColors.secondary)),
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: HourListWidget(key: UniqueKey()),
-                              ),
+                              TimeWidget(),
+                              TimeWidget(),
+                              TimeWidget(),
                             ],
                           ),
                         ],
@@ -182,12 +184,16 @@ class _ConfigPageState extends State<ConfigPage> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, '/changeTime');
+                      quantAlimento();
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) => super.widget));
                     },
-                    child: const Text('Adicionar novo horário'),
+                    child: const Text('Salvar'),
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(AppColors.secondary)),

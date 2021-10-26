@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/modules/form/form_controller.dart';
+
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
 import 'package:peteat/share/widgets/checkbox/checkbox.dart';
@@ -19,8 +19,6 @@ class _ChangeTimeState extends State<ChangeTime> {
   var _minutes;
   var hora = Hour();
   var semana = DayWeek();
-
-  final controller = FormController();
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +72,6 @@ class _ChangeTimeState extends State<ChangeTime> {
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Form(
-                  key: controller.formKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -86,11 +83,8 @@ class _ChangeTimeState extends State<ChangeTime> {
                             height: size.height * 0.06,
                             width: size.width * 0.12,
                             child: TextFormField(
-                                validator: controller.validateHour,
                                 initialValue: hora.text,
-                                onChanged: (value) {
-                                  controller.onChange(hora: value);
-                                },
+                                onChanged: (value) {},
                                 decoration: InputDecoration(
                                     hintText: hora.text,
                                     fillColor: AppColors.stroke)),
@@ -156,11 +150,11 @@ class _ChangeTimeState extends State<ChangeTime> {
                       SizedBox(
                         height: size.height * 0.06,
                         child: TextFormField(
-                            initialValue: 'Todos os dias da semana',
-                            decoration: InputDecoration(
-                                hintText: semana.message,
-                                fillColor: AppColors.stroke),
-                            validator: controller.validateDia),
+                          initialValue: 'Todos os dias da semana',
+                          decoration: InputDecoration(
+                              hintText: semana.message,
+                              fillColor: AppColors.stroke),
+                        ),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -182,7 +176,6 @@ class _ChangeTimeState extends State<ChangeTime> {
                           ),
                           ElevatedButton(
                             onPressed: () async {
-                              await controller.cadastrar();
                               Navigator.pop(context);
                             },
                             child: const Text('Salvar'),
