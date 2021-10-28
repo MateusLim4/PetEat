@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/share/models/hour_model.dart';
 
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
-import 'package:peteat/share/widgets/my-globals.dart';
-import 'hours_little.dart';
+import 'package:peteat/share/widgets/hourlist/hour_list_controller.dart';
 
 class TimeWidget extends StatelessWidget {
-  const TimeWidget({Key? key}) : super(key: key);
+  final HourModel data;
+  const TimeWidget({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final controller = HourListController();
 
     return Container(
         height: size.height * 0.15,
@@ -36,7 +38,7 @@ class TimeWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '00:00',
+                    data.hora!,
                     style: TextStyles.textBlack,
                   ),
                   Row(
@@ -58,10 +60,9 @@ class TimeWidget extends StatelessWidget {
                 ],
               ),
               Text(
-                'Sem horário definido',
+                data.semana!,
                 style: TextStyles.textBlackLight,
               ),
-              Row(),
             ],
           ),
         ));

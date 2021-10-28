@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/modules/form/form_controller.dart';
 
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
@@ -14,6 +15,7 @@ class ChangeTime extends StatefulWidget {
 }
 
 class _ChangeTimeState extends State<ChangeTime> {
+  final controller = FormController();
   TimeOfDay selectedTime = TimeOfDay.now();
   var _hour;
   var _minutes;
@@ -23,6 +25,7 @@ class _ChangeTimeState extends State<ChangeTime> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(152),
@@ -71,122 +74,133 @@ class _ChangeTimeState extends State<ChangeTime> {
                   color: AppColors.titleWhite),
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: Form(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Text('Definir horário', style: TextStyles.pinkTitle),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
+                  children: [
+                    Form(
+                      key: controller.formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          Text('Definir horário', style: TextStyles.pinkTitle),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                height: size.height * 0.06,
+                                width: size.width * 0.12,
+                                child: TextFormField(
+                                    onChanged: (value) {
+                                      controller.onChange(hour: value);
+                                    },
+                                    validator: controller.validateHour,
+                                    decoration: InputDecoration(
+                                        hintText: hora.text,
+                                        fillColor: AppColors.stroke)),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  selectTime(context);
+                                },
+                                child: const Text("Selecionar horário"),
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        AppColors.secondary)),
+                              ),
+                            ],
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(top: 15.0),
+                          //   child: Row(children: [
+                          //     Column(
+                          //       children: const [
+                          //         Text('Dom'),
+                          //         SizedBox(width: 40, child: CheckboxSun()),
+                          //       ],
+                          //     ),
+                          //     Column(
+                          //       children: const [
+                          //         Text('Seg'),
+                          //         SizedBox(width: 40, child: CheckboxMon()),
+                          //       ],
+                          //     ),
+                          //     Column(
+                          //       children: const [
+                          //         Text('Ter'),
+                          //         SizedBox(width: 40, child: CheckboxTu()),
+                          //       ],
+                          //     ),
+                          //     Column(
+                          //       children: const [
+                          //         Text('Qua'),
+                          //         SizedBox(width: 40, child: CheckboxWd()),
+                          //       ],
+                          //     ),
+                          //     Column(
+                          //       children: const [
+                          //         Text('Qui'),
+                          //         SizedBox(width: 40, child: CheckboxTh()),
+                          //       ],
+                          //     ),
+                          //     Column(
+                          //       children: const [
+                          //         Text('Sex'),
+                          //         SizedBox(width: 40, child: CheckboxFr()),
+                          //       ],
+                          //     ),
+                          //     Column(
+                          //       children: const [
+                          //         Text('Sab'),
+                          //         SizedBox(width: 40, child: CheckboxSt()),
+                          //       ],
+                          //     )
+                          //   ]),
+                          // ),
                           SizedBox(
                             height: size.height * 0.06,
-                            width: size.width * 0.12,
                             child: TextFormField(
-                                initialValue: hora.text,
-                                onChanged: (value) {},
-                                decoration: InputDecoration(
-                                    hintText: hora.text,
-                                    fillColor: AppColors.stroke)),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              selectTime(context);
-                            },
-                            child: const Text("Selecionar horário"),
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    AppColors.secondary)),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15.0),
-                        child: Row(children: [
-                          Column(
-                            children: const [
-                              Text('Dom'),
-                              SizedBox(width: 40, child: CheckboxSun()),
-                            ],
-                          ),
-                          Column(
-                            children: const [
-                              Text('Seg'),
-                              SizedBox(width: 40, child: CheckboxMon()),
-                            ],
-                          ),
-                          Column(
-                            children: const [
-                              Text('Ter'),
-                              SizedBox(width: 40, child: CheckboxTu()),
-                            ],
-                          ),
-                          Column(
-                            children: const [
-                              Text('Qua'),
-                              SizedBox(width: 40, child: CheckboxWd()),
-                            ],
-                          ),
-                          Column(
-                            children: const [
-                              Text('Qui'),
-                              SizedBox(width: 40, child: CheckboxTh()),
-                            ],
-                          ),
-                          Column(
-                            children: const [
-                              Text('Sex'),
-                              SizedBox(width: 40, child: CheckboxFr()),
-                            ],
-                          ),
-                          Column(
-                            children: const [
-                              Text('Sab'),
-                              SizedBox(width: 40, child: CheckboxSt()),
-                            ],
-                          )
-                        ]),
-                      ),
-                      SizedBox(
-                        height: size.height * 0.06,
-                        child: TextFormField(
-                          initialValue: 'Todos os dias da semana',
-                          decoration: InputDecoration(
-                              hintText: semana.message,
-                              fillColor: AppColors.stroke),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          OutlinedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Cancelar',
-                                style: TextStyle(color: AppColors.buttonRed)),
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                  color: AppColors.buttonRed, width: 2.0),
-                              shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                              ),
+                              validator: controller.validateWeek,
+                              onChanged: (value) {
+                                controller.onChange(semana: value);
+                              },
+                              decoration: InputDecoration(
+                                  hintText: semana.message,
+                                  fillColor: AppColors.stroke),
                             ),
                           ),
-                          ElevatedButton(
-                            onPressed: () async {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Salvar'),
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    AppColors.secondary)),
-                          )
                         ],
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        OutlinedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Cancelar',
+                              style: TextStyle(color: AppColors.buttonRed)),
+                          style: OutlinedButton.styleFrom(
+                            side: const BorderSide(
+                                color: AppColors.buttonRed, width: 2.0),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () async {
+                            controller.cadastrar();
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Salvar'),
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                  AppColors.secondary)),
+                        )
+                      ],
+                    )
+                  ],
                 ),
               ),
             ),

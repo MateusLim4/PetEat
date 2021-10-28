@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/share/presets/app_colors.dart';
 import 'package:peteat/share/presets/app_text_style.dart';
+import 'package:peteat/share/widgets/hourlist/hour_list_controller.dart';
+import 'package:peteat/share/widgets/hourlist/hour_list_widget.dart';
 import 'package:peteat/share/widgets/my-globals.dart';
 import 'package:peteat/share/widgets/timewidget/time_widget.dart';
 
@@ -22,6 +24,7 @@ class _ConfigPageState extends State<ConfigPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final controller = HourListController();
 
     return Scaffold(
         appBar: PreferredSize(
@@ -173,9 +176,9 @@ class _ConfigPageState extends State<ConfigPage> {
                                   ),
                                 ],
                               ),
-                              TimeWidget(),
-                              TimeWidget(),
-                              TimeWidget(),
+                              HourListWidget(
+                                controller: controller,
+                              ),
                             ],
                           ),
                         ],
