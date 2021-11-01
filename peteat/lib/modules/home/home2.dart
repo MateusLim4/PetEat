@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/share/presets/app_colors.dart';
-import 'package:peteat/share/presets/app_text_style.dart';
-import 'package:peteat/share/widgets/my-globals.dart';
-import 'package:peteat/share/widgets/timewidget/hours_little.dart';
+import 'package:peteat/shared/themes/app_colors.dart';
+import 'package:peteat/shared/themes/app_text_style.dart';
+import 'package:peteat/shared/widgets/my-globals.dart';
+import 'package:peteat/shared/widgets/timewidget/hours.dart';
 
 class FeederModal extends StatefulWidget {
   // final UserModel user;

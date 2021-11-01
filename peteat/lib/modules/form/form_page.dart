@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/modules/form/form_controller.dart';
 
-import 'package:peteat/share/presets/app_colors.dart';
-import 'package:peteat/share/presets/app_text_style.dart';
-import 'package:peteat/share/widgets/checkbox/checkbox.dart';
-import 'package:peteat/share/widgets/timewidget/day_week.dart';
-import 'package:peteat/share/widgets/timewidget/hours_little.dart';
+import 'package:peteat/shared/themes/app_colors.dart';
+import 'package:peteat/shared/themes/app_text_style.dart';
+import 'package:peteat/shared/widgets/timewidget/day_week.dart';
+import 'package:peteat/shared/widgets/timewidget/hours.dart';
 
 class ChangeTime extends StatefulWidget {
   const ChangeTime({Key? key}) : super(key: key);
@@ -89,9 +88,6 @@ class _ChangeTimeState extends State<ChangeTime> {
                                 height: size.height * 0.06,
                                 width: size.width * 0.12,
                                 child: TextFormField(
-                                    onChanged: (value) {
-                                      controller.onChange(hour: value);
-                                    },
                                     validator: controller.validateHour,
                                     decoration: InputDecoration(
                                         hintText: hora.text,

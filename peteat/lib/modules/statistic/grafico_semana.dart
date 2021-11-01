@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:peteat/share/presets/app_colors.dart';
+import 'package:peteat/shared/themes/app_colors.dart';
 
 class GraficoSemana extends StatefulWidget {
   const GraficoSemana({Key? key}) : super(key: key);

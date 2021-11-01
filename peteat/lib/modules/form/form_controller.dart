@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:peteat/share/models/hour_model.dart';
+import 'package:peteat/shared/models/hour_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FormController {

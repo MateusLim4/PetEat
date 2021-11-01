@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/share/presets/app_colors.dart';
-import 'package:peteat/share/presets/app_text_style.dart';
-import 'package:peteat/share/widgets/social_button.dart';
+import 'package:peteat/shared/themes/app_colors.dart';
+import 'package:peteat/shared/themes/app_text_style.dart';
+import 'package:peteat/shared/widgets/social_button.dart';
 
 import 'login_controller.dart';
 

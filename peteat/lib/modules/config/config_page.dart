@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/share/presets/app_colors.dart';
-import 'package:peteat/share/presets/app_text_style.dart';
-import 'package:peteat/share/widgets/hourlist/hour_list_controller.dart';
-import 'package:peteat/share/widgets/hourlist/hour_list_widget.dart';
-import 'package:peteat/share/widgets/my-globals.dart';
-import 'package:peteat/share/widgets/timewidget/time_widget.dart';
+import 'package:peteat/shared/themes/app_colors.dart';
+import 'package:peteat/shared/themes/app_text_style.dart';
+import 'package:peteat/shared/widgets/hourlist/hour_list_controller.dart';
+import 'package:peteat/shared/widgets/hourlist/hour_list_widget.dart';
+import 'package:peteat/shared/widgets/my-globals.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({Key? key}) : super(key: key);
@@ -176,8 +175,11 @@ class _ConfigPageState extends State<ConfigPage> {
                                   ),
                                 ],
                               ),
-                              HourListWidget(
-                                controller: controller,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: HourListWidget(
+                                  controller: controller,
+                                ),
                               ),
                             ],
                           ),

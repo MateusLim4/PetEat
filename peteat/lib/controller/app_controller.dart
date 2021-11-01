@@ -5,7 +5,7 @@ import 'package:peteat/modules/form/form_page.dart';
 import 'package:peteat/modules/home/home_page.dart';
 import 'package:peteat/modules/splash/splash_page.dart';
 import 'package:peteat/modules/statistic/statistic_page.dart';
-import 'package:peteat/share/models/user_model.dart';
+import 'package:peteat/shared/models/user_model.dart';
 
 class WidgetController extends StatelessWidget {
   const WidgetController({Key? key}) : super(key: key);

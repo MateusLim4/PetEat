@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/share/presets/app_text_style.dart';
+import 'package:peteat/shared/themes/app_text_style.dart';
 
 class OpsPage extends StatelessWidget {
   const OpsPage({Key? key}) : super(key: key);

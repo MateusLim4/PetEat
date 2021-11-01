@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/share/models/user_model.dart';
-import 'package:peteat/share/presets/app_colors.dart';
-import 'package:peteat/share/presets/app_text_style.dart';
-import 'package:peteat/share/widgets/logout_modal.dart';
+import 'package:peteat/shared/models/user_model.dart';
+import 'package:peteat/shared/themes/app_colors.dart';
+import 'package:peteat/shared/themes/app_text_style.dart';
+import 'package:peteat/shared/widgets/logout_modal.dart';
 
 import 'home_page_modal.dart';
 import 'home1.dart';

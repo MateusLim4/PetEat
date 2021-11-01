@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:peteat/modules/statistic/grafico_dia.dart';
 import 'package:peteat/modules/statistic/grafico_semana.dart';
 import 'package:peteat/modules/statistic/statistic_page_controller.dart';
-import 'package:peteat/share/presets/app_colors.dart';
-import 'package:peteat/share/presets/app_text_style.dart';
-import 'package:peteat/share/widgets/my-globals.dart';
+import 'package:peteat/shared/themes/app_colors.dart';
+import 'package:peteat/shared/themes/app_text_style.dart';
+import 'package:peteat/shared/widgets/my-globals.dart';
 
 class Statistics extends StatefulWidget {
   const Statistics({Key? key}) : super(key: key);

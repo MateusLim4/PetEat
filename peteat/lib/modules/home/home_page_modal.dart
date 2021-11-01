@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/share/presets/app_colors.dart';
-import 'package:peteat/share/presets/app_text_style.dart';
+import 'package:peteat/shared/themes/app_colors.dart';
+import 'package:peteat/shared/themes/app_text_style.dart';
 
 class ModalHomeWidget extends StatefulWidget {
   const ModalHomeWidget({Key? key}) : super(key: key);
