@@ -140,6 +140,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_staggered_grid_view",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_staggered_grid_view-0.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///C:/src/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -428,7 +434,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-11-01T23:49:31.807958Z",
+  "generated": "2021-11-03T21:07:20.562737Z",
   "generator": "pub",
   "generatorVersion": "2.14.4"
 }

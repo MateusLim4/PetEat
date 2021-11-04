@@ -1,68 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/shared/models/hour_model.dart';
-
+import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/themes/app_colors.dart';
 import 'package:peteat/shared/themes/app_text_style.dart';
 
-class TimeWidget extends StatelessWidget {
-  final HourModel data;
-  const TimeWidget({Key? key, required this.data}) : super(key: key);
+class ConfigCardWidget extends StatelessWidget {
+  ConfigCardWidget({Key? key, required this.config, required this.index});
+
+  final ConfigUser config;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    return Container(
-        height: size.height * 0.15,
-        width: size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          color: AppColors.titleWhite,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              spreadRadius: 2,
-              blurRadius: 8,
-              offset: const Offset(0, 0), // changes position of shadow
+    return Card(
+      color: AppColors.titleWhite,
+      child: Container(
+        constraints: BoxConstraints(minHeight: 50),
+        padding: EdgeInsets.all(15),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  config.horario,
+                  style: TextStyles.blueText,
+                ),
+                Text('${config.alimento}g', style: TextStyles.pinkTitleThin)
+              ],
             ),
+            SizedBox(height: 4),
+            Text(config.diaSemana, style: TextStyles.textBlackLight),
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    data.hora!,
-                    style: TextStyles.textBlack,
-                  ),
-                  Row(
-                    children: [
-                      TextButton(
-                        child: const Text('Alterar',
-                            style: TextStyle(color: AppColors.secondary)),
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/changeTime');
-                        },
-                      ),
-                      TextButton(
-                        child: const Text('Excluir',
-                            style: TextStyle(color: AppColors.buttonRed)),
-                        onPressed: () {},
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              Text(
-                data.semana!,
-                style: TextStyles.textBlackLight,
-              ),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }

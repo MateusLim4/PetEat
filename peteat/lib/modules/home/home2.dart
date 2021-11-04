@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/themes/app_colors.dart';
 import 'package:peteat/shared/themes/app_text_style.dart';
 import 'package:peteat/shared/widgets/my-globals.dart';
@@ -140,8 +141,7 @@ class _FeederModalState extends State<FeederModal> {
                                 ),
                                 Column(
                                   children: [
-                                    Text('${food!}g',
-                                        style: TextStyles.blueTextBold),
+                                    Text('0 g', style: TextStyles.blueTextBold),
                                     Text('Quantidade de ração\n definida',
                                         style: TextStyles.textBlackLight,
                                         textAlign: TextAlign.center),

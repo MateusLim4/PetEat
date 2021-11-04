@@ -9,9 +9,9 @@ class HourModel {
     this.semana,
   });
 
-  HourModel copyWith({String? hour, String? semana}) {
+  HourModel copyWith({String? hora, String? semana}) {
     return HourModel(
-      hora: hour ?? this.hora,
+      hora: hora ?? this.hora,
       semana: semana ?? this.semana,
     );
   }

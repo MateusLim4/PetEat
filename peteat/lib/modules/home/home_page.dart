@@ -67,13 +67,13 @@ class _HomePageState extends State<HomePage> {
         ),
         backgroundColor: AppColors.primary,
         body: pages[homeController.currentPage],
-        floatingActionButton: FloatingActionButton.extended(
+        floatingActionButton: FloatingActionButton(
           backgroundColor: AppColors.secondary,
           onPressed: () {
             homeController.setPage(1);
             setState(() {});
           },
-          label: Icon(Icons.add),
+          child: Icon(Icons.add),
         ));
   }
 }
