@@ -53,6 +53,36 @@ class _FormularioWidgetState extends State<FormularioWidget> {
                 child:
                     Text('Definir configurações', style: TextStyles.blueText),
               ),
+
+              // Padding(
+              //   padding: const EdgeInsets.all(18.0),
+              //   child: TextFormField(
+              //     controller: timeCtl, // add this line.
+              //     decoration: const InputDecoration(
+              //       labelText: 'Definir horário',
+              //     ),
+              //     onTap: () async {
+              //       TimeOfDay time = TimeOfDay.now();
+              //       FocusScope.of(context).requestFocus(FocusNode());
+
+              //       TimeOfDay? picked = await showTimePicker(
+              //           context: context, initialTime: time);
+              //       if (picked != null && picked != time) {
+              //         timeCtl.text = picked.toString(); // add this line.
+              //         setState(() {
+              //           time = picked;
+              //         });
+              //       }
+              //     },
+              //     onChanged: widget.onChangedHorario,
+              //     validator: (value) {
+              //       if (value!.isEmpty) {
+              //         return 'cant be empty';
+              //       }
+              //       return null;
+              //     },
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 25, right: 25),
                 child: buildHora(),
