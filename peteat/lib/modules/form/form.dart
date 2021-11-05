@@ -3,7 +3,7 @@ import 'package:peteat/shared/themes/app_colors.dart';
 import 'package:peteat/shared/themes/app_text_style.dart';
 import 'package:peteat/shared/widgets/timewidget/clock.dart';
 
-class FormularioWidget extends StatelessWidget {
+class FormularioWidget extends StatefulWidget {
   final String? horario;
   final String? diaSemana;
   final String? alimento;
@@ -22,7 +22,13 @@ class FormularioWidget extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<FormularioWidget> createState() => _FormularioWidgetState();
+}
+
+class _FormularioWidgetState extends State<FormularioWidget> {
+  @override
   Widget build(BuildContext context) {
+    TextEditingController timeCtl = TextEditingController();
     final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(right: 10.0, left: 10, top: 20),
@@ -59,35 +65,41 @@ class FormularioWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 25, right: 25),
                 child: buildAlimento(),
               ),
-              ClockWidget(),
             ],
           )),
     );
   }
 
   Widget buildHora() => TextFormField(
-        initialValue: horario,
+        initialValue: widget.horario,
         maxLength: 5,
         validator: (horario) =>
             horario != null && horario.isEmpty ? 'Preencha esse campo!' : null,
-        onChanged: onChangedHorario,
+        onChanged: widget.onChangedHorario,
       );
 
   Widget buildSemana() => TextFormField(
-        initialValue: diaSemana,
+        initialValue: widget.diaSemana,
         maxLength: 20,
         validator: (diaSemana) => diaSemana != null && diaSemana.isEmpty
             ? 'Preencha esse campo!'
             : null,
-        onChanged: onChangedDiaSemana,
+        onChanged: widget.onChangedDiaSemana,
+        decoration: const InputDecoration(
+          labelText: 'Definir dia da Semana',
+        ),
       );
 
   Widget buildAlimento() => TextFormField(
-        initialValue: alimento,
+        keyboardType: TextInputType.number,
+        initialValue: widget.alimento,
         maxLength: 4,
         validator: (alimento) => alimento != null && alimento.isEmpty
             ? 'Preencha esse campo!'
             : null,
-        onChanged: onChangedAlimento,
+        onChanged: widget.onChangedAlimento,
+        decoration: const InputDecoration(
+          labelText: 'Quantidade de alimento (g)',
+        ),
       );
 }

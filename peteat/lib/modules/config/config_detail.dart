@@ -26,7 +26,7 @@ class _ConfigDetailPageState extends State<ConfigDetailPage> {
   Future refreshConfigs() async {
     setState(() => isLoading = true);
 
-    this.configuracoes =
+    configuracoes =
         await AllConfigDatabase.instance.readConfig(widget.configId);
 
     setState(() => isLoading = false);
@@ -66,31 +66,71 @@ class _ConfigDetailPageState extends State<ConfigDetailPage> {
             ? const Center(child: CircularProgressIndicator())
             : Padding(
                 padding: EdgeInsets.all(12),
-                child: ListView(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  children: [
-                    Text(configuracoes.horario),
-                    Text(configuracoes.diaSemana),
-                    Text(configuracoes.alimento)
-                  ],
+                child: Container(
+                  color: AppColors.titleWhite,
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text('Horário definido: ',
+                                  style: TextStyles.blueText),
+                              Text(configuracoes.horario,
+                                  style: TextStyles.textBlack),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text('Dia: ', style: TextStyles.blueText),
+                              Text(configuracoes.diaSemana,
+                                  style: TextStyles.textBlack),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text('Quantidade de ração(g): ',
+                                  style: TextStyles.blueText),
+                              Text(configuracoes.alimento,
+                                  style: TextStyles.textBlack),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ),
       );
 
   Widget editButton() => IconButton(
-      icon: Icon(Icons.edit_outlined),
+      icon: Icon(
+        Icons.edit_outlined,
+        color: AppColors.primary,
+      ),
       onPressed: () async {
         if (isLoading) return;
 
         await Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => AddEditConfig(),
+          builder: (context) => AddEditConfig(configuracoes: configuracoes),
         ));
 
         refreshConfigs();
       });
 
   Widget deleteButton() => IconButton(
-        icon: Icon(Icons.delete),
+        icon: Icon(Icons.delete, color: AppColors.primary),
         onPressed: () async {
           await AllConfigDatabase.instance.delete(widget.configId);
 

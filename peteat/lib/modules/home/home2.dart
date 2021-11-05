@@ -1,19 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/themes/app_colors.dart';
 import 'package:peteat/shared/themes/app_text_style.dart';
-import 'package:peteat/shared/widgets/my-globals.dart';
 import 'package:peteat/shared/widgets/timewidget/hours.dart';
 
 class FeederModal extends StatefulWidget {
   // final UserModel user;
-  const FeederModal({Key? key}) : super(key: key);
+  final dynamic config;
+  const FeederModal({Key? key, this.config}) : super(key: key);
 
   @override
   State<FeederModal> createState() => _FeederModalState();
 }
 
 class _FeederModalState extends State<FeederModal> {
+  bool isLoading = false;
+  late List<ConfigUser> configuracoes;
+
+  @override
+  void initState() {
+    super.initState();
+    refreshConfigs();
+  }
+
+  Future refreshConfigs() async {
+    setState(() => isLoading = true);
+
+    this.configuracoes = await AllConfigDatabase.instance.readAllConfigs();
+
+    setState(() => isLoading = false);
+  }
+
   @override
   double _animatedHeight = 200;
 
@@ -115,7 +133,7 @@ class _FeederModalState extends State<FeederModal> {
                               children: [
                                 Column(
                                   children: [
-                                    Text(hora.text,
+                                    Text(configuracoes[0].horario,
                                         style: TextStyles.blueTextBold),
                                     Text('Proxima liberação de\n ração',
                                         style: TextStyles.textBlackLight,
@@ -141,7 +159,8 @@ class _FeederModalState extends State<FeederModal> {
                                 ),
                                 Column(
                                   children: [
-                                    Text('0 g', style: TextStyles.blueTextBold),
+                                    Text('${configuracoes[0].alimento} g',
+                                        style: TextStyles.blueTextBold),
                                     Text('Quantidade de ração\n definida',
                                         style: TextStyles.textBlackLight,
                                         textAlign: TextAlign.center),

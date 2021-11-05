@@ -68,10 +68,10 @@ class _ModalHomeWidgetState extends State<ModalHomeWidget> {
                                     onPressed: () {},
                                     child: Row(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.search,
                                         ),
-                                        Text('$buttonmessage')
+                                        Text(buttonmessage)
                                       ],
                                     )),
                               ),

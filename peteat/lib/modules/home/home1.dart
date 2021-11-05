@@ -3,6 +3,7 @@ import 'package:peteat/shared/themes/app_text_style.dart';
 
 class OpsPage extends StatelessWidget {
   const OpsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

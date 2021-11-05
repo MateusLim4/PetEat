@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/modules/config/add_edit_config.dart';
+
+import 'package:peteat/shared/models/allconfig_db.dart';
+import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/models/user_model.dart';
 import 'package:peteat/shared/themes/app_colors.dart';
 import 'package:peteat/shared/themes/app_text_style.dart';
 import 'package:peteat/shared/widgets/logout_modal.dart';
 
-import 'home_page_modal.dart';
 import 'home1.dart';
 import 'home2.dart';
 import 'home_controller.dart';
@@ -18,11 +21,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<ConfigUser>? configuracoes;
+  bool isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    refreshConfigs();
+  }
+
+  Future refreshConfigs() async {
+    setState(() => isLoading = true);
+
+    configuracoes = await AllConfigDatabase.instance.readAllConfigs();
+
+    setState(() => isLoading = false);
+  }
+
   final homeController = HomeController();
-  final pages = [
-    OpsPage(),
-    FeederModal(),
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,14 +82,25 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         backgroundColor: AppColors.primary,
-        body: pages[homeController.currentPage],
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColors.secondary,
-          onPressed: () {
-            homeController.setPage(1);
-            setState(() {});
-          },
-          child: Icon(Icons.add),
-        ));
+        body: isLoading
+            ? const CircularProgressIndicator()
+            : configuracoes!.isEmpty
+                ? OpsPage()
+                : FeederModal(config: configuracoes),
+        floatingActionButton: configuracoes!.isEmpty
+            ? FloatingActionButton(
+                backgroundColor: AppColors.secondary,
+                onPressed: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const AddEditConfig(),
+                    ),
+                  );
+                  refreshConfigs();
+                  setState(() {});
+                },
+                child: Icon(Icons.add),
+              )
+            : null);
   }
 }
