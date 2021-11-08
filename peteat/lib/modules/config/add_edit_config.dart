@@ -17,7 +17,7 @@ class AddEditConfig extends StatefulWidget {
 class _AddEditConfigState extends State<AddEditConfig> {
   late int? hora;
   late int? minuto;
-  late String? diaSemana;
+  late String? diaSemana = 'Sem dia definido';
   late int? diaSemanaId;
   late String? alimento;
   late int? notificacaoId;
@@ -27,9 +27,9 @@ class _AddEditConfigState extends State<AddEditConfig> {
   @override
   void initState() {
     super.initState();
-    hora = widget.configuracoes?.hora ?? null;
-    minuto = widget.configuracoes?.minuto ?? null;
-    diaSemana = widget.configuracoes?.diaSemana ?? '';
+    hora = widget.configuracoes?.hora ?? 0;
+    minuto = widget.configuracoes?.minuto ?? 0;
+    diaSemana = widget.configuracoes?.diaSemana ?? 'Sem dia definido';
     diaSemanaId = widget.configuracoes?.diaSemanaId ?? -1;
     alimento = widget.configuracoes?.alimento ?? '';
   }
