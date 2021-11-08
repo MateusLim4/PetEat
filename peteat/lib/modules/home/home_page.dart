@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:peteat/modules/config/add_edit_config.dart';
 
@@ -21,14 +22,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<ConfigUser>? configuracoes;
+  late List<ConfigUser> configuracoes;
   bool isLoading = false;
+
   @override
   void initState() {
-    super.initState();
     refreshConfigs();
+    super.initState();
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: const Text('Permitir notificações'),
+                  content: const Text(
+                      'Nosso aplicativo gostaria de enviar notificações para você'),
+                  actions: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text('Não permitir',
+                            style: TextStyle(color: AppColors.buttonRed))),
+                    TextButton(
+                      onPressed: () => AwesomeNotifications()
+                          .requestPermissionToSendNotifications()
+                          .then((_) => Navigator.pop(context)),
+                      child: Text('Permitir',
+                          style: TextStyle(color: AppColors.secondary)),
+                    )
+                  ],
+                ));
+      }
+    });
   }
 
+  @override
   Future refreshConfigs() async {
     setState(() => isLoading = true);
 
@@ -38,6 +67,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   final homeController = HomeController();
+  bool isTrue = false;
 
   @override
   Widget build(BuildContext context) {
@@ -84,23 +114,28 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: AppColors.primary,
         body: isLoading
             ? const CircularProgressIndicator()
-            : configuracoes!.isEmpty
+            : configuracoes.isEmpty
                 ? OpsPage()
-                : FeederModal(config: configuracoes),
-        floatingActionButton: configuracoes!.isEmpty
-            ? FloatingActionButton(
-                backgroundColor: AppColors.secondary,
-                onPressed: () async {
-                  await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const AddEditConfig(),
-                    ),
-                  );
-                  refreshConfigs();
-                  setState(() {});
-                },
-                child: Icon(Icons.add),
-              )
-            : null);
+                : FeederModal(),
+        floatingActionButton: isLoading
+            ? const CircularProgressIndicator()
+            : configuracoes.isEmpty
+                ? FloatingActionButton(
+                    backgroundColor: AppColors.secondary,
+                    onPressed: () async {
+                      isTrue = true;
+                      print(configuracoes);
+                      await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const AddEditConfig(),
+                        ),
+                      );
+                      refreshConfigs();
+
+                      setState(() {});
+                    },
+                    child: Icon(Icons.add),
+                  )
+                : null);
   }
 }

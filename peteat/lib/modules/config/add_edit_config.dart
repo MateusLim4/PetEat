@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/modules/form/form.dart';
+import 'package:peteat/modules/notification/notification.dart';
+import 'package:peteat/modules/notification/notify_widget.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/themes/app_colors.dart';
@@ -14,21 +15,29 @@ class AddEditConfig extends StatefulWidget {
 }
 
 class _AddEditConfigState extends State<AddEditConfig> {
-  final _formKey = GlobalKey<FormState>();
-  late String horario;
-  late String diaSemana;
-  late String alimento;
+  late int? hora;
+  late int? minuto;
+  late String? diaSemana;
+  late int? diaSemanaId;
+  late String? alimento;
+  late int? notificacaoId;
+  late int? notificacaoId2;
+  late NotificationWeekAndTime? pickedSchedule;
 
   @override
   void initState() {
     super.initState();
-    horario = widget.configuracoes?.horario ?? '';
+    hora = widget.configuracoes?.hora ?? null;
+    minuto = widget.configuracoes?.minuto ?? null;
     diaSemana = widget.configuracoes?.diaSemana ?? '';
+    diaSemanaId = widget.configuracoes?.diaSemanaId ?? -1;
     alimento = widget.configuracoes?.alimento ?? '';
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(152),
@@ -43,7 +52,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
                   children: [
                     const BackButton(color: AppColors.primary),
                     Text('Alimentador 01 ', style: TextStyles.pinkTitle),
-                    buildButton()
+                    buildButton(),
                   ]),
             ),
           ),
@@ -51,18 +60,100 @@ class _AddEditConfigState extends State<AddEditConfig> {
       ),
       backgroundColor: AppColors.primary,
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
-          child: FormularioWidget(
-              horario: horario,
-              diaSemana: diaSemana,
-              alimento: alimento,
-              onChangedAlimento: (alimento) =>
-                  setState(() => this.alimento = alimento),
-              onChangedDiaSemana: (diaSemana) =>
-                  setState(() => this.diaSemana = diaSemana),
-              onChangedHorario: (horario) =>
-                  setState(() => this.horario = horario)),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Center(
+            child: Container(
+                height: size.height * 0.4,
+                width: size.width * 0.9,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppColors.titleWhite,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.15),
+                      spreadRadius: 2,
+                      blurRadius: 2,
+                      offset: const Offset(2, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Text('Definir configurações',
+                          style: TextStyles.blueTextBold2),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          initialValue: alimento,
+                          maxLength: 4,
+                          onChanged: (alimento) =>
+                              setState(() => this.alimento = alimento),
+                          validator: (alimento) =>
+                              alimento != null && alimento.isEmpty
+                                  ? 'Preencha esse campo!'
+                                  : null,
+                          decoration: const InputDecoration(
+                            labelText: 'Quantidade de alimento (g)',
+                          ),
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text('${diaSemana}', style: TextStyles.textBlack),
+                          Text('${hora}:${minuto}', style: TextStyles.blueText),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: ElevatedButton(
+                            onPressed: () async {
+                              pickedSchedule = await pickSchedule(context);
+                              print(pickedSchedule);
+                              if (pickedSchedule != null) {
+                                notificacaoId = createUniqueId();
+                                notificacaoId2 = createUniqueId();
+                                setState(() {
+                                  hora = pickedSchedule!.timeOfDay.hour;
+                                  minuto = pickedSchedule!.timeOfDay.minute;
+                                  diaSemanaId = pickedSchedule!.dayOfTheWeek;
+                                  switch (diaSemanaId) {
+                                    case 1:
+                                      diaSemana = 'Segunda-feira';
+                                      break;
+                                    case 2:
+                                      diaSemana = 'Terça-feira';
+                                      break;
+                                    case 3:
+                                      diaSemana = 'Quarta-feira';
+                                      break;
+                                    case 4:
+                                      diaSemana = 'Quinta-feira';
+                                      break;
+                                    case 5:
+                                      diaSemana = 'Sexta-feira';
+                                      break;
+                                    case 6:
+                                      diaSemana = 'Sábado';
+                                      break;
+                                    case 7:
+                                      diaSemana = 'Domingo';
+                                      break;
+                                  }
+                                });
+                              }
+                            },
+                            child: Text('Definir horário')),
+                      ),
+                    ],
+                  ),
+                )),
+          ),
         ),
       ),
     );
@@ -70,7 +161,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
 
   Widget buildButton() {
     final isFormValid =
-        horario.isNotEmpty && diaSemana.isNotEmpty && alimento.isNotEmpty;
+        hora != -1 && minuto != -1 && diaSemanaId != -1 && alimento != -1;
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -86,15 +177,18 @@ class _AddEditConfigState extends State<AddEditConfig> {
   }
 
   void addOrUpdate() async {
-    final isValid = _formKey.currentState!.validate();
+    final isValid =
+        hora != -1 && minuto != -1 && diaSemanaId != -1 && alimento != null;
 
     if (isValid) {
       final isUpdating = widget.configuracoes != null;
 
       if (isUpdating) {
         await update();
+        await creatConfigEditNotification();
       } else {
         await add();
+        await creatConfigNotification();
       }
 
       Navigator.of(context).pop();
@@ -105,19 +199,27 @@ class _AddEditConfigState extends State<AddEditConfig> {
     final configs = widget.configuracoes!.copy(
       alimento: alimento,
       diaSemana: diaSemana,
-      horario: horario,
+      hora: hora,
+      minuto: minuto,
+      diaSemanaId: diaSemanaId,
     );
 
+    createReminderNotification(pickedSchedule!, notificacaoId);
+    // await createNotificatioAfter(pickedSchedule!, notificacaoId2);
     await AllConfigDatabase.instance.update(configs);
   }
 
   Future add() async {
     final configs = ConfigUser(
-      alimento: alimento,
-      diaSemana: diaSemana,
-      horario: horario,
-    );
+        alimento: alimento,
+        diaSemana: diaSemana,
+        hora: hora,
+        minuto: minuto,
+        notificacaoId: notificacaoId,
+        diaSemanaId: diaSemanaId);
 
+    createReminderNotification(pickedSchedule!, notificacaoId);
+    //  createNotificatioAfter(pickedSchedule!, notificacaoId2);
     await AllConfigDatabase.instance.create(configs);
   }
 }

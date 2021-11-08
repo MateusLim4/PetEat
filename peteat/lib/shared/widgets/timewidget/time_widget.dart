@@ -26,14 +26,14 @@ class ConfigCardWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  config.horario,
+                  '${config.hora}:${config.minuto}',
                   style: TextStyles.blueText,
                 ),
                 Text('${config.alimento}g', style: TextStyles.pinkTitleThin)
               ],
             ),
             SizedBox(height: 4),
-            Text(config.diaSemana, style: TextStyles.textBlackLight),
+            Text('${config.diaSemana}', style: TextStyles.textBlackLight),
           ],
         ),
       ),

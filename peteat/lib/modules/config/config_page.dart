@@ -53,7 +53,9 @@ class _ConfigPageState extends State<ConfigPage> {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const BackButton(color: AppColors.primary),
+                  const BackButton(
+                    color: AppColors.primary,
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0, right: 25),
                     child: Text('Configurações ', style: TextStyles.pinkTitle),

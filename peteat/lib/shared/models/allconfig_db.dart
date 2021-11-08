@@ -28,15 +28,18 @@ class AllConfigDatabase {
 
   Future _createDB(Database db, int version) async {
     final idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
+    final integerType = 'INTEGER NOT NULL';
     final textType = 'TEXT NOT NULL';
 
     await db.execute('''
 CREATE TABLE $tableConfigs ( 
   ${ConfigFields.id} $idType, 
-  ${ConfigFields.horario} $textType,
+  ${ConfigFields.hora} $integerType,
+  ${ConfigFields.minuto} $integerType,
+  ${ConfigFields.diaSemanaId} $integerType,
   ${ConfigFields.diaSemana} $textType,
-  ${ConfigFields.alimento} $textType
-  )
+  ${ConfigFields.alimento} $textType,
+  ${ConfigFields.notificacaoId} $integerType)
 ''');
   }
 
@@ -65,7 +68,7 @@ CREATE TABLE $tableConfigs (
   Future<List<ConfigUser>> readAllConfigs() async {
     final db = await instance.database;
 
-    final orderBy = '${ConfigFields.alimento} ASC';
+    final orderBy = '${ConfigFields.hora} ASC';
     final result = await db.query(tableConfigs, orderBy: orderBy);
 
     return result.map((json) => ConfigUser.fromJson(json)).toList();

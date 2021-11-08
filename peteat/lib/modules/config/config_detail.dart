@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/modules/config/add_edit_config.dart';
+import 'package:peteat/modules/notification/notification.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/themes/app_colors.dart';
@@ -79,7 +80,8 @@ class _ConfigDetailPageState extends State<ConfigDetailPage> {
                             children: [
                               Text('Horário definido: ',
                                   style: TextStyles.blueText),
-                              Text(configuracoes.horario,
+                              Text(
+                                  '${configuracoes.hora}:${configuracoes.minuto}',
                                   style: TextStyles.textBlack),
                             ],
                           ),
@@ -90,7 +92,7 @@ class _ConfigDetailPageState extends State<ConfigDetailPage> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text('Dia: ', style: TextStyles.blueText),
-                              Text(configuracoes.diaSemana,
+                              Text('${configuracoes.diaSemana}',
                                   style: TextStyles.textBlack),
                             ],
                           ),
@@ -102,7 +104,7 @@ class _ConfigDetailPageState extends State<ConfigDetailPage> {
                             children: [
                               Text('Quantidade de ração(g): ',
                                   style: TextStyles.blueText),
-                              Text(configuracoes.alimento,
+                              Text('${configuracoes.alimento}',
                                   style: TextStyles.textBlack),
                             ],
                           ),
@@ -133,7 +135,7 @@ class _ConfigDetailPageState extends State<ConfigDetailPage> {
         icon: Icon(Icons.delete, color: AppColors.primary),
         onPressed: () async {
           await AllConfigDatabase.instance.delete(widget.configId);
-
+          await deleteConfigNotification();
           Navigator.of(context).pop();
         },
       );

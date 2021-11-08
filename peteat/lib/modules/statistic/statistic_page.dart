@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/modules/notification/notification.dart';
 import 'package:peteat/modules/statistic/grafico_dia.dart';
 import 'package:peteat/modules/statistic/grafico_semana.dart';
 import 'package:peteat/modules/statistic/statistic_page_controller.dart';
@@ -116,14 +117,6 @@ class _StatisticsState extends State<Statistics> {
                   ),
                 ],
               )),
-              Container(
-                  width: size.width * 0.95,
-                  height: size.height * 0.5,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: AppColors.titleWhite,
-                  ),
-                  child: pages[configController.currentPage]),
             ],
           ),
         ));

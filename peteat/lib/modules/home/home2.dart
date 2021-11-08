@@ -33,7 +33,7 @@ class _FeederModalState extends State<FeederModal> {
   }
 
   @override
-  double _animatedHeight = 200;
+  double _animatedHeight = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +133,8 @@ class _FeederModalState extends State<FeederModal> {
                               children: [
                                 Column(
                                   children: [
-                                    Text(configuracoes[0].horario,
+                                    Text(
+                                        '${configuracoes[0].hora}:${configuracoes[0].minuto}',
                                         style: TextStyles.blueTextBold),
                                     Text('Proxima liberação de\n ração',
                                         style: TextStyles.textBlackLight,
@@ -169,6 +170,7 @@ class _FeederModalState extends State<FeederModal> {
                                       child: OutlinedButton(
                                         onPressed: () {
                                           hora.adiantar();
+                                          initState();
                                           setState() {}
                                           ;
                                         },
