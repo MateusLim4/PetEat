@@ -17,6 +17,13 @@ class FeederModal extends StatefulWidget {
 class _FeederModalState extends State<FeederModal> {
   bool isLoading = false;
   late List<ConfigUser> configuracoes;
+  Future refreshConfigs() async {
+    setState(() => isLoading = true);
+
+    configuracoes = await AllConfigDatabase.instance.readAllConfigs();
+
+    setState(() => isLoading = false);
+  }
 
   @override
   void initState() {
@@ -24,16 +31,9 @@ class _FeederModalState extends State<FeederModal> {
     refreshConfigs();
   }
 
-  Future refreshConfigs() async {
-    setState(() => isLoading = true);
-
-    this.configuracoes = await AllConfigDatabase.instance.readAllConfigs();
-
-    setState(() => isLoading = false);
-  }
-
   @override
-  double _animatedHeight = 0;
+  double _animatedHeight = 200;
+  int index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +134,7 @@ class _FeederModalState extends State<FeederModal> {
                                 Column(
                                   children: [
                                     Text(
-                                        '${configuracoes[0].hora}:${configuracoes[0].minuto}',
+                                        '${configuracoes[index].hora}:${configuracoes[index].minuto}',
                                         style: TextStyles.blueTextBold),
                                     Text('Proxima liberação de\n ração',
                                         style: TextStyles.textBlackLight,
@@ -160,7 +160,7 @@ class _FeederModalState extends State<FeederModal> {
                                 ),
                                 Column(
                                   children: [
-                                    Text('${configuracoes[0].alimento} g',
+                                    Text('${configuracoes[index].alimento} g',
                                         style: TextStyles.blueTextBold),
                                     Text('Quantidade de ração\n definida',
                                         style: TextStyles.textBlackLight,
@@ -170,9 +170,6 @@ class _FeederModalState extends State<FeederModal> {
                                       child: OutlinedButton(
                                         onPressed: () {
                                           hora.adiantar();
-                                          initState();
-                                          setState() {}
-                                          ;
                                         },
                                         child: Text('Antecipar',
                                             style: TextStyles.blueText),
@@ -198,9 +195,40 @@ class _FeederModalState extends State<FeederModal> {
                 )
               ],
             ),
-          )
+          ),
+          ElevatedButton(onPressed: organizar, child: Text('atualizar'))
         ],
       ),
     );
+  }
+
+  void organizar() async {
+    refreshConfigs();
+    // var horario = TimeOfDay.now();
+    // int hora;
+    // var minuto;
+    // int menorDiferenca = 100;
+    // int count = 0;
+    // var lista = await AllConfigDatabase.instance.readAllConfigs();
+    // List inteira = [];
+    // lista.forEach((element) {
+    //   List sub = [];
+    //   sub.add(element.hora);
+    //   sub.add(element.minuto);
+    //   inteira.add(sub);
+    // });
+    // inteira.forEach((element) {
+    //   if (horario.hour == element[0]) {
+    //     var diferenca = minuto - element[0];
+    //     if (diferenca < menorDiferenca && diferenca > 0) {
+    //       menorDiferenca = diferenca;
+
+    //       index = count;
+
+    //       print(index);
+    //     }
+    //   }
+    //   count += 1;
+    // });
   }
 }

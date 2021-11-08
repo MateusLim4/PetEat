@@ -197,12 +197,12 @@ class _AddEditConfigState extends State<AddEditConfig> {
 
   Future update() async {
     final configs = widget.configuracoes!.copy(
-      alimento: alimento,
-      diaSemana: diaSemana,
-      hora: hora,
-      minuto: minuto,
-      diaSemanaId: diaSemanaId,
-    );
+        alimento: alimento,
+        diaSemana: diaSemana,
+        hora: hora,
+        minuto: minuto,
+        notificacaoId: notificacaoId,
+        diaSemanaId: diaSemanaId);
 
     createReminderNotification(pickedSchedule!, notificacaoId);
     // await createNotificatioAfter(pickedSchedule!, notificacaoId2);
