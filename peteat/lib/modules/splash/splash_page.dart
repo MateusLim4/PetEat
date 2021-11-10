@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/modules/auth/auth_controller.dart';
-import 'package:peteat/shared/themes/app_colors.dart';
-import 'package:peteat/shared/themes/app_text_style.dart';
+import 'package:peteat/shared/themes/colors/app_colors.dart';
+import 'package:peteat/shared/themes/font/app_text_style.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({Key? key}) : super(key: key);

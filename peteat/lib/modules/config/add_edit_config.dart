@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/functions/formata_hora.dart';
 import 'package:peteat/modules/notification/notification.dart';
 import 'package:peteat/modules/notification/notify_widget.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
-import 'package:peteat/shared/themes/app_colors.dart';
-import 'package:peteat/shared/themes/app_text_style.dart';
+import 'package:peteat/shared/themes/colors/app_colors.dart';
+import 'package:peteat/shared/themes/font/app_text_style.dart';
 
 class AddEditConfig extends StatefulWidget {
   final ConfigUser? configuracoes;
@@ -106,7 +107,8 @@ class _AddEditConfigState extends State<AddEditConfig> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text('${diaSemana}', style: TextStyles.textBlack),
-                          Text('${hora}:${minuto}', style: TextStyles.blueText),
+                          Text('${formataHora(hora, minuto)}',
+                              style: TextStyles.blueText),
                         ],
                       ),
                       Padding(

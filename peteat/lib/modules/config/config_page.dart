@@ -4,8 +4,8 @@ import 'package:peteat/modules/config/add_edit_config.dart';
 import 'package:peteat/modules/config/config_detail.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
-import 'package:peteat/shared/themes/app_colors.dart';
-import 'package:peteat/shared/themes/app_text_style.dart';
+import 'package:peteat/shared/themes/colors/app_colors.dart';
+import 'package:peteat/shared/themes/font/app_text_style.dart';
 import 'package:peteat/shared/widgets/timewidget/time_widget.dart';
 
 class ConfigPage extends StatefulWidget {

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/functions/formata_hora.dart';
 import 'package:peteat/shared/models/config_user.dart';
-import 'package:peteat/shared/themes/app_colors.dart';
-import 'package:peteat/shared/themes/app_text_style.dart';
+import 'package:peteat/shared/themes/colors/app_colors.dart';
+import 'package:peteat/shared/themes/font/app_text_style.dart';
 
 class ConfigCardWidget extends StatelessWidget {
   ConfigCardWidget({Key? key, required this.config, required this.index});
@@ -26,7 +27,7 @@ class ConfigCardWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${config.hora}:${config.minuto}',
+                  '${formataHora(config.hora, config.minuto)}',
                   style: TextStyles.blueText,
                 ),
                 Text('${config.alimento}g', style: TextStyles.pinkTitleThin)

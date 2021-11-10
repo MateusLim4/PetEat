@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/shared/themes/app_colors.dart';
+import 'package:peteat/shared/themes/colors/app_colors.dart';
 
 int createUniqueId() {
   int id = DateTime.now().millisecondsSinceEpoch.remainder(100000);

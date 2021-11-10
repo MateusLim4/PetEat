@@ -1,14 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:peteat/functions/formata_hora.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
-import 'package:peteat/shared/themes/app_colors.dart';
-import 'package:peteat/shared/themes/app_text_style.dart';
-import 'package:peteat/shared/widgets/timewidget/hours.dart';
+import 'package:peteat/shared/themes/colors/app_colors.dart';
+import 'package:peteat/shared/themes/font/app_text_style.dart';
 
 class FeederModal extends StatefulWidget {
   // final UserModel user;
+  final int index;
   final dynamic config;
-  const FeederModal({Key? key, this.config}) : super(key: key);
+  const FeederModal({Key? key, this.config, required this.index})
+      : super(key: key);
 
   @override
   State<FeederModal> createState() => _FeederModalState();
@@ -33,12 +37,9 @@ class _FeederModalState extends State<FeederModal> {
 
   @override
   double _animatedHeight = 200;
-  int index = 0;
 
   @override
   Widget build(BuildContext context) {
-    var hora = Hour();
-
     final size = MediaQuery.of(context).size;
 
     return Padding(
@@ -134,7 +135,7 @@ class _FeederModalState extends State<FeederModal> {
                                 Column(
                                   children: [
                                     Text(
-                                        '${configuracoes[index].hora}:${configuracoes[index].minuto}',
+                                        '${formataHora(configuracoes[widget.index].hora, configuracoes[widget.index].minuto)}',
                                         style: TextStyles.blueTextBold),
                                     Text('Proxima liberação de\n ração',
                                         style: TextStyles.textBlackLight,
@@ -160,7 +161,8 @@ class _FeederModalState extends State<FeederModal> {
                                 ),
                                 Column(
                                   children: [
-                                    Text('${configuracoes[index].alimento} g',
+                                    Text(
+                                        '${configuracoes[widget.index].alimento} g',
                                         style: TextStyles.blueTextBold),
                                     Text('Quantidade de ração\n definida',
                                         style: TextStyles.textBlackLight,
@@ -168,9 +170,7 @@ class _FeederModalState extends State<FeederModal> {
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: OutlinedButton(
-                                        onPressed: () {
-                                          hora.adiantar();
-                                        },
+                                        onPressed: () {},
                                         child: Text('Antecipar',
                                             style: TextStyles.blueText),
                                         style: OutlinedButton.styleFrom(
@@ -196,39 +196,8 @@ class _FeederModalState extends State<FeederModal> {
               ],
             ),
           ),
-          ElevatedButton(onPressed: organizar, child: Text('atualizar'))
         ],
       ),
     );
-  }
-
-  void organizar() async {
-    refreshConfigs();
-    // var horario = TimeOfDay.now();
-    // int hora;
-    // var minuto;
-    // int menorDiferenca = 100;
-    // int count = 0;
-    // var lista = await AllConfigDatabase.instance.readAllConfigs();
-    // List inteira = [];
-    // lista.forEach((element) {
-    //   List sub = [];
-    //   sub.add(element.hora);
-    //   sub.add(element.minuto);
-    //   inteira.add(sub);
-    // });
-    // inteira.forEach((element) {
-    //   if (horario.hour == element[0]) {
-    //     var diferenca = minuto - element[0];
-    //     if (diferenca < menorDiferenca && diferenca > 0) {
-    //       menorDiferenca = diferenca;
-
-    //       index = count;
-
-    //       print(index);
-    //     }
-    //   }
-    //   count += 1;
-    // });
   }
 }

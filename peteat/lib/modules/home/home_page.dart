@@ -5,9 +5,9 @@ import 'package:peteat/modules/config/add_edit_config.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/models/user_model.dart';
-import 'package:peteat/shared/themes/app_colors.dart';
-import 'package:peteat/shared/themes/app_text_style.dart';
-import 'package:peteat/shared/widgets/logout_modal.dart';
+import 'package:peteat/shared/themes/colors/app_colors.dart';
+import 'package:peteat/shared/themes/font/app_text_style.dart';
+import 'package:peteat/shared/widgets/logout/logout_modal.dart';
 
 import 'home1.dart';
 import 'home2.dart';
@@ -24,6 +24,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late List<ConfigUser> configuracoes;
   bool isLoading = false;
+  int index = 0;
 
   @override
   void initState() {
@@ -116,7 +117,15 @@ class _HomePageState extends State<HomePage> {
             ? const CircularProgressIndicator()
             : configuracoes.isEmpty
                 ? OpsPage()
-                : FeederModal(),
+                : Column(
+                    children: [
+                      FeederModal(
+                        index: index,
+                      ),
+                      ElevatedButton(
+                          onPressed: organizar, child: Text('atualizar'))
+                    ],
+                  ),
         floatingActionButton: isLoading
             ? const CircularProgressIndicator()
             : configuracoes.isEmpty
@@ -124,7 +133,6 @@ class _HomePageState extends State<HomePage> {
                     backgroundColor: AppColors.secondary,
                     onPressed: () async {
                       isTrue = true;
-                      print(configuracoes);
                       await Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const AddEditConfig(),
@@ -137,5 +145,54 @@ class _HomePageState extends State<HomePage> {
                     child: Icon(Icons.add),
                   )
                 : null);
+  }
+
+  void organizar() async {
+    var horario = TimeOfDay.now();
+    List listaHoras = [];
+    var hora;
+    var minuto = 0;
+    int diferencaMin = 0;
+    int menorDiferencaMin = 100;
+    int menorDiferenca = 100;
+    int count = 0;
+    int diferenca = 0;
+    var lista = await AllConfigDatabase.instance.readAllConfigs();
+    List inteira = [];
+    lista.forEach((element) {
+      List sub = [];
+      sub.add(element.hora);
+      sub.add(element.minuto);
+      inteira.add(sub);
+    });
+    //Encontra as menores diferenças de hora
+    inteira.forEach((element) {
+      if (horario.hour <= element[0]) {
+        diferenca = element[0] - horario.hour;
+        if (diferenca > 0 && diferenca < menorDiferenca) {
+          menorDiferenca = diferenca;
+          hora = element[0];
+        }
+      }
+    });
+    inteira.forEach((element) {
+      if (element[0] == hora) {
+        index = count;
+        listaHoras.add(count);
+        count += 1;
+      }
+    });
+    count = 0;
+    listaHoras.forEach((element) {
+      diferencaMin = inteira[element][1] - horario.minute;
+      if (diferencaMin > 0 && diferencaMin < menorDiferenca) {
+        menorDiferencaMin = diferencaMin;
+        index = count;
+      }
+      count += 1;
+    });
+
+    index = count;
+    refreshConfigs();
   }
 }
