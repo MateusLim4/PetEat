@@ -50,22 +50,15 @@ class _ConfigPageState extends State<ConfigPage> {
           height: 152,
           color: AppColors.titleWhite,
           child: Center(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const BackButton(
-                    color: AppColors.primary,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 25),
-                    child: Text('Configurações ', style: TextStyles.pinkTitle),
-                  ),
-                  TextButton(
-                    child: const Icon(Icons.notifications,
-                        size: 40, color: AppColors.grey),
-                    onPressed: () {},
-                  ),
-                ]),
+            child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              const BackButton(
+                color: AppColors.primary,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0, right: 25),
+                child: Text('Configurações ', style: TextStyles.pinkTitle),
+              ),
+            ]),
           ),
         ),
       ),

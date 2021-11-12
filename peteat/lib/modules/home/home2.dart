@@ -36,7 +36,26 @@ class _FeederModalState extends State<FeederModal> {
   }
 
   @override
-  double _animatedHeight = 200;
+  double _animatedHeight = 0;
+  bool _visible = true;
+
+  Future change() async {
+    if (_animatedHeight == 0) {
+      _visible = false;
+    } else {
+      _visible = true;
+    }
+  }
+
+  Future trocaStatus() async {
+    refreshConfigs();
+    await change();
+    trocaTamanho();
+  }
+
+  Future trocaTamanho() async {
+    _animatedHeight != 0.0 ? _animatedHeight = 0.0 : _animatedHeight = 217.5;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +71,8 @@ class _FeederModalState extends State<FeederModal> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 GestureDetector(
-                    onTap: () => setState(() {
-                          _animatedHeight != 0.0
-                              ? _animatedHeight = 0.0
-                              : _animatedHeight = 200.0;
+                    onTap: () => setState(() async {
+                          await trocaStatus();
                         }),
                     child: Column(
                       children: [
@@ -125,79 +142,87 @@ class _FeederModalState extends State<FeederModal> {
                       ],
                     ),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 28.0),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                        '${formataHora(configuracoes[widget.index].hora, configuracoes[widget.index].minuto)}',
-                                        style: TextStyles.blueTextBold),
-                                    Text('Proxima liberação de\n ração',
-                                        style: TextStyles.textBlackLight,
-                                        textAlign: TextAlign.center),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pushNamed(
-                                            context,
-                                            "/config",
-                                          );
-                                        },
-                                        child: Text('Configurar',
-                                            style: TextStyles.textWhiteBold),
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    AppColors.secondary)),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    Text(
-                                        '${configuracoes[widget.index].alimento} g',
-                                        style: TextStyles.blueTextBold),
-                                    Text('Quantidade de ração\n definida',
-                                        style: TextStyles.textBlackLight,
-                                        textAlign: TextAlign.center),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: OutlinedButton(
-                                        onPressed: () {},
-                                        child: Text('Antecipar',
-                                            style: TextStyles.blueText),
-                                        style: OutlinedButton.styleFrom(
-                                          side: const BorderSide(
-                                              color: AppColors.secondary,
-                                              width: 2.0),
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(5)),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ]),
-                        ),
+                        cardContent(),
                       ],
                     ),
                   ),
                   height: _animatedHeight,
-                )
+                ),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  Widget cardContent() {
+    return _visible
+        ? Container()
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+                Column(
+                  children: [
+                    Text(
+                        configuracoes.isEmpty
+                            ? 'N/a'
+                            : '${formataHora(configuracoes[widget.index].hora, configuracoes[widget.index].minuto)}',
+                        style: TextStyles.blueTextBold),
+                    Text('Proxima liberação de\n ração',
+                        style: TextStyles.textBlackLight,
+                        textAlign: TextAlign.center),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _animatedHeight = 0;
+                          });
+
+                          Navigator.pushNamed(
+                            context,
+                            "/config",
+                          );
+                        },
+                        child:
+                            Text('Configurar', style: TextStyles.textWhiteBold),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(AppColors.secondary)),
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Text(
+                        configuracoes.isEmpty
+                            ? 'N/a'
+                            : '${configuracoes[widget.index].alimento} g',
+                        style: TextStyles.blueTextBold),
+                    Text('Quantidade de ração\n definida',
+                        style: TextStyles.textBlackLight,
+                        textAlign: TextAlign.center),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: OutlinedButton(
+                        onPressed: () {},
+                        child: Text('Antecipar', style: TextStyles.blueText),
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(
+                              color: AppColors.secondary, width: 2.0),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ]);
   }
 }

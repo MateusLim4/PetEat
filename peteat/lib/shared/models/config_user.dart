@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final String tableConfigs = 'configs';
+const String tableConfigs = 'configs';
 
 class ConfigFields {
   static final List<String> values = [
@@ -13,13 +13,13 @@ class ConfigFields {
     notificacaoId,
   ];
 
-  static final String id = '_id';
-  static final String hora = 'hora';
-  static final String minuto = 'minuto';
-  static final String diaSemana = 'dia_semana';
-  static final String diaSemanaId = 'dia_semana_id';
-  static final String alimento = 'alimento';
-  static final String notificacaoId = 'notificacao_id';
+  static const String id = '_id';
+  static const String hora = 'hora';
+  static const String minuto = 'minuto';
+  static const String diaSemana = 'dia_semana';
+  static const String diaSemanaId = 'dia_semana_id';
+  static const String alimento = 'alimento';
+  static const String notificacaoId = 'notificacao_id';
 }
 
 class ConfigUser {
@@ -28,7 +28,7 @@ class ConfigUser {
   final int? minuto;
   final String? diaSemana;
   final int? diaSemanaId;
-  final String? alimento;
+  final int? alimento;
   final int? notificacaoId;
 
   const ConfigUser(
@@ -46,7 +46,7 @@ class ConfigUser {
     int? minuto,
     String? diaSemana,
     int? diaSemanaId,
-    String? alimento,
+    int? alimento,
     int? notificacaoId,
   }) =>
       ConfigUser(
@@ -65,7 +65,7 @@ class ConfigUser {
       minuto: json[ConfigFields.minuto] as int?,
       diaSemana: json[ConfigFields.diaSemana] as String?,
       diaSemanaId: json[ConfigFields.diaSemanaId] as int?,
-      alimento: json[ConfigFields.alimento] as String?,
+      alimento: json[ConfigFields.alimento] as int?,
       notificacaoId: json[ConfigFields.notificacaoId] as int?);
 
   Map<String, Object?> toJson() => {

@@ -1,53 +1,67 @@
 /// Donut chart example. This is a simple pie chart with a hole in the middle.
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:peteat/shared/themes/colors/app_colors.dart';
+import 'package:peteat/shared/themes/font/app_text_style.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
-class DonutPieChart extends StatelessWidget {
-  final List<charts.Series> seriesList;
-  final bool animate;
+class InfoChart extends StatefulWidget {
+  final List data;
+  const InfoChart({Key? key, required this.data}) : super(key: key);
 
-  DonutPieChart({Key? key, required this.seriesList, required this.animate})
-      : super(key: key);
+  @override
+  State<InfoChart> createState() => _InfoChartState();
+}
 
-  factory DonutPieChart.withSampleData() {
-    return DonutPieChart(
-      seriesList: _createSampleData(),
-      animate: false,
-    );
+class _InfoChartState extends State<InfoChart> {
+  late List<ICData> _chartData;
+
+  @override
+  void initState() {
+    super.initState();
+    double porcentagemConsumida =
+        ((widget.data[1] - widget.data[0]) / widget.data[1]) * 100;
+    double porcentagemNaoConsumida = widget.data[0] / widget.data[1] * 100;
+    _chartData = getChartData(porcentagemConsumida, porcentagemNaoConsumida);
   }
 
   @override
   Widget build(BuildContext context) {
-    return charts.PieChart(seriesList,
-        animate: animate,
-        // Configure the width of the pie slices to 60px. The remaining space in
-        // the chart will be left as a hole in the center.
-        defaultRenderer: charts.ArcRendererConfig(arcWidth: 60));
+    return SfCircularChart(
+      title: ChartTitle(
+          text: 'Acompanhe a alimentação do seu pet!',
+          textStyle: TextStyles.textBlack),
+      legend: Legend(
+          isVisible: true,
+          overflowMode: LegendItemOverflowMode.wrap,
+          position: LegendPosition.bottom),
+      palette: const <Color>[
+        Colors.grey,
+        AppColors.secondary,
+      ],
+      series: <CircularSeries>[
+        DoughnutSeries<ICData, String>(
+            dataSource: _chartData,
+            xValueMapper: (ICData data, _) => data.nome,
+            yValueMapper: (ICData data, _) => data.data,
+            dataLabelSettings: const DataLabelSettings(
+                isVisible: true,
+                textStyle: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold)))
+      ],
+    );
   }
 
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<LinearSales, int>> _createSampleData() {
-    final data = [
-      LinearSales(0, 100),
-      LinearSales(1, 75),
-      LinearSales(2, 25),
-      LinearSales(3, 5),
+  List<ICData> getChartData(porcentagemConsumida, porcentagemNaoConsumida) {
+    final List<ICData> chartData = [
+      ICData('Não consumido', porcentagemConsumida.toInt()),
+      ICData('Consumido', porcentagemNaoConsumida.toInt()),
     ];
-    return [
-      charts.Series<LinearSales, int>(
-        id: 'Sales',
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
-        data: data,
-      )
-    ];
+    return chartData;
   }
 }
 
-/// Sample linear data type.
-class LinearSales {
-  final int year;
-  final int sales;
-
-  LinearSales(this.year, this.sales);
+class ICData {
+  ICData(this.nome, this.data);
+  final String? nome;
+  final int? data;
 }

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/shared/widgets/charts_interface/display.dart';
 
-class YesterdayChart extends StatelessWidget {
-  const YesterdayChart({Key? key}) : super(key: key);
+class YesterdayChart extends StatefulWidget {
+  YesterdayChart({Key? key}) : super(key: key);
 
   @override
+  State<YesterdayChart> createState() => _YesterdayChartState();
+}
+
+class _YesterdayChartState extends State<YesterdayChart> {
+  @override
   Widget build(BuildContext context) {
-    return Container(child: Text('Gráficos de ontem'));
+    return const ChartDisplay(
+      quantConsumida: 250,
+      quantDefinida: 250,
+    );
   }
 }

@@ -20,7 +20,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
   late int? minuto;
   late String? diaSemana = 'Sem dia definido';
   late int? diaSemanaId;
-  late String? alimento;
+  late int? alimento;
   late int? notificacaoId;
   late int? notificacaoId2;
   late NotificationWeekAndTime? pickedSchedule;
@@ -32,7 +32,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
     minuto = widget.configuracoes?.minuto ?? 0;
     diaSemana = widget.configuracoes?.diaSemana ?? 'Sem dia definido';
     diaSemanaId = widget.configuracoes?.diaSemanaId ?? -1;
-    alimento = widget.configuracoes?.alimento ?? '';
+    alimento = widget.configuracoes?.alimento ?? 0;
   }
 
   @override
@@ -89,16 +89,16 @@ class _AddEditConfigState extends State<AddEditConfig> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           keyboardType: TextInputType.number,
-                          initialValue: alimento,
-                          maxLength: 4,
-                          onChanged: (alimento) =>
-                              setState(() => this.alimento = alimento),
+                          initialValue: alimento == null ? '$alimento' : '0',
+                          maxLength: 3,
+                          onChanged: (alimento) => setState(
+                              () => this.alimento = int.tryParse(alimento)),
                           validator: (alimento) =>
-                              alimento != null && alimento.isEmpty
-                                  ? 'Preencha esse campo!'
-                                  : null,
+                              alimento != null && int.tryParse(alimento)! <= 500
+                                  ? 'O valor máximo é 500g!'
+                                  : '',
                           decoration: const InputDecoration(
-                            labelText: 'Quantidade de alimento (g)',
+                            labelText: 'Quantidade de alimento (max 500g)',
                           ),
                         ),
                       ),
@@ -106,7 +106,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text('${diaSemana}', style: TextStyles.textBlack),
+                          Text('$diaSemana', style: TextStyles.textBlack),
                           Text('${formataHora(hora, minuto)}',
                               style: TextStyles.blueText),
                         ],
@@ -116,7 +116,6 @@ class _AddEditConfigState extends State<AddEditConfig> {
                         child: ElevatedButton(
                             onPressed: () async {
                               pickedSchedule = await pickSchedule(context);
-                              print(pickedSchedule);
                               if (pickedSchedule != null) {
                                 notificacaoId = createUniqueId();
                                 notificacaoId2 = createUniqueId();
@@ -150,7 +149,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
                                 });
                               }
                             },
-                            child: Text('Definir horário')),
+                            child: const Text('Definir horário')),
                       ),
                     ],
                   ),
@@ -162,25 +161,31 @@ class _AddEditConfigState extends State<AddEditConfig> {
   }
 
   Widget buildButton() {
-    final isFormValid =
-        hora != -1 && minuto != -1 && diaSemanaId != -1 && alimento != -1;
+    final isFormValid = hora != -1 &&
+        minuto != -1 &&
+        diaSemanaId != -1 &&
+        alimento != -1 &&
+        alimento != null;
 
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           onPrimary: AppColors.titleWhite,
           primary: isFormValid ? null : AppColors.stroke,
         ),
         onPressed: addOrUpdate,
-        child: Text('Salvar'),
+        child: const Text('Salvar'),
       ),
     );
   }
 
   void addOrUpdate() async {
-    final isValid =
-        hora != -1 && minuto != -1 && diaSemanaId != -1 && alimento != null;
+    final isValid = hora != -1 &&
+        minuto != -1 &&
+        diaSemanaId != -1 &&
+        alimento != null &&
+        alimento! <= 500;
 
     if (isValid) {
       final isUpdating = widget.configuracoes != null;

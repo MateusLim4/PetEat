@@ -113,21 +113,17 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         backgroundColor: AppColors.primary,
-        body: isLoading
-            ? const CircularProgressIndicator()
-            : configuracoes.isEmpty
-                ? OpsPage()
-                : Column(
-                    children: [
-                      FeederModal(
-                        index: index,
-                      ),
-                      ElevatedButton(
-                          onPressed: organizar, child: Text('atualizar'))
-                    ],
-                  ),
+        body: Center(
+          child: isLoading
+              ? const CircularProgressIndicator()
+              : configuracoes.isEmpty
+                  ? OpsPage()
+                  : FeederModal(
+                      index: index,
+                    ),
+        ),
         floatingActionButton: isLoading
-            ? const CircularProgressIndicator()
+            ? null
             : configuracoes.isEmpty
                 ? FloatingActionButton(
                     backgroundColor: AppColors.secondary,

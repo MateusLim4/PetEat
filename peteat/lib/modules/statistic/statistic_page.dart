@@ -17,18 +17,14 @@ class Statistics extends StatefulWidget {
 class _StatisticsState extends State<Statistics> {
   final controller = StatisticsController();
 
-  @override
-  bool current1 = false;
-  bool current2 = true;
-  bool current3 = false;
+  late bool current1 = false;
+  late bool current2 = true;
+  late bool current3 = false;
 
   List pages = [TodayChart(), YesterdayChart(), WeekChart()];
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final configController = StatisticsController();
-
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(152),
@@ -43,19 +39,14 @@ class _StatisticsState extends State<Statistics> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const BackButton(),
+                          const BackButton(color: AppColors.primary),
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 8.0, right: 25),
-                            child: Text('Alimentador 01 ',
-                                style: TextStyles.pinkTitle),
-                          ),
-                          TextButton(
-                            child: const Icon(Icons.notifications,
-                                size: 40, color: AppColors.grey),
-                            onPressed: () {},
+                            child:
+                                Text('Graficos ', style: TextStyles.pinkTitle),
                           ),
                         ]),
                   ),
@@ -68,21 +59,15 @@ class _StatisticsState extends State<Statistics> {
         body: Padding(
             padding: const EdgeInsets.all(15),
             child: Column(children: [
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                        height: size.height * 0.5,
-                        width: size.width * 0.85,
-                        color: AppColors.titleWhite,
-                        child: pages[controller.currentPage]),
-                  ],
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(child: pages[controller.currentPage]),
+                ],
               ),
             ])),
         bottomNavigationBar: Container(
-          height: 90,
+          height: 70,
           color: AppColors.titleWhite,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

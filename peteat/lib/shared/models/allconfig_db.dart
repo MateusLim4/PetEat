@@ -38,7 +38,7 @@ CREATE TABLE $tableConfigs (
   ${ConfigFields.minuto} $integerType,
   ${ConfigFields.diaSemanaId} $integerType,
   ${ConfigFields.diaSemana} $textType,
-  ${ConfigFields.alimento} $textType,
+  ${ConfigFields.alimento} $integerType,
   ${ConfigFields.notificacaoId} $integerType)
 ''');
   }

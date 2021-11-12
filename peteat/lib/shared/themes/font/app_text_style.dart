@@ -54,6 +54,17 @@ class TextStyles {
     fontWeight: FontWeight.bold,
     color: AppColors.secondary,
   );
+  static final greyTextBold = GoogleFonts.sunflower(
+    fontSize: 36,
+    fontWeight: FontWeight.bold,
+    color: Colors.grey,
+  );
+  static final blueTextThin = GoogleFonts.sunflower(
+    fontSize: 36,
+    fontWeight: FontWeight.normal,
+    color: AppColors.secondary,
+  );
+
   static final blueTextBold2 = GoogleFonts.sunflower(
     fontSize: 25,
     fontWeight: FontWeight.bold,
