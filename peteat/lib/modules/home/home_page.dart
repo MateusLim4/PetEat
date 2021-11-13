@@ -24,7 +24,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late List<ConfigUser> configuracoes;
   bool isLoading = false;
-  int index = 0;
 
   @override
   void initState() {
@@ -49,7 +48,7 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () => AwesomeNotifications()
                           .requestPermissionToSendNotifications()
                           .then((_) => Navigator.pop(context)),
-                      child: Text('Permitir',
+                      child: const Text('Permitir',
                           style: TextStyle(color: AppColors.secondary)),
                     )
                   ],
@@ -58,7 +57,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  @override
   Future refreshConfigs() async {
     setState(() => isLoading = true);
 
@@ -118,9 +116,7 @@ class _HomePageState extends State<HomePage> {
               ? const CircularProgressIndicator()
               : configuracoes.isEmpty
                   ? OpsPage()
-                  : FeederModal(
-                      index: index,
-                    ),
+                  : FeederModal(),
         ),
         floatingActionButton: isLoading
             ? null
@@ -135,60 +131,10 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                       refreshConfigs();
-
                       setState(() {});
                     },
                     child: Icon(Icons.add),
                   )
                 : null);
-  }
-
-  void organizar() async {
-    var horario = TimeOfDay.now();
-    List listaHoras = [];
-    var hora;
-    var minuto = 0;
-    int diferencaMin = 0;
-    int menorDiferencaMin = 100;
-    int menorDiferenca = 100;
-    int count = 0;
-    int diferenca = 0;
-    var lista = await AllConfigDatabase.instance.readAllConfigs();
-    List inteira = [];
-    lista.forEach((element) {
-      List sub = [];
-      sub.add(element.hora);
-      sub.add(element.minuto);
-      inteira.add(sub);
-    });
-    //Encontra as menores diferenças de hora
-    inteira.forEach((element) {
-      if (horario.hour <= element[0]) {
-        diferenca = element[0] - horario.hour;
-        if (diferenca > 0 && diferenca < menorDiferenca) {
-          menorDiferenca = diferenca;
-          hora = element[0];
-        }
-      }
-    });
-    inteira.forEach((element) {
-      if (element[0] == hora) {
-        index = count;
-        listaHoras.add(count);
-        count += 1;
-      }
-    });
-    count = 0;
-    listaHoras.forEach((element) {
-      diferencaMin = inteira[element][1] - horario.minute;
-      if (diferencaMin > 0 && diferencaMin < menorDiferenca) {
-        menorDiferencaMin = diferencaMin;
-        index = count;
-      }
-      count += 1;
-    });
-
-    index = count;
-    refreshConfigs();
   }
 }

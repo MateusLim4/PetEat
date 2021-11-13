@@ -33,6 +33,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
     diaSemana = widget.configuracoes?.diaSemana ?? 'Sem dia definido';
     diaSemanaId = widget.configuracoes?.diaSemanaId ?? -1;
     alimento = widget.configuracoes?.alimento ?? 0;
+    notificacaoId = widget.configuracoes?.notificacaoId ?? 0;
   }
 
   @override
@@ -89,7 +90,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           keyboardType: TextInputType.number,
-                          initialValue: alimento == null ? '$alimento' : '0',
+                          initialValue: alimento == null ? '0' : '$alimento',
                           maxLength: 3,
                           onChanged: (alimento) => setState(
                               () => this.alimento = int.tryParse(alimento)),
@@ -124,6 +125,9 @@ class _AddEditConfigState extends State<AddEditConfig> {
                                   minuto = pickedSchedule!.timeOfDay.minute;
                                   diaSemanaId = pickedSchedule!.dayOfTheWeek;
                                   switch (diaSemanaId) {
+                                    case 0:
+                                      diaSemana = 'Domingo';
+                                      break;
                                     case 1:
                                       diaSemana = 'Segunda-feira';
                                       break;
@@ -141,9 +145,6 @@ class _AddEditConfigState extends State<AddEditConfig> {
                                       break;
                                     case 6:
                                       diaSemana = 'Sábado';
-                                      break;
-                                    case 7:
-                                      diaSemana = 'Domingo';
                                       break;
                                   }
                                 });
@@ -165,7 +166,8 @@ class _AddEditConfigState extends State<AddEditConfig> {
         minuto != -1 &&
         diaSemanaId != -1 &&
         alimento != -1 &&
-        alimento != null;
+        alimento != null &&
+        alimento! <= 500;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),

@@ -9,10 +9,8 @@ import 'package:peteat/shared/themes/font/app_text_style.dart';
 
 class FeederModal extends StatefulWidget {
   // final UserModel user;
-  final int index;
   final dynamic config;
-  const FeederModal({Key? key, this.config, required this.index})
-      : super(key: key);
+  const FeederModal({Key? key, this.config}) : super(key: key);
 
   @override
   State<FeederModal> createState() => _FeederModalState();
@@ -36,6 +34,7 @@ class _FeederModalState extends State<FeederModal> {
   }
 
   @override
+  int? index = null;
   double _animatedHeight = 0;
   bool _visible = true;
 
@@ -49,6 +48,7 @@ class _FeederModalState extends State<FeederModal> {
 
   Future trocaStatus() async {
     refreshConfigs();
+
     await change();
     trocaTamanho();
   }
@@ -71,8 +71,9 @@ class _FeederModalState extends State<FeederModal> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 GestureDetector(
-                    onTap: () => setState(() async {
-                          await trocaStatus();
+                    onTap: () => setState(() {
+                          definirHorario();
+                          trocaStatus();
                         }),
                     child: Column(
                       children: [
@@ -144,7 +145,7 @@ class _FeederModalState extends State<FeederModal> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        cardContent(),
+                        cardContent(index),
                       ],
                     ),
                   ),
@@ -158,7 +159,7 @@ class _FeederModalState extends State<FeederModal> {
     );
   }
 
-  Widget cardContent() {
+  Widget cardContent(index) {
     return _visible
         ? Container()
         : Row(
@@ -170,7 +171,7 @@ class _FeederModalState extends State<FeederModal> {
                     Text(
                         configuracoes.isEmpty
                             ? 'N/a'
-                            : '${formataHora(configuracoes[widget.index].hora, configuracoes[widget.index].minuto)}',
+                            : '${formataHora(configuracoes[index].hora, configuracoes[index].minuto)}',
                         style: TextStyles.blueTextBold),
                     Text('Proxima liberação de\n ração',
                         style: TextStyles.textBlackLight,
@@ -202,7 +203,7 @@ class _FeederModalState extends State<FeederModal> {
                     Text(
                         configuracoes.isEmpty
                             ? 'N/a'
-                            : '${configuracoes[widget.index].alimento} g',
+                            : '${configuracoes[0].alimento} g',
                         style: TextStyles.blueTextBold),
                     Text('Quantidade de ração\n definida',
                         style: TextStyles.textBlackLight,
@@ -224,5 +225,117 @@ class _FeederModalState extends State<FeederModal> {
                   ],
                 )
               ]);
+  }
+
+  organizaHora(index, lista, now, diaInicial) {
+    int count = 0;
+    int menorHorario = 24;
+    int menorMinuto = 60;
+    int? indexHorario;
+    int diferenca;
+
+    if (diaInicial == index) {
+      lista.forEach((element) {
+        if (element[0] == index) {
+          diferenca = element[1] - now.hour;
+          if (diferenca >= 0 && diferenca < menorHorario) {
+            menorHorario = element[1];
+            indexHorario = count;
+          } else if (diferenca == menorHorario) {
+            diferenca = element[2] - now.minute;
+            menorMinuto = lista[indexHorario!][2];
+            if (diferenca >= 0 && diferenca < menorMinuto) {
+              menorMinuto = diferenca;
+              indexHorario = count;
+            }
+          }
+        }
+        count += 1;
+      });
+    } else {
+      lista.forEach((element) {
+        if (element[0] == index) {
+          diferenca = now.hour - element[1];
+          if (diferenca < menorHorario) {
+            menorHorario = element[1];
+            indexHorario = count;
+          } else if (diferenca == menorHorario) {
+            diferenca = now.minute - element[2];
+            menorMinuto = lista[indexHorario!][2];
+            if (diferenca < menorMinuto) {
+              menorMinuto = diferenca;
+              indexHorario = count;
+            }
+          }
+        }
+        count += 1;
+      });
+
+      return indexHorario;
+    }
+  }
+
+  void definirHorario() {
+    var now = DateTime.now();
+    List lista = [];
+    for (var element in configuracoes) {
+      List subLista = [];
+      subLista.add(element.diaSemanaId);
+      subLista.add(element.hora);
+      subLista.add(element.minuto);
+      lista.add(subLista);
+    }
+    print(index);
+    var agora = now.weekday;
+    var diaInicial = agora;
+    while (index == null) {
+      switch (agora) {
+        case 0:
+          setState(() {
+            index = organizaHora(0, lista, now, diaInicial);
+          });
+
+          break;
+        case 1:
+          setState(() {
+            index = organizaHora(1, lista, now, diaInicial);
+          });
+
+          break;
+        case 2:
+          setState(() {
+            index = organizaHora(2, lista, now, diaInicial);
+          });
+
+          break;
+        case 3:
+          setState(() {
+            index = organizaHora(3, lista, now, diaInicial);
+          });
+
+          break;
+        case 4:
+          setState(() {
+            index = organizaHora(4, lista, now, diaInicial);
+          });
+
+          break;
+        case 5:
+          setState(() {
+            index = organizaHora(5, lista, now, diaInicial);
+          });
+
+          break;
+        case 6:
+          setState(() {
+            index = organizaHora(6, lista, now, diaInicial);
+          });
+
+          agora = -1;
+          break;
+      }
+      agora += 1;
+      print(index);
+    }
   }
 }

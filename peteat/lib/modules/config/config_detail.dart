@@ -118,7 +118,7 @@ class _ConfigDetailPageState extends State<ConfigDetailPage> {
       );
 
   Widget editButton() => IconButton(
-      icon: Icon(
+      icon: const Icon(
         Icons.edit_outlined,
         color: AppColors.primary,
       ),

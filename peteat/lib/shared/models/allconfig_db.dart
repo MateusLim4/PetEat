@@ -68,7 +68,7 @@ CREATE TABLE $tableConfigs (
   Future<List<ConfigUser>> readAllConfigs() async {
     final db = await instance.database;
 
-    final orderBy = '${ConfigFields.hora} ASC';
+    final orderBy = '${ConfigFields.diaSemanaId}, ${ConfigFields.hora} ASC';
     final result = await db.query(tableConfigs, orderBy: orderBy);
 
     return result.map((json) => ConfigUser.fromJson(json)).toList();
