@@ -20,13 +20,13 @@ Future<NotificationWeekAndTime?> pickSchedule(
   BuildContext context,
 ) async {
   List<String> weekdays = [
-    'Dom',
     'Seg',
     'Ter',
     'Qua',
     'Qui',
     'Sex',
     'Sab',
+    'Dom',
   ];
   TimeOfDay? timeOfDay;
   DateTime now = DateTime.now();
@@ -47,7 +47,7 @@ Future<NotificationWeekAndTime?> pickSchedule(
               for (int index = 0; index < weekdays.length; index++)
                 ElevatedButton(
                   onPressed: () {
-                    selectedDay = index;
+                    selectedDay = index + 1;
                     Navigator.pop(context);
                   },
                   style: ButtonStyle(

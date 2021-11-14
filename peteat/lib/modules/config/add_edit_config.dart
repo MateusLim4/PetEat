@@ -125,7 +125,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
                                   minuto = pickedSchedule!.timeOfDay.minute;
                                   diaSemanaId = pickedSchedule!.dayOfTheWeek;
                                   switch (diaSemanaId) {
-                                    case 0:
+                                    case 7:
                                       diaSemana = 'Domingo';
                                       break;
                                     case 1:

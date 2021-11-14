@@ -34,7 +34,7 @@ class _FeederModalState extends State<FeederModal> {
   }
 
   @override
-  int? index = null;
+  int? index;
   double _animatedHeight = 0;
   bool _visible = true;
 
@@ -236,14 +236,15 @@ class _FeederModalState extends State<FeederModal> {
 
     if (diaInicial == index) {
       lista.forEach((element) {
+        diferenca = 0;
         if (element[0] == index) {
           diferenca = element[1] - now.hour;
           if (diferenca >= 0 && diferenca < menorHorario) {
-            menorHorario = element[1];
+            menorHorario = diferenca;
             indexHorario = count;
           } else if (diferenca == menorHorario) {
             diferenca = element[2] - now.minute;
-            menorMinuto = lista[indexHorario!][2];
+            menorMinuto = lista[indexHorario!][2] - now.minute;
             if (diferenca >= 0 && diferenca < menorMinuto) {
               menorMinuto = diferenca;
               indexHorario = count;
@@ -253,24 +254,27 @@ class _FeederModalState extends State<FeederModal> {
         count += 1;
       });
     } else {
-      lista.forEach((element) {
-        if (element[0] == index) {
-          diferenca = now.hour - element[1];
-          if (diferenca < menorHorario) {
-            menorHorario = element[1];
-            indexHorario = count;
-          } else if (diferenca == menorHorario) {
-            diferenca = now.minute - element[2];
-            menorMinuto = lista[indexHorario!][2];
-            if (diferenca < menorMinuto) {
-              menorMinuto = diferenca;
+      lista.forEach(
+        (element) {
+          if (element[0] == index) {
+            diferenca = now.hour - element[1];
+            if (diferenca < menorHorario) {
+              menorHorario = element[1];
               indexHorario = count;
+            } else if (diferenca == menorHorario) {
+              diferenca = now.minute - element[2];
+              menorMinuto = lista[indexHorario!][2];
+              if (diferenca < menorMinuto) {
+                menorMinuto = diferenca;
+                indexHorario = count;
+              }
             }
           }
-        }
-        count += 1;
-      });
-
+          count += 1;
+        },
+      );
+    }
+    if (indexHorario != null) {
       return indexHorario;
     }
   }
@@ -290,48 +294,27 @@ class _FeederModalState extends State<FeederModal> {
     var diaInicial = agora;
     while (index == null) {
       switch (agora) {
-        case 0:
-          setState(() {
-            index = organizaHora(0, lista, now, diaInicial);
-          });
-
-          break;
         case 1:
-          setState(() {
-            index = organizaHora(1, lista, now, diaInicial);
-          });
-
+          index = organizaHora(1, lista, now, diaInicial);
           break;
         case 2:
-          setState(() {
-            index = organizaHora(2, lista, now, diaInicial);
-          });
-
+          index = organizaHora(2, lista, now, diaInicial);
           break;
         case 3:
-          setState(() {
-            index = organizaHora(3, lista, now, diaInicial);
-          });
-
+          index = organizaHora(3, lista, now, diaInicial);
           break;
         case 4:
-          setState(() {
-            index = organizaHora(4, lista, now, diaInicial);
-          });
-
+          index = organizaHora(4, lista, now, diaInicial);
           break;
         case 5:
-          setState(() {
-            index = organizaHora(5, lista, now, diaInicial);
-          });
-
+          index = organizaHora(5, lista, now, diaInicial);
           break;
         case 6:
-          setState(() {
-            index = organizaHora(6, lista, now, diaInicial);
-          });
-
-          agora = -1;
+          index = organizaHora(6, lista, now, diaInicial);
+          break;
+        case 7:
+          index = organizaHora(7, lista, now, diaInicial);
+          agora = 0;
           break;
       }
       agora += 1;
