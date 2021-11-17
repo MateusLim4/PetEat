@@ -1,5 +1,7 @@
 #include "HX711.h"
 #include <EEPROM.h>
+#include <ESP8266WiFi.h>
+#include <PubSubClient.h>
 
 #define D0    16
 #define D1    5
@@ -13,6 +15,53 @@
 #define D9    3
 #define D10   1
 
+
+
+//MQTT
+const char* SSID = "Rafael";                           
+const char* PASSWORD = "V7356i2851v41o";                  
+const char* ip = "seu ip";                       
+const char* mqtt_server = "test.mosquitto.org";    
+int broker_port = 1883;                                  
+#define outTOPIC "testLB/outtopic"                       
+#define inTOPIC "testLB/intopic" 
+
+WiFiClient espClient;                                     
+PubSubClient client(espClient);                           
+
+unsigned long lastMsg = 0;                                
+#define MSG_BUFFER_SIZE  (50)
+char msg[MSG_BUFFER_SIZE];
+int value = 0;
+
+
+void setup_wifi() {
+  WiFi.begin(SSID, PASSWORD);
+  Serial.print("Conectando na rede: ");
+  Serial.println(SSID);
+  while (WiFi.status() != WL_CONNECTED) {
+   Serial.print(".");
+   delay(500);
+  }
+    Serial.print("Conetado ao wifi");
+    
+}
+
+void reconnect() {
+  while (!client.connected()) {
+    Serial.print("Conectando ao MQTT...");
+    if (client.connect("ESP8266Client-")) {
+      Serial.println("connected");                                              
+    } else {
+      Serial.print("Falha ao Conectar, rc=");                        
+      Serial.print(client.state());
+      Serial.println(" tentando se reconectar...");          
+      delay(5000);
+    }
+  }
+}
+
+//
 // HX711 circuit wiring
 const int DOUT_PIN = 5;
 const int DOUT_SCK = 4;
@@ -63,6 +112,10 @@ void calibra() {
 
 void setup() {
   Serial.begin(9600);
+  void setup_wifi();
+
+  client.setServer(mqtt_server, 1883);
+
   tigela.begin(DOUT_PIN, DOUT_SCK);
   ajustaTara();
   pinMode(12, OUTPUT);
@@ -73,12 +126,28 @@ void setup() {
     float escala;
     EEPROM.get(ENDER_ESCALA, escala);
     tigela.set_scale(escala);
+ 
   }  
   
   }
 
 
 void loop() {
+
+   if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+
+  unsigned long now = millis();                          
+  if (now - lastMsg > 2000) {
+    lastMsg = now;
+    ++value;
+    snprintf (msg, MSG_BUFFER_SIZE, "hello world #%ld", value);
+    Serial.print("Publish message: ");
+    Serial.println(msg);
+    client.publish(outTOPIC, msg);
+}
 
   peso = tigela.get_units(10);
   char medida[17];
