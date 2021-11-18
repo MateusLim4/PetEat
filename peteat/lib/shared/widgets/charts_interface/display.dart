@@ -4,12 +4,12 @@ import 'package:peteat/shared/themes/font/app_text_style.dart';
 import 'package:peteat/shared/widgets/charts/dounuts_chart.dart';
 
 class ChartDisplay extends StatefulWidget {
-  final int? quantConsumida;
-  final int? quantDefinida;
+  final int quantConsumida;
+  final int quantDefinida;
   const ChartDisplay({
     Key? key,
-    this.quantConsumida,
-    this.quantDefinida,
+    required this.quantConsumida,
+    required this.quantDefinida,
   }) : super(key: key);
 
   @override
@@ -35,14 +35,14 @@ class _ChartDisplayState extends State<ChartDisplay> {
                 child: cardWidget(
                   size,
                   'Total de programado',
-                  widget.quantDefinida ?? 0,
+                  widget.quantDefinida,
                   TextStyles.greyTextBold,
                 ),
               ),
               cardWidget(
                 size,
                 'Quantidade consumida',
-                widget.quantConsumida ?? 0,
+                widget.quantConsumida,
                 TextStyles.blueTextBold,
               ),
             ],

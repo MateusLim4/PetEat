@@ -17,10 +17,16 @@ class _InfoChartState extends State<InfoChart> {
 
   @override
   void initState() {
+    double porcentagemConsumida = 0;
+    double porcentagemNaoConsumida = 0;
+
+    if (widget.data[1] != 0) {
+      porcentagemConsumida =
+          ((widget.data[1] - widget.data[0]) / widget.data[1]) * 100;
+      porcentagemNaoConsumida = widget.data[0] / widget.data[1] * 100;
+    }
     super.initState();
-    double porcentagemConsumida =
-        ((widget.data[1] - widget.data[0]) / widget.data[1]) * 100;
-    double porcentagemNaoConsumida = widget.data[0] / widget.data[1] * 100;
+
     _chartData = getChartData(porcentagemConsumida, porcentagemNaoConsumida);
   }
 

@@ -49,8 +49,8 @@ class _FeederModalState extends State<FeederModal> {
   Future trocaStatus() async {
     refreshConfigs();
 
-    await change();
-    trocaTamanho();
+    change();
+    await trocaTamanho();
   }
 
   Future trocaTamanho() async {
@@ -239,7 +239,9 @@ class _FeederModalState extends State<FeederModal> {
         diferenca = 0;
         if (element[0] == index) {
           diferenca = element[1] - now.hour;
-          if (diferenca >= 0 && diferenca < menorHorario) {
+          if (diferenca >= 0 &&
+              diferenca < menorHorario &&
+              now.minute >= element[2]) {
             menorHorario = diferenca;
             indexHorario = count;
           } else if (diferenca == menorHorario) {
@@ -289,7 +291,6 @@ class _FeederModalState extends State<FeederModal> {
       subLista.add(element.minuto);
       lista.add(subLista);
     }
-    print(index);
     var agora = now.weekday;
     var diaInicial = agora;
     while (index == null) {
@@ -318,7 +319,6 @@ class _FeederModalState extends State<FeederModal> {
           break;
       }
       agora += 1;
-      print(index);
     }
   }
 }

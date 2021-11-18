@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:peteat/modules/config/add_edit_config.dart';
+import 'package:peteat/modules/notification/notification_page.dart';
 
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
@@ -101,7 +102,11 @@ class _HomePageState extends State<HomePage> {
                           TextButton(
                             child: const Icon(Icons.notifications,
                                 size: 40, color: AppColors.grey),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      const NotificationPage()));
+                            },
                           ),
                         ]),
                       ),
@@ -115,8 +120,8 @@ class _HomePageState extends State<HomePage> {
           child: isLoading
               ? const CircularProgressIndicator()
               : configuracoes.isEmpty
-                  ? OpsPage()
-                  : FeederModal(),
+                  ? const OpsPage()
+                  : const FeederModal(),
         ),
         floatingActionButton: isLoading
             ? null
@@ -133,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                       refreshConfigs();
                       setState(() {});
                     },
-                    child: Icon(Icons.add),
+                    child: const Icon(Icons.add),
                   )
                 : null);
   }

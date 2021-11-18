@@ -3,6 +3,8 @@ import 'package:peteat/modules/statistic/pages/hoje.dart';
 import 'package:peteat/modules/statistic/pages/ontem.dart';
 import 'package:peteat/modules/statistic/pages/semana.dart';
 import 'package:peteat/modules/statistic/statistic_page_controller.dart';
+import 'package:peteat/shared/models/allconfig_db.dart';
+import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/themes/colors/app_colors.dart';
 import 'package:peteat/shared/themes/font/app_text_style.dart';
 import 'package:peteat/shared/widgets/charts/dounuts_chart.dart';
@@ -15,6 +17,21 @@ class Statistics extends StatefulWidget {
 }
 
 class _StatisticsState extends State<Statistics> {
+  late List<ConfigUser> configuracoes;
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    refreshConfigs();
+    super.initState();
+  }
+
+  Future refreshConfigs() async {
+    setState(() => isLoading = true);
+    configuracoes = await AllConfigDatabase.instance.readAllConfigs();
+    setState(() => isLoading = false);
+  }
+
   final controller = StatisticsController();
 
   late bool current1 = false;
@@ -62,7 +79,14 @@ class _StatisticsState extends State<Statistics> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Container(child: pages[controller.currentPage]),
+                  isLoading
+                      ? CircularProgressIndicator()
+                      : configuracoes.isEmpty
+                          ? Center(
+                              child: Text('Sem configuração definida!',
+                                  style: TextStyles.textWhiteBold),
+                            )
+                          : Container(child: pages[controller.currentPage]),
                 ],
               ),
             ])),

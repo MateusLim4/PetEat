@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/functions/formata_hora.dart';
 import 'package:peteat/modules/config/add_edit_config.dart';
-import 'package:peteat/modules/notification/notification.dart';
+import 'package:peteat/shared/notify/notification.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/themes/colors/app_colors.dart';
