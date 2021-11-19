@@ -82,9 +82,20 @@ class _StatisticsState extends State<Statistics> {
                   isLoading
                       ? CircularProgressIndicator()
                       : configuracoes.isEmpty
-                          ? Center(
-                              child: Text('Sem configuração definida!',
-                                  style: TextStyles.textWhiteBold),
+                          ? Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                    height: 200,
+                                    width: 200,
+                                    child: Image.asset(
+                                        'assets/images/detective.png')),
+                                Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Text('Não há nada para ver aqui!',
+                                      style: TextStyles.textWhiteBold),
+                                ),
+                              ],
                             )
                           : Container(child: pages[controller.currentPage]),
                 ],

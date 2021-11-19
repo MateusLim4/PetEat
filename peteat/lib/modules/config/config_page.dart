@@ -34,7 +34,7 @@ class _ConfigPageState extends State<ConfigPage> {
   Future refreshConfigs() async {
     setState(() => isLoading = true);
 
-    this.configuracoes = await AllConfigDatabase.instance.readAllConfigs();
+    configuracoes = await AllConfigDatabase.instance.readAllConfigs();
 
     setState(() => isLoading = false);
   }
@@ -67,7 +67,28 @@ class _ConfigPageState extends State<ConfigPage> {
         child: isLoading
             ? const CircularProgressIndicator()
             : configuracoes.isEmpty
-                ? const Text('Nenhuma configuração definida')
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          height: 200,
+                          width: 200,
+                          child: Image.asset('assets/images/confused.png')),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Text(
+                          'ONDE ESTÃO MINHAS CONFIGURAÇÕES?',
+                          style: TextStyles.textWhiteBold,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      Text(
+                        'Clique no botão abaixo e defina novas configurações',
+                        style: TextStyles.textWhite,
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  )
                 : buildConfig(),
       ),
       floatingActionButton: FloatingActionButton(

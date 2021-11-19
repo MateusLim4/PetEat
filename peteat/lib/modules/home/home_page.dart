@@ -8,7 +8,7 @@ import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/models/user_model.dart';
 import 'package:peteat/shared/themes/colors/app_colors.dart';
 import 'package:peteat/shared/themes/font/app_text_style.dart';
-import 'package:peteat/shared/widgets/logout/logout_modal.dart';
+import 'package:peteat/shared/widgets/logout/logout_button.dart';
 
 import 'home1.dart';
 import 'home2.dart';
