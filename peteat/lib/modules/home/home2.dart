@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:peteat/functions/formata_hora.dart';
+import 'package:peteat/functions/soma_quantidade.dart';
+import 'package:peteat/modules/statistic/statistic_page.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/themes/colors/app_colors.dart';
@@ -102,10 +104,12 @@ class _FeederModalState extends State<FeederModal> {
                                       style: TextStyles.textWhite),
                                   OutlinedButton(
                                     onPressed: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/statistics',
-                                      );
+                                      var lista = somaQuantidade(configuracoes);
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            Statistics(lista: lista),
+                                      ));
                                     },
                                     child: Text(
                                       'Relatório',

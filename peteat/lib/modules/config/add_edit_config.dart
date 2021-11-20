@@ -107,7 +107,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text('$diaSemana', style: TextStyles.textBlack),
+                          Text('$diaSemana', style: TextStyles.textBlackLight),
                           Text('${formataHora(hora, minuto)}',
                               style: TextStyles.blueText),
                         ],

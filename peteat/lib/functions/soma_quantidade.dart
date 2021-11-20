@@ -14,5 +14,6 @@ somaQuantidade(configuracoes) {
     lista.add(soma);
     count += 1;
   }
+  print(lista);
   return lista;
 }

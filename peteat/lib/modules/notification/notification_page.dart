@@ -16,37 +16,46 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
-  late List<SaveNotification> notificacao;
   late List<ConfigUser> configuracoes;
+  late List<SaveNotification> notificacao;
   bool isLoading = false;
 
   @override
   void initState() {
-    refreshConfigs();
     super.initState();
-    isLoading = false;
+    refreshConfigs();
   }
+
+  @override
+  // void dispose() {
+  //   AllConfigDatabase.instance.close();
+  //   super.dispose();
+  // }
 
   Future refreshConfigs() async {
     setState(() => isLoading = true);
-    notificacao = await SaveNotificationDB.instance.readAllConfigs();
+
     configuracoes = await AllConfigDatabase.instance.readAllConfigs();
-    criaModal();
+    // criaModal();
+
+    // notificacao = await SaveNotificationDB.instance.readAllConfigs();
+
     setState(() => isLoading = false);
   }
 
+  @override
   void criaModal() {
     var now = DateTime.now();
-    configuracoes.forEach((element) {
-      if (element.hora == now.hour &&
-          element.minuto == now.minute &&
-          element.diaSemanaId == now.weekday) {
-        SaveNotificationDB.instance.create(SaveNotification(idMensagem: 1));
+    configuracoes.forEach((element) async {
+      if (element.hora! <= now.hour &&
+          element.minuto! <= now.minute &&
+          element.diaSemanaId! == now.weekday) {
+        final notify = SaveNotification(idMensagem: 1);
+        await SaveNotificationDB.instance.create(notify);
       }
     });
   }
 
-  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
@@ -72,23 +81,11 @@ class _NotificationPageState extends State<NotificationPage> {
       body: Center(
           child: isLoading
               ? const CircularProgressIndicator()
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                        height: 200,
-                        width: 200,
-                        child: Image.asset('assets/images/sleep.png')),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Tudo calmo por enquanto...',
-                        style: TextStyles.textWhiteBold,
-                        textAlign: TextAlign.center,
-                      ),
-                    )
-                  ],
-                )),
+              : configuracoes.isEmpty
+                  ? dogMessage()
+                  : configuracoes.isEmpty
+                      ? buildConfig()
+                      : dogMessage()),
     );
   }
 
@@ -109,5 +106,23 @@ class _NotificationPageState extends State<NotificationPage> {
             child: ModalNotify(notify: notify, index: index),
           );
         },
+      );
+
+  Widget dogMessage() => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+              height: 200,
+              width: 200,
+              child: Image.asset('assets/images/sleep.png')),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Tudo calmo por enquanto...',
+              style: TextStyles.textWhiteBold,
+              textAlign: TextAlign.center,
+            ),
+          )
+        ],
       );
 }

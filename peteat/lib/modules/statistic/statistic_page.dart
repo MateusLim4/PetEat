@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/functions/soma_quantidade.dart';
 import 'package:peteat/modules/statistic/pages/hoje.dart';
 import 'package:peteat/modules/statistic/pages/ontem.dart';
 import 'package:peteat/modules/statistic/pages/semana.dart';
@@ -10,7 +11,8 @@ import 'package:peteat/shared/themes/font/app_text_style.dart';
 import 'package:peteat/shared/widgets/charts/dounuts_chart.dart';
 
 class Statistics extends StatefulWidget {
-  const Statistics({Key? key}) : super(key: key);
+  final List lista;
+  const Statistics({Key? key, required this.lista}) : super(key: key);
 
   @override
   State<Statistics> createState() => _StatisticsState();
@@ -26,22 +28,27 @@ class _StatisticsState extends State<Statistics> {
     super.initState();
   }
 
+  @override
   Future refreshConfigs() async {
     setState(() => isLoading = true);
     configuracoes = await AllConfigDatabase.instance.readAllConfigs();
     setState(() => isLoading = false);
   }
 
+  @override
   final controller = StatisticsController();
 
   late bool current1 = false;
   late bool current2 = true;
   late bool current3 = false;
 
-  List pages = [TodayChart(), YesterdayChart(), WeekChart()];
-
   @override
   Widget build(BuildContext context) {
+    List pages = [
+      TodayChart(lista: widget.lista),
+      YesterdayChart(lista: widget.lista),
+      WeekChart(lista: widget.lista)
+    ];
     return Scaffold(
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(152),

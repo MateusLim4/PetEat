@@ -21,7 +21,6 @@ class WidgetController extends StatelessWidget {
           "/home": (context) => HomePage(
               user: ModalRoute.of(context)!.settings.arguments as UserModel),
           "/config": (context) => const ConfigPage(),
-          "/statistics": (context) => const Statistics(),
         });
   }
 }
