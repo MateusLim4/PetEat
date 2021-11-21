@@ -3,7 +3,6 @@ import 'package:peteat/modules/Login/login_page.dart';
 import 'package:peteat/modules/config/config_page.dart';
 import 'package:peteat/modules/home/home_page.dart';
 import 'package:peteat/modules/splash/splash_page.dart';
-import 'package:peteat/modules/statistic/statistic_page.dart';
 import 'package:peteat/shared/models/user_model.dart';
 
 class WidgetController extends StatelessWidget {

@@ -10,7 +10,6 @@ import 'package:peteat/shared/themes/colors/app_colors.dart';
 import 'package:peteat/shared/themes/font/app_text_style.dart';
 
 class FeederModal extends StatefulWidget {
-  // final UserModel user;
   final dynamic config;
   const FeederModal({Key? key, this.config}) : super(key: key);
 

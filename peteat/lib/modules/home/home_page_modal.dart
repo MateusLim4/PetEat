@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:peteat/modules/config/add_edit_config.dart';
+import 'package:peteat/shared/mqtt/mqtt.dart';
+import 'package:peteat/shared/mqtt/mqtt_server.dart';
 import 'package:peteat/shared/themes/colors/app_colors.dart';
 import 'package:peteat/shared/themes/font/app_text_style.dart';
 
 class ModalHomeWidget extends StatefulWidget {
-  const ModalHomeWidget({Key? key}) : super(key: key);
+  final dynamic configuracoes;
+  const ModalHomeWidget({Key? key, this.configuracoes}) : super(key: key);
 
   @override
   State<ModalHomeWidget> createState() => _ModalHomeWidgetState();
 }
 
 class _ModalHomeWidgetState extends State<ModalHomeWidget> {
-  var message1 = "Nenhum dispositivo encontrado... \n";
-  var message2 = "Pressione “Buscar” para procurar novos dispositivos...";
-  var buttonmessage = "Buscar";
+  @override
+  String message2 = "Pressione “Buscar” para procurar novos dispositivos.";
+  String buttonmessage = "Buscar";
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    void _buscar() {
-      setState(() {
-        message1 = "";
-        message2 = "Buscando novos dispositivos";
-        buttonmessage = "Buscando...";
-      });
-    }
-
     final size = MediaQuery.of(context).size;
 
     return FloatingActionButton(
@@ -33,7 +30,8 @@ class _ModalHomeWidgetState extends State<ModalHomeWidget> {
           showModalBottomSheet<void>(
             context: context,
             builder: (BuildContext context) {
-              return Container(
+              return Center(
+                  child: Container(
                 height: 500,
                 color: AppColors.titleWhite,
                 child: Padding(
@@ -42,15 +40,16 @@ class _ModalHomeWidgetState extends State<ModalHomeWidget> {
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Container(
-                            child: Text('Conectar dispositivo',
-                                style: TextStyles.textBlackBold)),
+                        isLoading
+                            ? CircularProgressIndicator(
+                                color: AppColors.secondary)
+                            : Container(
+                                child: Text('Conectar dispositivo',
+                                    style: TextStyles.textBlackBold)),
                         Padding(
                           padding: const EdgeInsets.only(top: 20.0),
                           child: Container(
-                            child: Text(
-                                '$message1'
-                                '$message2',
+                            child: Text('$message2',
                                 style: TextStyles.textBlackLight),
                           ),
                         ),
@@ -80,7 +79,7 @@ class _ModalHomeWidgetState extends State<ModalHomeWidget> {
                         )
                       ]),
                 ),
-              );
+              ));
             },
           );
         });

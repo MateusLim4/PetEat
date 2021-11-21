@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peteat/functions/formata_hora.dart';
+import 'package:peteat/shared/mqtt/mqtt.dart';
 import 'package:peteat/shared/notify/notification.dart';
 import 'package:peteat/shared/notify/notify_widget.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
@@ -24,10 +25,13 @@ class _AddEditConfigState extends State<AddEditConfig> {
   late int? notificacaoId;
   late int? notificacaoId2;
   late NotificationWeekAndTime? pickedSchedule;
+  bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    configureAndConnect();
+    isLoading = false;
     hora = widget.configuracoes?.hora ?? 0;
     minuto = widget.configuracoes?.minuto ?? 0;
     diaSemana = widget.configuracoes?.diaSemana ?? 'Sem dia definido';
@@ -61,103 +65,112 @@ class _AddEditConfigState extends State<AddEditConfig> {
         ),
       ),
       backgroundColor: AppColors.primary,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Center(
-            child: Container(
-                height: size.height * 0.4,
-                width: size.width * 0.9,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: AppColors.titleWhite,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.15),
-                      spreadRadius: 2,
-                      blurRadius: 2,
-                      offset: const Offset(2, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    children: [
-                      Text('Definir configurações',
-                          style: TextStyles.blueTextBold2),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          initialValue: alimento == null ? '0' : '$alimento',
-                          maxLength: 3,
-                          onChanged: (alimento) => setState(
-                              () => this.alimento = int.tryParse(alimento)),
-                          validator: (alimento) =>
-                              alimento != null && int.tryParse(alimento)! <= 500
-                                  ? 'O valor máximo é 500g!'
-                                  : '',
-                          decoration: const InputDecoration(
-                            labelText: 'Quantidade de alimento (max 500g)',
+      body: isLoading
+          ? Center(child: CircularProgressIndicator(color: AppColors.secondary))
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Center(
+                  child: Container(
+                      height: size.height * 0.4,
+                      width: size.width * 0.9,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: AppColors.titleWhite,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.15),
+                            spreadRadius: 2,
+                            blurRadius: 2,
+                            offset: const Offset(
+                                2, 3), // changes position of shadow
                           ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text('$diaSemana', style: TextStyles.textBlackLight),
-                          Text('${formataHora(hora, minuto)}',
-                              style: TextStyles.blueText),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(18.0),
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              pickedSchedule = await pickSchedule(context);
-                              if (pickedSchedule != null) {
-                                notificacaoId = createUniqueId();
-                                notificacaoId2 = createUniqueId();
-                                setState(() {
-                                  hora = pickedSchedule!.timeOfDay.hour;
-                                  minuto = pickedSchedule!.timeOfDay.minute;
-                                  diaSemanaId = pickedSchedule!.dayOfTheWeek;
-                                  switch (diaSemanaId) {
-                                    case 7:
-                                      diaSemana = 'Domingo';
-                                      break;
-                                    case 1:
-                                      diaSemana = 'Segunda-feira';
-                                      break;
-                                    case 2:
-                                      diaSemana = 'Terça-feira';
-                                      break;
-                                    case 3:
-                                      diaSemana = 'Quarta-feira';
-                                      break;
-                                    case 4:
-                                      diaSemana = 'Quinta-feira';
-                                      break;
-                                    case 5:
-                                      diaSemana = 'Sexta-feira';
-                                      break;
-                                    case 6:
-                                      diaSemana = 'Sábado';
-                                      break;
-                                  }
-                                });
-                              }
-                            },
-                            child: const Text('Definir horário')),
-                      ),
-                    ],
-                  ),
-                )),
-          ),
-        ),
-      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          children: [
+                            Text('Definir configurações',
+                                style: TextStyles.blueTextBold2),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                initialValue:
+                                    alimento == null ? '0' : '$alimento',
+                                maxLength: 3,
+                                onChanged: (alimento) => setState(() =>
+                                    this.alimento = int.tryParse(alimento)),
+                                validator: (alimento) => alimento != null &&
+                                        int.tryParse(alimento)! <= 500
+                                    ? 'O valor máximo é 500g!'
+                                    : '',
+                                decoration: const InputDecoration(
+                                  labelText:
+                                      'Quantidade de alimento (max 500g)',
+                                ),
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text('$diaSemana',
+                                    style: TextStyles.textBlackLight),
+                                Text('${formataHora(hora, minuto)}',
+                                    style: TextStyles.blueText),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: ElevatedButton(
+                                  onPressed: () async {
+                                    pickedSchedule =
+                                        await pickSchedule(context);
+                                    if (pickedSchedule != null) {
+                                      notificacaoId = createUniqueId();
+                                      notificacaoId2 = createUniqueId();
+                                      setState(() {
+                                        hora = pickedSchedule!.timeOfDay.hour;
+                                        minuto =
+                                            pickedSchedule!.timeOfDay.minute;
+                                        diaSemanaId =
+                                            pickedSchedule!.dayOfTheWeek;
+                                        switch (diaSemanaId) {
+                                          case 7:
+                                            diaSemana = 'Domingo';
+                                            break;
+                                          case 1:
+                                            diaSemana = 'Segunda-feira';
+                                            break;
+                                          case 2:
+                                            diaSemana = 'Terça-feira';
+                                            break;
+                                          case 3:
+                                            diaSemana = 'Quarta-feira';
+                                            break;
+                                          case 4:
+                                            diaSemana = 'Quinta-feira';
+                                            break;
+                                          case 5:
+                                            diaSemana = 'Sexta-feira';
+                                            break;
+                                          case 6:
+                                            diaSemana = 'Sábado';
+                                            break;
+                                        }
+                                      });
+                                    }
+                                  },
+                                  child: const Text('Definir horário')),
+                            ),
+                          ],
+                        ),
+                      )),
+                ),
+              ),
+            ),
     );
   }
 
@@ -212,6 +225,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
         minuto: minuto,
         notificacaoId: notificacaoId,
         diaSemanaId: diaSemanaId);
+    publishMessage('${alimento}');
 
     createReminderNotification(pickedSchedule!, notificacaoId);
     // await createNotificatioAfter(pickedSchedule!, notificacaoId2);
@@ -227,6 +241,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
         notificacaoId: notificacaoId,
         diaSemanaId: diaSemanaId);
 
+    publishMessage('${alimento}');
     createReminderNotification(pickedSchedule!, notificacaoId);
     //  createNotificatioAfter(pickedSchedule!, notificacaoId2);
     await AllConfigDatabase.instance.create(configs);

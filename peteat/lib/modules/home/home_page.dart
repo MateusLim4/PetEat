@@ -2,14 +2,13 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:peteat/modules/config/add_edit_config.dart';
 import 'package:peteat/modules/notification/notification_page.dart';
-
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
 import 'package:peteat/shared/models/user_model.dart';
+import 'package:peteat/shared/mqtt/mqtt.dart';
 import 'package:peteat/shared/themes/colors/app_colors.dart';
 import 'package:peteat/shared/themes/font/app_text_style.dart';
 import 'package:peteat/shared/widgets/logout/logout_button.dart';
-
 import 'home1.dart';
 import 'home2.dart';
 import 'home_controller.dart';
@@ -121,7 +120,11 @@ class _HomePageState extends State<HomePage> {
               ? const CircularProgressIndicator()
               : configuracoes.isEmpty
                   ? const OpsPage()
-                  : const FeederModal(),
+                  : Column(
+                      children: [
+                        const FeederModal(),
+                      ],
+                    ),
         ),
         floatingActionButton: isLoading
             ? null
@@ -130,6 +133,7 @@ class _HomePageState extends State<HomePage> {
                     backgroundColor: AppColors.secondary,
                     onPressed: () async {
                       isTrue = true;
+                      configureAndConnect();
                       await Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const AddEditConfig(),

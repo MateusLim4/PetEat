@@ -46,6 +46,10 @@ cupertino_icons
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.3/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/cupertino_icons-1.0.3/lib/
+event_bus
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/event_bus-2.0.0/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/event_bus-2.0.0/lib/
 fake_async
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0/
@@ -130,6 +134,14 @@ meta
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/meta-1.7.0/lib/
+mqtt_client
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/mqtt_client-9.6.2/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/mqtt_client-9.6.2/lib/
+nested
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0/lib/
 path
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0/
@@ -174,6 +186,10 @@ process
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.3/
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.3/lib/
+provider
+2.12
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/provider-5.0.0/
+file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/provider-5.0.0/lib/
 quiver
 2.12
 file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/quiver-3.0.1/

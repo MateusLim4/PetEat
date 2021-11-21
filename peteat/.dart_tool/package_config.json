@@ -68,6 +68,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "event_bus",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/event_bus-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "fake_async",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/fake_async-1.2.0",
       "packageUri": "lib/",
@@ -212,6 +218,18 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "mqtt_client",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/mqtt_client-9.6.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "nested",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/nested-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "path",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/path-1.8.0",
       "packageUri": "lib/",
@@ -274,6 +292,12 @@
     {
       "name": "process",
       "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/process-4.2.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "provider",
+      "rootUri": "file:///C:/src/flutter/.pub-cache/hosted/pub.dartlang.org/provider-5.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -446,7 +470,7 @@
       "languageVersion": "2.12"
     }
   ],
-  "generated": "2021-11-14T14:02:24.816212Z",
+  "generated": "2021-11-21T20:25:54.656564Z",
   "generator": "pub",
   "generatorVersion": "2.14.4"
 }
