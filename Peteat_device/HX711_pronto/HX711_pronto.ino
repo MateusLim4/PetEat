@@ -25,7 +25,6 @@ const int DOUT_SCK = 4;
 
 const int DOUT_PIN_1 = 0;
 const int DOUT_SCK_1 = 2;
-
 //MQTT
 const char* SSID = "Rafael";                           
 const char* PASSWORD = "V7356i2851v41o";                  
@@ -35,12 +34,29 @@ int broker_port = 15139;
 #define outTOPIC "testLB/outtopic"                       
 #define inTOPIC "testLB/intopic"
 #define notification "notification" 
-
+#define DISPARO "DISPARO"
+#define ESTOQUE "ESTOQUE"
+#define CALIBRADO "CALIBRA"
 int value = 0;
-char tarefa = 'C';
+char tarefa = '.';
 char *funcao = &tarefa;
 char tarefas[4]= {'0','0','0'};
 char *funcaos = &tarefas[4];
+
+
+HX711 tigela;
+bool letter = false;
+const int FLAGS = 0;
+const int ENDER_ESCALA = 1;
+const byte FLAG_CALIBRADA = 0x10;
+float peso;
+
+HX711 reservatorio;
+const int FLAGS_ = 0;
+const int ENDER_ESCALA_ = 1;
+const byte FLAG_CALIBRADA_ = 0x20;
+float peso_;
+int cont = 0;
 
 WiFiClient espClient;                                     
 PubSubClient client(espClient);                           
@@ -49,31 +65,65 @@ unsigned long lastMsg = 0;
 #define MSG_BUFFER_SIZE  (50)
 char msg[MSG_BUFFER_SIZE];
 
+
+
 void callback(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message arrived [");
   Serial.print(topic);
   Serial.println("]");
-  char teste[4];
   char sfuncao[1];
+  char funcaoss[6];
   for (int i = 0; i < length; i++) {
     Serial.print((char)payload[i]);
     if (i == 0){
       sfuncao[0] = ((char)payload[i]);
+      }if (i == 2){
+      funcaoss[i-2] = ((char)payload[i]);
       }
-    if(i >= 2){
-        teste[i-2] = ((char)payload[i]);
     }
-  }
   Serial.print(">");
   Serial.print(sfuncao[0]);
   Serial.println("<");
-  if(sfuncao[0] == 'A'){
-    *funcao = sfuncao[0];
-    *funcaos = *teste;
-  }else if(
-    sfuncao[0] == 'B'){
-    *funcao = sfuncao[0];
-  }
+   if(sfuncao[0] == 'A'){
+    float valor;
+    float entrada;
+    float entradas;
+    peso = tigela.get_units(10);
+    char medida[17];
+    char teste[17];
+    dtostrf (peso, 6, 3, medida);
+    client.publish(DISPARO, medida);
+    entradas = atof(funcaoss);
+    entrada = entradas * 0.10;
+    Serial.print("Variavel após a conversão: ");    
+    Serial.println(entradas);
+    if(valor < entrada){
+    digitalWrite(12, HIGH);
+    Serial.println("Motor ligado");
+    delay(12000);
+    }
+    digitalWrite(12, LOW);
+    Serial.println("Motor desligado");
+    delay(1000);
+    unsigned long now = millis();
+    Serial.println("Publish message: ");
+    strcat (medida, "g");
+    Serial.print("Tigela: ");
+    Serial.println(medida);
+    client.publish(notification, medida);
+    
+      }
+  
+   if(sfuncao[0] == 'B'){
+    peso_ = reservatorio.get_units(10);
+    char medidaE[17];
+    Serial.print("Reservatorio: ");
+    dtostrf (peso_, 7, 3, medidaE);
+    client.publish(ESTOQUE, medidaE);
+    }
+  
+
+  
   // Switch on the LED if the first character is present
   if ((char)payload[0] != NULL) {
     digitalWrite(LED_BUILTIN, LOW); // Turn the LED on (Note that LOW is the voltage level
@@ -85,6 +135,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
   } else {
     digitalWrite(LED_BUILTIN, HIGH); // Turn the LED off by making the voltage HIGH
   }
+    Serial.println("Não travou ate aqui");
+
 }
 
 
@@ -124,18 +176,6 @@ void reconnect() {
 }
 
 
-HX711 tigela;
-bool letter = false;
-const int FLAGS = 0;
-const int ENDER_ESCALA = 1;
-const byte FLAG_CALIBRADA = 0x55;
-float peso;
-
-HX711 reservatorio;
-const int FLAGS_ = 0;
-const int ENDER_ESCALA_ = 1;
-const byte FLAG_CALIBRADA_ = 0x55;
-float peso_;
 
 void ajustaTara() {
   Serial.println("Registrando TARA");
@@ -147,9 +187,10 @@ void ajustaTara() {
 
 void calibra() {
   // Mostra as instruções
-  Serial.println("CALIBRACAO");
+  
+  Serial.println("CALIBRAGEM");
   Serial.println("Deixe a tigela e o reservatorio vazios");
-
+  client.publish("CALIBRA", "INICIA_CALIBRAGEM");
   delay (5000);
 
   Serial.println("Coloque 500g na tigela e 1kg no reservatorio");
@@ -164,7 +205,7 @@ void calibra() {
   long leitura = tigela.read_average(25);
   float escala = (leitura - tigela.get_offset())/0.50f;
   long leitura_ = reservatorio.read_average(25);
-  float escala_ = (leitura - reservatorio.get_offset())/1.00f;
+  float escala_ = (leitura_ - reservatorio.get_offset())/.50f;
   // Salva na EEProm
   EEPROM.put(ENDER_ESCALA, escala);
   EEPROM.put(ENDER_ESCALA_, escala_);
@@ -177,7 +218,8 @@ void calibra() {
   tigela.set_scale(escala);
   reservatorio.set_scale(escala_);
   }
-  
+ client.publish("CALIBRA", "TERMINA_CALIBRAGEM");
+
  Serial.println("balanças calibradas");
   delay(1000);
   
@@ -190,13 +232,17 @@ void setup() {
   setup_wifi();
   client.setServer(mqtt_server, broker_port);
   client.setCallback(callback);
-
   tigela.begin(DOUT_PIN, DOUT_SCK);
   reservatorio.begin(DOUT_PIN_1, DOUT_SCK_1);
   ajustaTara();
+  if (!client.connected()) {
+    reconnect();
+  }
   pinMode(12, OUTPUT);
   if (EEPROM.read(FLAGS) != FLAG_CALIBRADA){
     calibra();
+    float pesos = tigela.get_units(10);
+    float pesoz = reservatorio.get_units(10);
   } else {
     // Usa escala salva na EEPROM
     float escala;
@@ -215,47 +261,10 @@ void loop() {
     reconnect();
   }
   client.loop();
-delay(1000);
-Serial.println(tarefa);
- 
-  if(tarefa == 'B'){
-  unsigned long now = millis();                          
-  if (now - lastMsg > 2000) {
-    lastMsg = now;
-    ++value;
-    snprintf (msg, MSG_BUFFER_SIZE, "Peso reservatorio #%ld", value);
-    Serial.print("Publish message: ");
-    Serial.println(msg);
-    client.publish(notification, msg);
-    tarefa = '.';
-  }}
+
+
+
+  delay(500);
   
-  if(tarefa == 'A'){
-  peso = tigela.get_units(10);
-  char medida[17];
-  dtostrf (peso, 7, 3, medida);
-  strcat (medida, "g");
-  Serial.println(medida);
-  float entrada = atof(tarefas);
-  float valor;
-  valor = atof(medida);
-  char *valors;
-  dtostrf(valor,4,3,valors);
-  if(valor < entrada){
-    digitalWrite(12, HIGH);
-    delay(1000);
-    }else{
-    digitalWrite(12, LOW); 
-    delay(1000);
-    unsigned long now = millis();                          
-    snprintf (msg, MSG_BUFFER_SIZE, "Ligado #%ld", value);
-    Serial.print("Publish message: ");
-    Serial.println(valor);
-    client.publish(notification, valors);
-      }
-  }
-  
- 
-  delay(100);
-  
+tarefa = '.';
 }
