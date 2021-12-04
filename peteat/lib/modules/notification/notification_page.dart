@@ -38,7 +38,7 @@ class _NotificationPageState extends State<NotificationPage> {
     configuracoes = await AllConfigDatabase.instance.readAllConfigs();
     // criaModal();
 
-    // notificacao = await SaveNotificationDB.instance.readAllConfigs();
+    notificacao = await SaveNotificationDB.instance.readAllConfigs();
 
     setState(() => isLoading = false);
   }
@@ -50,7 +50,7 @@ class _NotificationPageState extends State<NotificationPage> {
       if (element.hora! <= now.hour &&
           element.minuto! <= now.minute &&
           element.diaSemanaId! == now.weekday) {
-        final notify = SaveNotification(idMensagem: 1);
+        final notify = SaveNotification(mensagem: '');
         await SaveNotificationDB.instance.create(notify);
       }
     });

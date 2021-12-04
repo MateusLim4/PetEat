@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:peteat/modules/config/add_edit_config.dart';
-import 'package:peteat/shared/mqtt/mqtt.dart';
-import 'package:peteat/shared/mqtt/mqtt_server.dart';
 import 'package:peteat/shared/themes/colors/app_colors.dart';
 import 'package:peteat/shared/themes/font/app_text_style.dart';
 

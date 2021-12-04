@@ -3,7 +3,7 @@ formataHora(hora, minuto) {
   String formatado = '';
   if (hora < 10 && minuto < 10) {
     formatado = '0${hora}:0${minuto}';
-  } else if (hora > 10 && minuto < 10) {
+  } else if (hora >= 10 && minuto < 10) {
     formatado = '${hora}:0${minuto}';
   } else if (hora < 10 && minuto > 10) {
     formatado = '0${hora}:${minuto}';

@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:peteat/functions/formata_hora.dart';
 import 'package:peteat/shared/mqtt/mqtt.dart';
+
 import 'package:peteat/shared/notify/notification.dart';
 import 'package:peteat/shared/notify/notify_widget.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
@@ -30,7 +33,8 @@ class _AddEditConfigState extends State<AddEditConfig> {
   @override
   void initState() {
     super.initState();
-    configureAndConnect();
+    configureAndConnect('testLB/intopic');
+
     isLoading = false;
     hora = widget.configuracoes?.hora ?? 0;
     minuto = widget.configuracoes?.minuto ?? 0;
@@ -130,7 +134,6 @@ class _AddEditConfigState extends State<AddEditConfig> {
                                         await pickSchedule(context);
                                     if (pickedSchedule != null) {
                                       notificacaoId = createUniqueId();
-                                      notificacaoId2 = createUniqueId();
                                       setState(() {
                                         hora = pickedSchedule!.timeOfDay.hour;
                                         minuto =
@@ -210,6 +213,7 @@ class _AddEditConfigState extends State<AddEditConfig> {
         await creatConfigEditNotification();
       } else {
         await add();
+
         await creatConfigNotification();
       }
 
@@ -225,7 +229,10 @@ class _AddEditConfigState extends State<AddEditConfig> {
         minuto: minuto,
         notificacaoId: notificacaoId,
         diaSemanaId: diaSemanaId);
-    publishMessage('${alimento}');
+
+    pickedSchedule = NotificationWeekAndTime(
+        dayOfTheWeek: diaSemanaId!,
+        timeOfDay: TimeOfDay(hour: hora!, minute: minuto!));
 
     createReminderNotification(pickedSchedule!, notificacaoId);
     // await createNotificatioAfter(pickedSchedule!, notificacaoId2);
@@ -241,9 +248,72 @@ class _AddEditConfigState extends State<AddEditConfig> {
         notificacaoId: notificacaoId,
         diaSemanaId: diaSemanaId);
 
-    publishMessage('${alimento}');
     createReminderNotification(pickedSchedule!, notificacaoId);
     //  createNotificatioAfter(pickedSchedule!, notificacaoId2);
     await AllConfigDatabase.instance.create(configs);
+  }
+
+  Future disparo() async {
+    DateTime yourTime;
+    var diferencaHora = hora! - DateTime.now().hour;
+    var diferencaMin = minuto! - DateTime.now().minute;
+    var diferencaDia = diaSemanaId! - DateTime.now().day - 2;
+
+    if (diferencaMin < 0) {
+      diferencaHora = diferencaHora - 1;
+      if (diferencaHora < 0) {
+        diferencaHora = hora! - 1;
+      }
+      diferencaMin = 60 + diferencaMin;
+    }
+
+    if (diferencaDia < 0) {
+      diferencaDia = -diferencaDia;
+    }
+
+    void myAction() async {
+      // final notify = SaveNotification(idMensagem: createUniqueId());
+      // await SaveNotificationDB.instance.create(notify);
+
+      // var payload = 'A:0.0$alimento';
+      // if (alimento! > 99) {
+      //   payload = 'A:0.$alimento';
+      // }
+      // publishMessage(payload);
+
+      // configureAndConnect('DISPARO');
+      // var response = currentAppState.getHistoryText.split(' ');
+      // final isValid = response == [];
+
+      // if (isValid == true) {
+      //   var ultimo;
+
+      //   var now = DateTime.now().weekday;
+      //   if (response[response.length - 1].contains('A')) {
+      //     response = response[response.length - 1].split('A:');
+      //   }
+      //   ultimo = double.tryParse(response[response.length - 1]);
+
+      //   createNotificatioAfter((alimento! - ultimo));
+
+      //   final consumoQuant =
+      //       QuantConsumida(idDiaAtual: now, quantConsumida: ultimo);
+
+      //   if (response != []) {
+      //     await QuantConsumidaDB.instance.create(consumoQuant);
+      //   }
+      // }
+      // disconnect();
+
+      // createNotificatioAfter(text);
+    }
+
+    Timer(
+        Duration(
+            days: diferencaDia,
+            hours: diferencaHora,
+            minutes: diferencaMin,
+            milliseconds: 0),
+        myAction);
   }
 }

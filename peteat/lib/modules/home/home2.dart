@@ -1,17 +1,24 @@
 import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:peteat/functions/formata_hora.dart';
 import 'package:peteat/functions/soma_quantidade.dart';
 import 'package:peteat/modules/statistic/statistic_page.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
+import 'package:peteat/shared/mqtt/mqtt.dart';
+import 'package:peteat/shared/mqtt/mqtt_server.dart';
+import 'package:peteat/shared/notify/notification.dart';
+import 'package:peteat/shared/notify/notify_widget.dart';
 import 'package:peteat/shared/themes/colors/app_colors.dart';
 import 'package:peteat/shared/themes/font/app_text_style.dart';
+import 'package:peteat/shared/widgets/current.dart';
 
 class FeederModal extends StatefulWidget {
   final dynamic config;
-  const FeederModal({Key? key, this.config}) : super(key: key);
+  final List<String> response;
+  const FeederModal({Key? key, this.config, required this.response})
+      : super(key: key);
 
   @override
   State<FeederModal> createState() => _FeederModalState();
@@ -20,11 +27,11 @@ class FeederModal extends StatefulWidget {
 class _FeederModalState extends State<FeederModal> {
   bool isLoading = false;
   late List<ConfigUser> configuracoes;
+  late MQTTAppState currentAppState = MQTTAppState();
+
   Future refreshConfigs() async {
     setState(() => isLoading = true);
-
     configuracoes = await AllConfigDatabase.instance.readAllConfigs();
-
     setState(() => isLoading = false);
   }
 
@@ -35,7 +42,7 @@ class _FeederModalState extends State<FeederModal> {
   }
 
   @override
-  int? index;
+  int? index = 0;
   double _animatedHeight = 0;
   bool _visible = true;
 
@@ -55,7 +62,7 @@ class _FeederModalState extends State<FeederModal> {
   }
 
   Future trocaTamanho() async {
-    _animatedHeight != 0.0 ? _animatedHeight = 0.0 : _animatedHeight = 217.5;
+    _animatedHeight != 0.0 ? _animatedHeight = 0.0 : _animatedHeight = 270;
   }
 
   @override
@@ -74,6 +81,8 @@ class _FeederModalState extends State<FeederModal> {
                 GestureDetector(
                     onTap: () => setState(() {
                           definirHorario();
+                          configureAndConnect('testLB/intopic');
+
                           trocaStatus();
                         }),
                     child: Column(
@@ -106,8 +115,9 @@ class _FeederModalState extends State<FeederModal> {
                                       var lista = somaQuantidade(configuracoes);
                                       Navigator.of(context)
                                           .push(MaterialPageRoute(
-                                        builder: (context) =>
-                                            Statistics(lista: lista),
+                                        builder: (context) => Statistics(
+                                          lista: lista,
+                                        ),
                                       ));
                                     },
                                     child: Text(
@@ -165,72 +175,86 @@ class _FeederModalState extends State<FeederModal> {
   Widget cardContent(index) {
     return _visible
         ? Container()
-        : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
+        : Column(
             children: [
-                Column(
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                        configuracoes.isEmpty
-                            ? 'N/a'
-                            : '${formataHora(configuracoes[index].hora, configuracoes[index].minuto)}',
-                        style: TextStyles.blueTextBold),
-                    Text('Proxima liberação de\n ração',
-                        style: TextStyles.textBlackLight,
-                        textAlign: TextAlign.center),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _animatedHeight = 0;
-                          });
+                    Column(
+                      children: [
+                        Text(
+                            configuracoes.isEmpty
+                                ? 'N/a'
+                                : '${formataHora(configuracoes[index].hora, configuracoes[index].minuto)}',
+                            style: TextStyles.blueTextBold),
+                        Text('Proxima liberação de\n ração',
+                            style: TextStyles.textBlackLight,
+                            textAlign: TextAlign.center),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                _animatedHeight = 0;
+                              });
 
-                          Navigator.pushNamed(
-                            context,
-                            "/config",
-                          );
-                        },
-                        child:
-                            Text('Configurar', style: TextStyles.textWhiteBold),
-                        style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all(AppColors.secondary)),
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Text(
-                        configuracoes.isEmpty
-                            ? 'N/a'
-                            : '${configuracoes[0].alimento} g',
-                        style: TextStyles.blueTextBold),
-                    Text('Quantidade de ração\n definida',
-                        style: TextStyles.textBlackLight,
-                        textAlign: TextAlign.center),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: OutlinedButton(
-                        onPressed: () {},
-                        child: Text('Antecipar', style: TextStyles.blueText),
-                        style: OutlinedButton.styleFrom(
-                          side: const BorderSide(
-                              color: AppColors.secondary, width: 2.0),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                              Navigator.pushNamed(
+                                context,
+                                "/config",
+                              );
+                            },
+                            child: Text('Configurar',
+                                style: TextStyles.textWhiteBold),
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    AppColors.secondary)),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                )
-              ]);
+                    Column(
+                      children: [
+                        Text(
+                            configuracoes.isEmpty
+                                ? 'N/a'
+                                : '${configuracoes[index].alimento} g',
+                            style: TextStyles.blueTextBold),
+                        Text('Quantidade de ração\n definida',
+                            style: TextStyles.textBlackLight,
+                            textAlign: TextAlign.center),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: OutlinedButton(
+                            onPressed: () {
+                              var payload = 'A:1.000';
+
+                              publishMessage(payload);
+                              createUniqueId();
+                              antecipateNotification();
+                            },
+                            child:
+                                Text('Antecipar', style: TextStyles.blueText),
+                            style: OutlinedButton.styleFrom(
+                              side: const BorderSide(
+                                  color: AppColors.secondary, width: 2.0),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  ]),
+              CurrentFood()
+            ],
+          );
   }
 
   organizaHora(index, lista, now, diaInicial) {
+    refreshConfigs();
     int count = 0;
     int menorHorario = 24;
     int menorMinuto = 60;
@@ -286,6 +310,7 @@ class _FeederModalState extends State<FeederModal> {
 
   void definirHorario() {
     var now = DateTime.now();
+    index = null;
     List lista = [];
     for (var element in configuracoes) {
       List subLista = [];

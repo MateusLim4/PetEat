@@ -27,11 +27,12 @@ class SaveNotificationDB {
   Future _createDB(Database db, int version) async {
     final idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     final integerType = 'INTEGER NOT NULL';
+    final textType = 'TEXT NOT NULL';
 
     await db.execute('''
 CREATE TABLE $tableConfigs ( 
   ${SavedNotificationDB.id} $idType, 
-  ${SavedNotificationDB.idMensagem} $integerType,
+  ${SavedNotificationDB.mensagem} $textType,
 ''');
   }
 

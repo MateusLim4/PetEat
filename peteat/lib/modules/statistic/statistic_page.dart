@@ -6,12 +6,15 @@ import 'package:peteat/modules/statistic/pages/semana.dart';
 import 'package:peteat/modules/statistic/statistic_page_controller.dart';
 import 'package:peteat/shared/models/allconfig_db.dart';
 import 'package:peteat/shared/models/config_user.dart';
+import 'package:peteat/shared/models/consumido/consumido.dart';
+import 'package:peteat/shared/models/consumido/consumido_db.dart';
+import 'package:peteat/shared/mqtt/mqtt.dart';
 import 'package:peteat/shared/themes/colors/app_colors.dart';
 import 'package:peteat/shared/themes/font/app_text_style.dart';
-import 'package:peteat/shared/widgets/charts/dounuts_chart.dart';
 
 class Statistics extends StatefulWidget {
   final List lista;
+
   const Statistics({Key? key, required this.lista}) : super(key: key);
 
   @override
@@ -20,7 +23,9 @@ class Statistics extends StatefulWidget {
 
 class _StatisticsState extends State<Statistics> {
   late List<ConfigUser> configuracoes;
+  late List<QuantConsumida> consumo;
   bool isLoading = false;
+  List consumido = [];
 
   @override
   void initState() {
@@ -28,11 +33,37 @@ class _StatisticsState extends State<Statistics> {
     super.initState();
   }
 
-  @override
   Future refreshConfigs() async {
     setState(() => isLoading = true);
     configuracoes = await AllConfigDatabase.instance.readAllConfigs();
+    consumo = await QuantConsumidaDB.instance.readAllConfigs();
+    configureAndConnect('DISPARO');
+    getDados();
     setState(() => isLoading = false);
+  }
+
+  void getDados() async {
+    var response = currentAppState.getHistoryText.split(' ');
+    final isValid = response == [];
+    if (isValid == false) {
+      var ultimo;
+
+      var now = DateTime.now().weekday;
+
+      response = response[response.length - 1].split('A:');
+
+      ultimo = double.tryParse(response[response.length - 1]);
+      print(response);
+
+      final consumoQuant =
+          QuantConsumida(idDiaAtual: now, quantConsumida: ultimo / 100);
+
+      if (response != []) {
+        await QuantConsumidaDB.instance.create(consumoQuant);
+      }
+    }
+
+    consumido = somaQuantidade2(consumo);
   }
 
   @override
@@ -45,9 +76,18 @@ class _StatisticsState extends State<Statistics> {
   @override
   Widget build(BuildContext context) {
     List pages = [
-      TodayChart(lista: widget.lista),
-      YesterdayChart(lista: widget.lista),
-      WeekChart(lista: widget.lista)
+      TodayChart(
+        lista: widget.lista,
+        consumido: consumido,
+      ),
+      YesterdayChart(
+        lista: widget.lista,
+        consumido: consumido,
+      ),
+      WeekChart(
+        lista: widget.lista,
+        consumido: consumido,
+      )
     ];
     return Scaffold(
         appBar: PreferredSize(
@@ -56,26 +96,23 @@ class _StatisticsState extends State<Statistics> {
             height: 152,
             color: AppColors.titleWhite,
             child: Center(
-              child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const BackButton(color: AppColors.primary),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 25),
-                            child:
-                                Text('Graficos ', style: TextStyles.pinkTitle),
-                          ),
-                        ]),
-                  ),
-                ),
-              ]),
+              child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8.0, right: 160),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              const BackButton(color: AppColors.primary),
+                              Text('Graficos ', style: TextStyles.pinkTitle),
+                            ]),
+                      ),
+                    ),
+                  ]),
             ),
           ),
         ),
@@ -87,12 +124,12 @@ class _StatisticsState extends State<Statistics> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   isLoading
-                      ? CircularProgressIndicator()
+                      ? const CircularProgressIndicator()
                       : configuracoes.isEmpty
                           ? Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Container(
+                                SizedBox(
                                     height: 200,
                                     width: 200,
                                     child: Image.asset(

@@ -23,6 +23,17 @@ Future<void> creatConfigEditNotification() async {
   ));
 }
 
+Future<void> antecipateNotification() async {
+  await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+    id: createUniqueId(),
+    channelKey: 'basic_channel',
+    title: '${Emojis.animals_dog} Aeeeeeeeee!!!',
+    body: 'A ração será liberada em instantes!',
+    notificationLayout: NotificationLayout.Default,
+  ));
+}
+
 Future<void> deleteConfigNotification() async {
   await AwesomeNotifications().createNotification(
       content: NotificationContent(
@@ -50,31 +61,17 @@ Future<void> createReminderNotification(
         second: 0,
         millisecond: 0,
         repeats: true,
-      ),
-      actionButtons: [NotificationActionButton(label: 'Ok')]);
+      ));
 }
 
-
-// Future<void> createNotificatioAfter(
-//     NotificationWeekAndTime notificationSchedule, id) async {
-//   int hora = notificationSchedule.timeOfDay.hour;
-//   int minuto = notificationSchedule.timeOfDay.minute + 3;
-//   if ((minuto) > 60) {
-//     minuto = minuto - 60;
-//     hora = hora + 1;
-//   }
-//   await AwesomeNotifications().createNotification(
-//       content: NotificationContent(
-//           id: id,
-//           channelKey: 'scheduled_channel',
-//           title: '${Emojis.animals_dog_face}, o ADM liberou!!!',
-//           body: 'A ração foi depositada na tijela!',
-//           notificationLayout: NotificationLayout.Default),
-//       schedule: NotificationCalendar(
-//           weekday: notificationSchedule.dayOfTheWeek,
-//           hour: hora,
-//           minute: minuto,
-//           second: 0,
-//           millisecond: 0,
-//           repeats: true));
-// }
+Future<void> createNotificatioAfter(text) async {
+  await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+    id: createUniqueId(),
+    channelKey: 'basic_channel',
+    title: text != 0 ? 'Ração liberada!!' : 'Ração não foi liberada ;-;',
+    body:
+        text == 0 ? 'Foi depositado ${text}g' : 'Parece que seu pet não comeu.',
+    notificationLayout: NotificationLayout.Default,
+  ));
+}

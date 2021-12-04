@@ -1,5 +1,7 @@
 import 'dart:io' show Platform;
 
+import 'package:flutter/material.dart';
+
 import 'mqtt_controller.dart';
 import 'mqtt_server.dart';
 
@@ -18,7 +20,7 @@ String prepareStateMessageFrom(MQTTAppConnectionState state) {
   }
 }
 
-configureAndConnect() {
+configureAndConnect(topic) {
   var aqui = currentAppState;
   String osPrefix = 'Aplicativo';
   if (Platform.isAndroid) {
@@ -26,7 +28,7 @@ configureAndConnect() {
   }
   manager = MQTTManager(
       host: 'e55ab74b.us-east-1.emqx.cloud',
-      topic: 'testLB/outtopic',
+      topic: topic,
       identifier: osPrefix,
       state: aqui);
   manager.initializeMQTTClient();

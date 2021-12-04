@@ -23,11 +23,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late List<ConfigUser> configuracoes;
+
   bool isLoading = false;
 
   @override
   void initState() {
     refreshConfigs();
+    configureAndConnect('testLB/intopic');
+
     super.initState();
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
       if (!isAllowed) {
@@ -59,9 +62,7 @@ class _HomePageState extends State<HomePage> {
 
   Future refreshConfigs() async {
     setState(() => isLoading = true);
-
     configuracoes = await AllConfigDatabase.instance.readAllConfigs();
-
     setState(() => isLoading = false);
   }
 
@@ -85,29 +86,32 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Row(children: [
-                          Logout(
-                              user: ModalRoute.of(context)!.settings.arguments
-                                  as UserModel),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text('Hello, ',
-                                style: TextStyles.pinkTitleThin),
-                          ),
-                          Text(
-                            widget.user.name,
-                            style: TextStyles.pinkTitle,
-                          ),
-                          TextButton(
-                            child: const Icon(Icons.notifications,
-                                size: 40, color: AppColors.grey),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      const NotificationPage()));
-                            },
-                          ),
-                        ]),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Logout(
+                                  user: ModalRoute.of(context)!
+                                      .settings
+                                      .arguments as UserModel),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text('Ola, ',
+                                    style: TextStyles.pinkTitleThin),
+                              ),
+                              Text(
+                                widget.user.name,
+                                style: TextStyles.pinkTitle,
+                              ),
+                              TextButton(
+                                child: const Icon(Icons.notifications,
+                                    size: 40, color: AppColors.grey),
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          const NotificationPage()));
+                                },
+                              ),
+                            ]),
                       ),
                     ),
                   ]),
@@ -120,11 +124,8 @@ class _HomePageState extends State<HomePage> {
               ? const CircularProgressIndicator()
               : configuracoes.isEmpty
                   ? const OpsPage()
-                  : Column(
-                      children: [
-                        const FeederModal(),
-                      ],
-                    ),
+                  : FeederModal(
+                      response: currentAppState.getHistoryText.split('A:')),
         ),
         floatingActionButton: isLoading
             ? null
@@ -133,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                     backgroundColor: AppColors.secondary,
                     onPressed: () async {
                       isTrue = true;
-                      configureAndConnect();
+
                       await Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => const AddEditConfig(),

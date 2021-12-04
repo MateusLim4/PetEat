@@ -1,38 +1,38 @@
 const String tableConfigs = 'messages';
 
 class SavedNotificationDB {
-  static final List<String> values = [id, idMensagem];
+  static final List<String> values = [id, mensagem];
 
   static const String id = '_id';
-  static const String idMensagem = 'horaAtual';
+  static const String mensagem = 'mensagem';
 }
 
 class SaveNotification {
   final int? id;
-  final int? idMensagem;
+  final String? mensagem;
 
   const SaveNotification({
     this.id,
-    required this.idMensagem,
+    required this.mensagem,
   });
 
   SaveNotification copy({
     int? id,
-    int? idMensagem,
+    String? idMensagem,
   }) =>
       SaveNotification(
         id: id ?? this.id,
-        idMensagem: idMensagem ?? this.idMensagem,
+        mensagem: mensagem ?? this.mensagem,
       );
 
   static SaveNotification fromJson(Map<String, Object?> json) =>
       SaveNotification(
         id: json[SavedNotificationDB.id] as int?,
-        idMensagem: json[SavedNotificationDB.idMensagem] as int?,
+        mensagem: json[SavedNotificationDB.mensagem] as String?,
       );
 
   Map<String, Object?> toJson() => {
         SavedNotificationDB.id: id,
-        SavedNotificationDB.idMensagem: idMensagem,
+        SavedNotificationDB.mensagem: mensagem,
       };
 }
